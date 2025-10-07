@@ -8,57 +8,386 @@
     <link rel="icon" href="./assets/img/logo.png" />
   </head>
   <body>
-    <header>
-      <section class="menu">
-        <a class="logo" href="index.html">
-          <img src="./assets/img/logo.png" alt="Logo" />
-        </a>
-        <nav class="nav">
-          <ul class="menu">
-            <li class="typography-action-link-button">
-              <a href="#">Favorite Coffee</a>
-            </li>
-            <li class="typography-action-link-button"><a href="#">About</a></li>
-            <li class="typography-action-link-button">
-              <a href="#">Mobile app</a>
-            </li>
-            <li class="typography-action-link-button">
-              <a href="#">Contact us</a>
-            </li>
-          </ul>
-        </nav>
-        <div class="coffee-menu">
-          <a href="#">
-            <span class="typography-action-link-button">Menu</span>
-            <span
-              ><img src="./assets/img/coffee-cup.svg" alt="coffee-cup"
-            /></span>
+    <main>
+      <header>
+        <section class="menu">
+          <a class="logo" href="index.html">
+            <img src="./assets/img/logo.png" alt="Logo" />
           </a>
+          <nav class="nav">
+            <ul class="menu">
+              <li class="typography-action-link-button">
+                <a href="#">Favorite coffee</a>
+              </li>
+              <li class="typography-action-link-button">
+                <a href="#">About</a>
+              </li>
+              <li class="typography-action-link-button">
+                <a href="#">Mobile app</a>
+              </li>
+              <li class="typography-action-link-button">
+                <a href="#">Contact us</a>
+              </li>
+            </ul>
+          </nav>
+          <div class="coffee-menu">
+            <a href="#">
+              <div class="typography-action-link-button">Menu</div>
+              <div>
+                <img src="./assets/img/coffee-cup.svg" alt="coffee-cup" />
+              </div>
+            </a>
+          </div>
+        </section>
+        <section class="hero">
+          <video autoplay muted loop playsinline class="hero__video">
+            <source
+              src="./assets/video/2909914-uhd_3840_2024_24fps.mp4"
+              type="video/mp4"
+            />
+          </video>
+          <div class="hero__content">
+            <h1 class="typography-heading-1">
+              <span class="typography-accent">Enjoy</span> premium coffee at our
+              charming cafe
+            </h1>
+            <p class="typography-body-medium">
+              With its inviting atmosphere and delicious coffee options, the
+              Coffee House Resource is a popular destination for coffee lovers
+              and those seeking a warm and inviting space to enjoy their
+              favorite beverage.
+            </p>
+            <button class="typography-action-link-button button">Menu</button>
+          </div>
+        </section>
+      </header>
+      <section class="favorite-coffee">
+        <h2 class="typography-heading-2 slider-header">
+          Choose your <span class="typography-accent">favorite</span> coffee
+        </h2>
+        <div class="slider-outer">
+          <div class="slider">
+            <div class="slider-button" id="btnLeft">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g id="arrow-left">
+                  <path
+                    id="VectorLeft"
+                    d="M18.5 12H6M6 12L12 6M6 12L12 18"
+                    stroke="white"
+                    stroke-opacity="0.4"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </g>
+              </svg>
+            </div>
+            <div class="slider-card">
+              <img
+                src="./assets/img/slider/coffee-slider-1.png"
+                alt="slider image"
+              />
+              <div class="card-content">
+                <h3 class="typography-heading-3">S’mores Frappuccino</h3>
+                <p class="typography-body-medium">
+                  This new drink takes an espresso and mixes it with brown sugar
+                  and cinnamon before being topped with oat milk.
+                </p>
+                <h3 class="typography-heading-3">$5.50</h3>
+              </div>
+            </div>
+            <div class="slider-button slider-button-activ" id="btnRight">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g id="arrow-right">
+                  <path
+                    id="VectorRight"
+                    d="M6 12H18.5M18.5 12L12.5 6M18.5 12L12.5 18"
+                    stroke="white"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </g>
+              </svg>
+            </div>
+          </div>
+          <div class="slider-controls">
+            <div class="slider-control" id="control1"></div>
+            <div class="slider-control" id="control2"></div>
+            <div class="slider-control" id="control3"></div>
+          </div>
         </div>
       </section>
-      <section class="hero">
-        <video autoplay muted loop playsinline class="hero__video">
-          <source
-            src="./assets/video/2909914-uhd_3840_2024_24fps.mp4"
-            type="video/mp4"
-          />
-        </video>
-        <div class="hero__content">
-          <h1 class="typography-heading-1">
-            <span class="typography-accent">Enjoy</span> premium coffee at our
-            charming cafe
-          </h1>
+      <section class="about">
+        <h2 class="typography-heading-2">
+          Resource is
+          <span class="typography-accent">the perfect and cozy place</span>
+          where you can enjoy a variety of hot beverages, relax, catch up with
+          friends, or get some work done.
+        </h2>
+        <div class="images">
+          <div class="images-column">
+            <div class="square-image">
+              <img src="./assets/img/about/about-1.jpg" alt="about image" />
+            </div>
+            <div class="rect-image">
+              <img src="./assets/img/about/about-2.jpg" alt="about image" />
+            </div>
+          </div>
+          <div class="images-column">
+            <div class="rect-image">
+              <img src="./assets/img/about/about-3.jpg" alt="about image" />
+            </div>
+            <div class="square-image">
+              <img src="./assets/img/about/about-4.jpg" alt="about image" />
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="mobile-app">
+        <div class="offer">
+          <h2 class="typography-heading-2">
+            <span class="typography-accent">Download</span> our apps to start
+            ordering
+          </h2>
           <p class="typography-body-medium">
-            With its inviting atmosphere and delicious coffee options, the
-            Coffee House Resource is a popular destination for coffee lovers and
-            those seeking a warm and inviting space to enjoy their favorite
-            beverage.
+            Download the Resource app today and experience the comfort of
+            ordering your favorite coffee from wherever you are
           </p>
-          <button class="typography-action-link-button button">Menu</button>
+          <div class="offer-buttons">
+            <button class="button-app typography-action-link-button">
+              <div class="button-app-icon">
+                <svg
+                  width="28"
+                  height="33"
+                  viewBox="0 0 28 33"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M22.7063 17.6307C22.6694 13.6324 26.0641 11.6872 26.2193 11.5966C24.2967 8.86366 21.3169 8.49026 20.2697 8.46048C17.767 8.20369 15.3393 9.92062 14.0644 9.92062C12.764 9.92062 10.8008 8.48529 8.68482 8.52747C5.96196 8.56841 3.41468 10.1055 2.01762 12.4923C-0.865556 17.359 1.28474 24.5108 4.04705 28.4446C5.42884 30.3712 7.04347 32.5223 9.15687 32.4466C11.2245 32.3635 11.9968 31.1614 14.4919 31.1614C16.9641 31.1614 17.6893 32.4466 19.8447 32.3983C22.0637 32.3635 23.4608 30.463 24.7942 28.519C26.3911 26.3108 27.0323 24.1362 27.0578 24.0245C27.0056 24.0071 22.7483 22.4229 22.7063 17.6307Z"
+                    fill="#403F3D"
+                  />
+                  <path
+                    d="M18.6347 5.87268C19.7468 4.51675 20.5076 2.67205 20.2964 0.800049C18.6869 0.86952 16.674 1.88554 15.5149 3.21169C14.4893 4.38029 13.5732 6.29571 13.8099 8.097C15.6179 8.2285 17.4743 7.20752 18.6347 5.87268Z"
+                    fill="#403F3D"
+                  />
+                </svg>
+              </div>
+              <div class="button-app-text">
+                <div class="typography-caption">Available on the</div>
+                <div class="typography-action-link-button">App Store</div>
+              </div>
+            </button>
+            <button class="button-app typography-action-link-button">
+              <div class="button-app-icon">
+                <svg
+                  width="31"
+                  height="34"
+                  viewBox="0 0 31 34"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M0.755796 2.20297C0.393349 2.57289 0.183594 3.14884 0.183594 3.89471V30.4994C0.183594 31.2453 0.393349 31.8212 0.755796 32.1911L0.845252 32.2723L16.1359 17.37V17.0181L0.845252 2.11575L0.755796 2.20297Z"
+                    fill="#403F3D"
+                  />
+                  <path
+                    d="M23.0776 22.34L17.9863 17.37V17.0181L23.0837 12.0482L23.1979 12.1128L29.2345 15.4617C30.9573 16.4121 30.9573 17.976 29.2345 18.9324L23.1979 22.2753L23.0776 22.34Z"
+                    fill="#403F3D"
+                  />
+                  <path
+                    d="M22.2733 23.2007L17.0617 18.1195L1.68164 33.1166C2.25384 33.7031 3.18695 33.7737 4.24807 33.1873L22.2733 23.2007Z"
+                    fill="#403F3D"
+                  />
+                  <path
+                    d="M22.2733 11.1876L4.24807 1.20103C3.18695 0.620579 2.25384 0.691254 1.68164 1.27772L17.0617 16.2688L22.2733 11.1876Z"
+                    fill="#403F3D"
+                  />
+                </svg>
+              </div>
+              <div class="button-app-text">
+                <div class="typography-caption">Available on</div>
+                <div class="typography-action-link-button">Google Play</div>
+              </div>
+            </button>
+          </div>
+        </div>
+        <img src="./assets/img/mobile-screens.png" alt="mobile-screens" />
+      </section>
+      <section class="contact">
+        <div class="contact-column">
+          <h2 class="typography-heading-2">
+            Sip, Savor, Smile.
+            <span class="typography-accent">It’s coffee time!</span>
+          </h2>
+          <div class="socials">
+            <button>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M23 3.01006C23 3.01006 20.9821 4.20217 19.86 4.54006C19.2577 3.84757 18.4573 3.35675 17.567 3.13398C16.6767 2.91122 15.7395 2.96725 14.8821 3.29451C14.0247 3.62177 13.2884 4.20446 12.773 4.96377C12.2575 5.72309 11.9877 6.62239 12 7.54006V8.54006C10.2426 8.58562 8.50127 8.19587 6.93101 7.4055C5.36074 6.61513 4.01032 5.44869 3 4.01006C3 4.01006 -1 13.0101 8 17.0101C5.94053 18.408 3.48716 19.109 1 19.0101C10 24.0101 21 19.0101 21 7.51006C20.9991 7.23151 20.9723 6.95365 20.92 6.68006C21.9406 5.67355 23 3.01006 23 3.01006Z"
+                  stroke="#E1D4C9"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+            <button>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z"
+                  stroke="#E1D4C9"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M3 16V8C3 5.23858 5.23858 3 8 3H16C18.7614 3 21 5.23858 21 8V16C21 18.7614 18.7614 21 16 21H8C5.23858 21 3 18.7614 3 16Z"
+                  stroke="#E1D4C9"
+                />
+                <path
+                  d="M17.5 6.51L17.51 6.49889"
+                  stroke="#E1D4C9"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+            <button>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M17 2H14C12.6739 2 11.4021 2.52678 10.4645 3.46447C9.52678 4.40215 9 5.67392 9 7V10H6V14H9V22H13V14H16L17 10H13V7C13 6.73478 13.1054 6.48043 13.2929 6.29289C13.4804 6.10536 13.7348 6 14 6H17V2Z"
+                  stroke="#E1D4C9"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="contact-column">
+          <h3 class="typography-heading-3">Contact us</h3>
+          <div class="contacts">
+            <a
+              href="https://maps.app.goo.gl/qpMBRpk5CdNGZDUq7"
+              target="_blank"
+              class="typography-action-link-button"
+            >
+              <span>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M16.6663 8.33329C16.6663 12.0152 9.99967 18.3333 9.99967 18.3333C9.99967 18.3333 3.33301 12.0152 3.33301 8.33329C3.33301 4.65139 6.31778 1.66663 9.99967 1.66663C13.6816 1.66663 16.6663 4.65139 16.6663 8.33329Z"
+                    stroke="#E1D4C9"
+                    stroke-width="1.5"
+                  />
+                  <path
+                    d="M10.0003 9.16667C10.4606 9.16667 10.8337 8.79357 10.8337 8.33333C10.8337 7.8731 10.4606 7.5 10.0003 7.5C9.54009 7.5 9.16699 7.8731 9.16699 8.33333C9.16699 8.79357 9.54009 9.16667 10.0003 9.16667Z"
+                    fill="#E1D4C9"
+                    stroke="#E1D4C9"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+              8558 Green Rd., LA
+            </a>
+            <a
+              href="tel:+37529112233"
+              target="_blank"
+              class="typography-action-link-button"
+            >
+              <span>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M15.0984 12.2516L11.6665 12.9166C9.34845 11.7531 7.91654 10.4166 7.08321 8.33329L7.72483 4.89154L6.51197 1.66663L3.72946 1.66663C2.60191 1.66663 1.71466 2.59958 1.90108 3.71161C2.29888 6.08454 3.37231 10.0391 6.24987 12.9166C9.27338 15.9401 13.5661 17.3318 16.1378 17.9288C17.299 18.1983 18.3332 17.2908 18.3332 16.0988L18.3332 13.4843L15.0984 12.2516Z"
+                    stroke="#E1D4C9"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+              +1 (603) 555-0123
+            </a>
+            <a href="#" target="_blank" class="typography-action-link-button">
+              <span>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g clip-path="url(#clip0_217_1736)">
+                    <path
+                      d="M10 5L10 10L15 10"
+                      stroke="#E1D4C9"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M10.0003 18.3333C14.6027 18.3333 18.3337 14.6023 18.3337 9.99996C18.3337 5.39759 14.6027 1.66663 10.0003 1.66663C5.39795 1.66663 1.66699 5.39759 1.66699 9.99996C1.66699 14.6023 5.39795 18.3333 10.0003 18.3333Z"
+                      stroke="#E1D4C9"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_217_1736">
+                      <rect width="20" height="20" fill="white" />
+                    </clipPath>
+                  </defs>
+                </svg>
+              </span>
+              Mon-Sat: 9:00 AM – 23:00 PM
+            </a>
+          </div>
         </div>
       </section>
-    </header>
-    <main></main>
+    </main>
   </body>
 </html>
 
