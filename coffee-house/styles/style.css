@@ -1,60 +1,16 @@
 @import url('./typography.css');
 @import url('./general.css');
+@import url('./header.css');
+@import url('./footer.css');
 
-*{
-  box-sizing: border-box;
-  margin: 0 0;
-  padding: 0 0;
-}
-
-body {
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  background-color: var(--color-background-body);
-  align-items: center;
-  width: 1440px;
-  padding: 20px 40px 40px 40px;
-}
-
-header {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-  height: fit-content;
-  width: 100%;
-  justify-content: space-between;
-
-  .logo {
-    margin: 0 0;
-    padding: 0 0;
-  }
-
-  .nav {
-    display: flex;
-
-    ul.menu {
-      display: flex;
-      gap: 40px;
-      justify-content: space-between;
-      align-items: center;
-      list-style-type: none;
-    }
-  }
-
-  a {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 8px;
-    height: 100%;
-    padding-bottom: 4px;
-  }
+* {
+  outline: 1px solid red;
 }
 
 main {
   display: flex;
   flex-direction: column;
+  width: 100%;
   max-width: 1440px;
   padding: 20px 40px 40px 40px;
   gap: 100px;
@@ -65,7 +21,7 @@ main {
 
     .enjoy-video {
       position: absolute;
-      width: 1360px;
+      max-width: 1360px;
       height: 100%;
       object-fit: cover;
       border-radius: 40px;
@@ -291,61 +247,6 @@ main {
               justify-content: flex-start;
             }
           }
-        }
-      }
-    }
-  }
-}
-
-.contact {
-  display: flex;
-  flex-direction: row;
-  gap: 100px;
-  padding: 100px 100px;
-  margin-top: 58px;
-  background-color: var(--color-background-container);
-  border-radius: 40px;
-
-  .contact-column {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 40px;
-    width: 530px;
-    color: var(--color-text-light);
-
-    .socials {
-      display: flex;
-      flex-direction: row;
-      gap: 12px;
-
-      button {
-        display: flex;
-        border-radius: 100px;
-        border: var(--color-border-light) 1px solid;
-        align-items: center;
-        justify-content: center;
-        width: 60px;
-        height: 60px;
-      }
-    }
-
-    .contacts {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 16px;
-
-      a {
-        display: flex;
-        color: var(--color-text-light);
-        gap: 4px;
-        margin-bottom: 2px;
-
-        .contact-line {
-          display: flex;
-          padding-left: 4px;
-          white-space: pre;
         }
       }
     }
