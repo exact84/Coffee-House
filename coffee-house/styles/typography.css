@@ -1,4 +1,87 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:slnt,wght@0,400;0,600;10,400;10,600&display=swap');
+/* @font-face {
+  font-family: 'Inter Display';
+  src: url('../fonts/Inter-rsms/web/InterDisplay-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter Display';
+  src: url('../fonts/Inter-rsms/web/InterDisplay-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter Display';
+  src: url('../fonts/Inter-rsms/web/InterDisplay-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter Display';
+  src: url('../fonts/Inter-rsms/web/InterDisplay-SemiBoldItalic.woff2') format('woff2');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+} */
+
+
+/* лучший вариант */
+  /* letter-spacing: 2.2px; */
+  /* letter-spacing: 2px; */
+  /* letter-spacing: 0.5px; */
+/* @font-face {
+  font-family: 'Inter';
+  src: url('../fonts/INTER/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../fonts/INTER/Inter-Italic-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+} */
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../fonts/INTER-3.19/Inter Web/Inter-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../fonts/INTER-3.19/Inter Web/Inter-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../fonts/INTER-3.19/Inter Web/Inter-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../fonts/INTER-3.19/Inter Web/Inter-SemiBoldItalic.woff2') format('woff2');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
 
 
 :root {
@@ -31,6 +114,18 @@
   line-height: var(--heading-1-line-height);
   font-weight: var(--font-weight-semibold);
   font-style: normal;
+  /* letter-spacing: 2.2px; */
+  text-transform: none;
+  text-decoration: none;
+  font-optical-sizing: auto;
+}
+
+.typography-accent {
+  font-style: italic;
+  color: var(--color-text-accent)
+  /* letter-spacing: -2px; */
+  /* font-variation-settings: 'slnt' 20; */
+
 }
 
 .typography-heading-2 {
@@ -38,18 +133,29 @@
   font-size: var(--heading-2-size);
   line-height: var(--heading-2-line-height);
   font-weight: var(--font-weight-semibold);
+  font-style: normal;
+  /* letter-spacing: 2px; */
+  font-optical-sizing: auto;
 }
 
-.typography-accent {
+/* .typography-heading-2-accent {
+  font-family: var(--font-family-base);
+  font-size: var(--heading-2-size);
+  line-height: var(--heading-2-line-height);
+  font-weight: var(--font-weight-semibold);
   font-style: italic;
-  color: var(--color-text-accent);
-}
+  letter-spacing: 0;
+  font-optical-sizing: auto;
+} */
 
 .typography-heading-3 {
   font-family: var(--font-family-base);
   font-size: var(--heading-3-size);
   line-height: var(--heading-3-line-height);
   font-weight: var(--font-weight-semibold);
+  font-style: normal;
+  /* letter-spacing: 0.5px; */
+  font-optical-sizing: auto;
 }
 
 .typography-body-medium {
@@ -57,6 +163,9 @@
   font-size: var(--body-medium-size);
   line-height: var(--body-medium-line-height);
   font-weight: var(--font-weight-regular);
+  font-style: normal;
+  letter-spacing: 0;
+  font-optical-sizing: auto;
 }
 
 .typography-caption {
@@ -64,6 +173,9 @@
   font-size: var(--caption-size);
   line-height: var(--caption-line-height);
   font-weight: var(--font-weight-semibold);
+  font-style: normal;
+  letter-spacing: 0;
+  font-optical-sizing: auto;
 }
 
 .typography-action-link-button {
@@ -71,6 +183,9 @@
   font-size: var(--action-link-size);
   line-height: var(--action-link-line-height);
   font-weight: var(--font-weight-semibold);
+  font-style: normal;
+  letter-spacing: 0;
+  font-optical-sizing: auto;
 }
 
 .typography-burger-link {
@@ -78,15 +193,20 @@
   font-size: var(--burger-link-size);
   line-height: var(--burger-link-line-height);
   font-weight: var(--font-weight-semibold);
+  font-style: normal;
+  letter-spacing: 0;
+  font-optical-sizing: auto;
 }
 
 @media (max-width: 768px) {
-  .typography-heading-1 {
+  .typography-heading-1,
+  .typography-heading-1-accent {
     font-size: 42px;
     line-height: 48.3px;
   }
 
-  .typography-heading-2 {
+  .typography-heading-2,
+  .typography-heading-2-accent {
     font-size: 32px;
     line-height: 40px;
   }
