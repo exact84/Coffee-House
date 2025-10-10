@@ -12,14 +12,11 @@ main {
   flex-direction: column;
   width: 100%;
   max-width: 1440px;
-  /* padding: 20px 40px 40px 40px; */
   gap: 100px;
 
   .enjoy {
-  /* display: flex; */
     position: relative;
     width: 100%;
-  /* overflow: hidden; */
 
     .enjoy-video {
       position: absolute;
@@ -40,9 +37,7 @@ main {
       z-index: 1;
       color: var(--color-text-dark);
       gap: 40px;
-      padding: 100px 100px 100px 100px; 
-      /* width: 100%; */
-      /* height: fit-content; */
+      padding: 100px 100px 100px 100px;
 
       h1 {
         color: var(--color-text-light);
@@ -72,9 +67,9 @@ main {
           display: flex;
           flex-direction: row;
           align-items: center;
-        justify-content: center;
-        gap: 4px;
-        padding-bottom: 2px;
+          justify-content: center;
+          gap: 4px;
+          padding-bottom: 2px;
           background-color: var(--color-background-body);
 
           .button-icon {
@@ -327,8 +322,9 @@ main {
       flex-direction: column;
       gap: 40px;
       padding-right: 60px;
-      padding-bottom: 4px;
+      /* padding-bottom: 4px; */
       flex-basis: 400px;
+      flex-grow: 1;
 
       .offer-buttons {
         display: flex ;
