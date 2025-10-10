@@ -3,7 +3,7 @@ footer.contact {
   flex-direction: row;
   gap: 100px;
   padding: 100px 100px;
-  margin-top: 58px;
+  margin-top: 98px;
   background-color: var(--color-background-container);
   border-radius: 40px;
   width: 100%;
@@ -14,6 +14,7 @@ footer.contact {
     justify-content: center;
     gap: 40px;
     width: 530px;
+    max-width: 100%;
     color: var(--color-text-light);
 
     .socials {
@@ -38,7 +39,7 @@ footer.contact {
       justify-content: center;
       gap: 16px;
 
-      a {
+      a, div.fake-a {
         display: flex;
         color: var(--color-text-light);
         gap: 4px;
@@ -51,5 +52,20 @@ footer.contact {
         }
       }
     }
+  }
+}
+
+@media (max-width: 830px) {
+  footer.contact {
+    flex-direction: column;
+    padding: 100px 60px;
+    margin-top: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  footer.contact {
+    padding: 60px 16px;
+    gap: 40px;
   }
 }

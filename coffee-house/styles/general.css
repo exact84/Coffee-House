@@ -12,6 +12,7 @@ html {
   align-items: center;
   justify-content: center;
   scroll-behavior: smooth;
+  overflow-y: scroll;
 }
 
 body {
@@ -34,4 +35,16 @@ button {
   cursor: pointer;
   background: none;
   border: none;
+}
+
+@media (max-width: 830px) {
+  body {
+    padding: 20px 40px 40px 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 20px 16px 40px 16px;
+  }
 }

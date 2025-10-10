@@ -3,25 +3,29 @@
 @import url('./header.css');
 @import url('./footer.css');
 
-* {
+/* * {
   outline: 1px solid red;
-}
+} */
 
 main {
   display: flex;
   flex-direction: column;
   width: 100%;
   max-width: 1440px;
-  padding: 20px 40px 40px 40px;
+  /* padding: 20px 40px 40px 40px; */
   gap: 100px;
 
-  .enjoy  {
+  .enjoy {
+  /* display: flex; */
     position: relative;
     width: 100%;
+  /* overflow: hidden; */
 
     .enjoy-video {
       position: absolute;
+    inset: 0;
       max-width: 1360px;
+      width: 100%;
       height: 100%;
       object-fit: cover;
       border-radius: 40px;
@@ -30,13 +34,15 @@ main {
 
     .enjoy-content {
       position: relative;
-      width: 530px;
+      max-width: 730px;
       display: flex;
       flex-direction: column;
       z-index: 1;
       color: var(--color-text-dark);
       gap: 40px;
-        margin: 100px 0 100px 100px; 
+      padding: 100px 100px 100px 100px; 
+      /* width: 100%; */
+      /* height: fit-content; */
 
       h1 {
         color: var(--color-text-light);
@@ -50,6 +56,37 @@ main {
         width: 200px;
         height: 64px;
         color: var(--color-text-dark);
+        border-radius: 100px;
+
+        .button-icon {
+          display: none;
+        }
+      }
+    }
+
+    @media (max-width: 840px) {
+      .enjoy-content {
+        padding: 100px 60px;
+        
+        .button {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+        justify-content: center;
+        gap: 4px;
+        padding-bottom: 2px;
+          background-color: var(--color-background-body);
+
+          .button-icon {
+            display: block;
+          }
+        }
+      }
+    }
+
+    @media (max-width: 397px) {
+      .enjoy-content {
+        padding: 60px 16px;
       }
     }
   }
@@ -63,6 +100,7 @@ main {
 
     .slider-header{
       color: var(--color-text-dark);
+      text-align: center;
     }
 
     .slider-outer {
@@ -114,11 +152,13 @@ main {
           align-items: center;
           gap: 20px;
           width: 480px;
+          max-width: 100%;
 
           img {
             width: 480px;
             height: 480px;
             object-fit: cover;
+            max-width: 100%;
           }
 
           .card-content {
@@ -155,6 +195,41 @@ main {
         }
       }
     }
+
+    @media (max-width: 700px) {
+      .slider-outer {
+        .slider {
+          .slider-card {
+            img {
+              width: 348px;
+              height: 348px;
+            }
+          }
+        }
+      }
+    }
+
+    @media (max-width: 397px) {
+      .slider-outer {
+        .slider {
+          .slider-button {
+            display: none;
+          }
+
+          .slider-card {
+            /* img {
+              width: 348px;
+              height: 348px;
+            } */
+
+            .card-content p {
+              padding: 0 0;
+            }
+          }
+        }
+      }
+    }
+
   }
 
   .about {
@@ -169,31 +244,73 @@ main {
       display: flex;
       flex-direction: row;
       gap: 40px;
+      width: 100%;
 
       .images-column {
         display: flex;
         flex-direction: column; 
         gap: 40px;
-        width: 660px;
+        max-width: 660px;
+        width: 100%;
 
         .square-image {
-          width: 660px;
-          height: 590px;
+          width: 100%;
+          max-width: 660px;
+          aspect-ratio: 660 / 590;
+          /* max-height: 590px; */
           display: flex;
           justify-content: center;
           align-items: center;
-           overflow: hidden;
-            border-radius: 20px;
+          overflow: hidden;
+          border-radius: 20px;
         }
 
         .rect-image {
-          width: 660px;
-          height: 430px;
+          width: 100%;
+          max-width: 660px;
+          aspect-ratio: 660 / 430;
+          /* max-height: 430px; */
           display: flex;
           justify-content: center;
           align-items: center;
-           overflow: hidden;
-            border-radius: 20px;
+          overflow: hidden;
+          border-radius: 20px;
+        }
+        
+        img {
+          width: 726px;
+          height: auto;
+          object-fit: contain;
+          display: block;
+        }
+
+        @media (max-width: 1440px) {
+          img {
+            max-width: 100%;
+          }
+        }
+      }
+
+      @media (max-width: 840px) {
+        flex-direction: column;
+
+        .images-column {
+          max-width: none;
+
+          .square-image {
+            width: 100%; 
+            height: 590px;
+            aspect-ratio: auto;
+            max-width: none;
+          
+            img {
+              max-width: none;
+            }
+          }
+
+          .rect-image {
+            display: none;
+          }
         }
       }
     }
@@ -211,6 +328,7 @@ main {
       gap: 40px;
       padding-right: 60px;
       padding-bottom: 4px;
+      flex-basis: 400px;
 
       .offer-buttons {
         display: flex ;
@@ -224,7 +342,7 @@ main {
           border: black 1px solid;
           width: 200px;
           height: 64px;
-          padding: 12px 20px;
+          padding: 10px 20px;
           color: var(--color-text-dark);
           gap: 8px;
 
@@ -232,7 +350,7 @@ main {
             display: flex;
             width: 36px;
             height: 36px;
-            align-items: center;
+            align-items: end;
             justify-content: center;
           }
 
@@ -249,6 +367,45 @@ main {
           }
         }
       }
+
+      @media (max-width: 768px) {
+        padding-right: 0px;
+      }
+
+      @media (max-width: 480px) {
+        flex-basis: auto;
+        padding-bottom: 0px;
+
+        .offer-buttons {
+          flex-direction: column;
+        }
+      }
+
     }
+    
+    .mobile-image {
+      display: flex;
+      justify-content: center;
+      height: 100%;
+    } 
+
+    img {
+      display: block;
+      width: 100%;
+      max-width: 630px;
+      height: auto;
+      object-fit: contain;
+    }
+  }
+}
+
+@media (max-width: 830px) {
+
+  .images {
+    flex-direction: column;
+  }
+
+  section.mobile-app {
+    flex-direction: column;
   }
 }
