@@ -57,16 +57,46 @@
           </li>
         </ul>
         <div class="coffee-menu">
-          <!-- <a href="menu.html"> -->
           <div class="typography-action-link-button">Menu</div>
           <div>
             <img src="./assets/img/coffee-cup.svg" alt="coffee-cup" />
           </div>
-          <!-- </a> -->
         </div>
       </nav>
     </header>
-    <main></main>
+    <main>
+      <section class="top">
+        <div class="offer">
+          <h2 class="typography-heading-2">
+            Behind each of our cups hides an
+            <span class="typography-accent">amazing surprise</span>
+          </h2>
+          <div class="tabs">
+            <div class="tab-item tab-item-active" data-tab="coffee">
+              <span class="tab-icon tab-icon-active">
+                <img src="./assets/img/tabs/coffee.png" alt="coffee" />
+              </span>
+              <span class="typography-action-link-button tab-text">Coffee</span>
+            </div>
+            <div class="tab-item" data-tab="tea">
+              <span class="tab-icon">
+                <img src="./assets/img/tabs/tea.png" alt="tea" />
+              </span>
+              <span class="typography-action-link-button tab-text">Tea</span>
+            </div>
+            <div class="tab-item" data-tab="dessert">
+              <span class="tab-icon">
+                <img src="./assets/img/tabs/dessert.png" alt="dessert" />
+              </span>
+              <span class="typography-action-link-button tab-text"
+                >Dessert</span
+              >
+            </div>
+          </div>
+        </div>
+        <div id="grid" class="menu-grid"></div>
+      </section>
+    </main>
     <footer class="contact" id="contact">
       <div class="contact-column">
         <h2 class="typography-heading-2">
@@ -230,6 +260,7 @@
       </div>
     </footer>
     <script src="./js/burger-menu.js"></script>
+    <script src="./js/menu-cards.js"></script>
   </body>
 </html>
 
