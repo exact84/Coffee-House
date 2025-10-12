@@ -32,12 +32,15 @@
               <a href="#contact">Contact us</a>
             </li>
             <li>
-            <a href="menu.html" class="coffee-menu-vertical">
-            <div class="typography-burger-link">Menu</div>
-            <div>
-              <img src="./assets/img/coffee-cup.svg" alt="coffee-cup" />
-            </div></a>
-          </li>
+              <a href="menu.html" class="coffee-menu-vertical">
+                <div class="typography-burger-link">Menu</div>
+                <div>
+                  <img
+                    src="./assets/img/coffee-cup.svg"
+                    alt="coffee-cup"
+                  /></div
+              ></a>
+            </li>
           </ul>
         </label>
 
@@ -87,7 +90,7 @@
             </p>
             <button class="typography-action-link-button button">
               <div>Menu</div>
-              <div class="button-icon"></div>
+              <div class="button-icon">
                 <img src="./assets/img/coffee-cup.svg" alt="coffee-cup" />
               </div>
             </button>
@@ -100,7 +103,7 @@
         </h2>
         <div class="slider-outer">
           <div class="slider">
-            <div class="slider-button" id="btnLeft">
+            <button class="slider-button" id="btnLeft">
               <svg
                 width="24"
                 height="24"
@@ -113,28 +116,59 @@
                     id="VectorLeft"
                     d="M18.5 12H6M6 12L12 6M6 12L12 18"
                     stroke="white"
-                    stroke-opacity="0.4"
                     stroke-linecap="round"
                     stroke-linejoin="round"
                   />
                 </g>
               </svg>
-            </div>
-            <div class="slider-card">
-              <img
-                src="./assets/img/slider/coffee-slider-1.png"
-                alt="slider image"
-              />
-              <div class="card-content">
-                <h3 class="typography-heading-3">S’mores Frappuccino</h3>
-                <p class="typography-body-medium">
-                  This new drink takes an espresso and mixes it with brown sugar
-                  and cinnamon before being topped with oat milk.
-                </p>
-                <h3 class="typography-heading-3">$5.50</h3>
+            </button>
+            <div class="slider-row">
+              <div class="slider-slider">
+                <div class="slider-card">
+                  <img
+                    src="./assets/img/slider/coffee-slider-1.png"
+                    alt="slider image"
+                  />
+                  <div class="card-content">
+                    <h3 class="typography-heading-3">S’mores Frappuccino</h3>
+                    <p class="typography-body-medium">
+                      This new drink takes an espresso and mixes it with brown
+                      sugar and cinnamon before being topped with oat milk.
+                    </p>
+                    <h3 class="typography-heading-3">$5.50</h3>
+                  </div>
+                </div>
+                <div class="slider-card">
+                  <img
+                    src="./assets/img/slider/coffee-slider-2.png"
+                    alt="slider image"
+                  />
+                  <div class="card-content">
+                    <h3 class="typography-heading-3">Caramel Macchiato</h3>
+                    <p class="typography-body-medium">
+                      Fragrant and unique classic espresso with rich
+                      caramel-peanut syrup, with cream under whipped thick foam.
+                    </p>
+                    <h3 class="typography-heading-3">$5.50</h3>
+                  </div>
+                </div>
+                <div class="slider-card">
+                  <img
+                    src="./assets/img/slider/coffee-slider-3.png"
+                    alt="slider image"
+                  />
+                  <div class="card-content">
+                    <h3 class="typography-heading-3">Ice coffee</h3>
+                    <p class="typography-body-medium">
+                      A popular summer drink that tones and invigorates.
+                      Prepared from coffee, milk and ice.
+                    </p>
+                    <h3 class="typography-heading-3">$4.50</h3>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="slider-button slider-button-activ" id="btnRight">
+            <button class="slider-button" id="btnRight">
               <svg
                 width="24"
                 height="24"
@@ -152,12 +186,18 @@
                   />
                 </g>
               </svg>
-            </div>
+            </button>
           </div>
           <div class="slider-controls">
-            <div class="slider-control" id="control1"></div>
-            <div class="slider-control" id="control2"></div>
-            <div class="slider-control" id="control3"></div>
+            <div class="slider-control slider-control-activ" id="control1">
+              <div class="slider-progress"></div>
+            </div>
+            <div class="slider-control" id="control2">
+              <div class="slider-progress"></div>
+            </div>
+            <div class="slider-control" id="control3">
+              <div class="slider-progress"></div>
+            </div>
           </div>
         </div>
       </section>
@@ -424,7 +464,8 @@
         </div>
       </div>
     </footer>
-  <script src="./js/burger-menu.js"></script>
+    <script src="./js/burger-menu.js"></script>
+    <script src="./js/slider.js"></script>
   </body>
 </html>
 
