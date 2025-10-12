@@ -2,6 +2,7 @@ let tabType = "coffee";
 let filteredItems = [];
 let visibleCount = 4;
 let isDesktop = window.innerWidth > 768;
+let isButton = false;
 
 const grid = document.getElementById("grid");
 
@@ -44,7 +45,7 @@ window.addEventListener("resize", () => {
     renderCards();
   }
 
-  if (visibleCount === 4 && nowDesktop) {
+  if (isButton && nowDesktop) {
     visibleCount = filteredItems.length;
     renderCards();
   }
@@ -64,7 +65,7 @@ function getTabData() {
 }
 
 async function renderCards() {
-  // console.log("renderCards", visibleCount, tabType);
+  // console.log("renderCards", visibleCount, tabType, ". isButton:", isButton);
   grid.innerHTML = "";
   let count = 0;
 
@@ -104,7 +105,10 @@ async function renderCards() {
   document.querySelector(".load-more-container")?.remove();
 
   if (filteredItems.length > limit && window.innerWidth <= 768) {
+    isButton = true;
     grid.after(buttonContainer);
-  }
+  } else isButton = false;
+
+  // console.log("filteredItems.length > limit. isButton:", isButton);
 }
 
