@@ -52,9 +52,25 @@ main {
         height: 64px;
         color: var(--color-text-dark);
         border-radius: 100px;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+          gap: 4px;
+          /* padding-bottom: 2px; */
 
         .button-icon {
           display: none;
+        }
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        .button:hover {
+          background-color: var(--color-background-body);
+          .button-icon {
+            display: block;
+            padding-top: 8px;
+          }
         }
       }
     }
@@ -62,20 +78,6 @@ main {
     @media (max-width: 840px) {
       .enjoy-content {
         padding: 100px 60px;
-        
-        .button {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: center;
-          gap: 4px;
-          padding-bottom: 2px;
-          background-color: var(--color-background-body);
-
-          .button-icon {
-            display: block;
-          }
-        }
       }
     }
 
@@ -148,6 +150,7 @@ main {
             transition: stroke 0.3s ease;
           }
         }
+        
         .slider-row {
           display: flex;
           flex-direction: row;
@@ -225,13 +228,13 @@ main {
             left: 0;
             height: 100%;
             width: 0%;
-            background-color: red;
+            background-color: var(--color-border-light);
             transition: width linear;
           }
         }
 
         .slider-control-activ {
-          background-color: #fff;
+          background-color: var(--color-border-dark);
           .slider-progress {
             width: 100%;
           }
@@ -408,6 +411,21 @@ main {
             div {
               display: flex;
               justify-content: flex-start;
+            }
+          }
+        }
+        @media (hover: hover) and (pointer: fine) {
+          .button-app:hover {
+            background-color: var(--color-background-container);
+
+            .button-app-icon {
+              svg path {
+                fill: var(--color-text-light);
+              }
+            }
+
+            .button-app-text {
+              color: var(--color-text-light);
             }
           }
         }

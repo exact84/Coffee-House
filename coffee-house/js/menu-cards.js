@@ -39,10 +39,13 @@ document.querySelectorAll(".tab-item").forEach((tab) => {
 
 window.addEventListener("resize", () => {
   const nowDesktop = window.innerWidth > 768;
+  if (visibleCount > 4 && !nowDesktop) {
+    visibleCount = 4;
+    renderCards();
+  }
 
-  if (nowDesktop !== isDesktop) {
-    isDesktop = nowDesktop;
-    visibleCount = isDesktop ? filteredItems.length : 4;
+  if (visibleCount === 4 && nowDesktop) {
+    visibleCount = filteredItems.length;
     renderCards();
   }
 });
@@ -61,7 +64,7 @@ function getTabData() {
 }
 
 async function renderCards() {
-  console.log("renderCards", visibleCount, tabType);
+  // console.log("renderCards", visibleCount, tabType);
   grid.innerHTML = "";
   let count = 0;
 

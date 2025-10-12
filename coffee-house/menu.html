@@ -10,7 +10,7 @@
   <body>
     <header class="menu-bar">
       <nav class="nav">
-        <a class="logo" href="index.html" class="nav-left-item">
+        <a class="logo" href="index.html">
           <img src="./assets/img/logo.png" alt="Logo" />
         </a>
 
@@ -44,13 +44,13 @@
 
         <ul class="nav-bar">
           <li class="typography-action-link-button">
-            <a href="#favorite">Favorite coffee</a>
+            <a href="index.html#favorite">Favorite coffee</a>
           </li>
           <li class="typography-action-link-button">
-            <a href="#about">About</a>
+            <a href="index.html#about">About</a>
           </li>
           <li class="typography-action-link-button">
-            <a href="#mobile-app">Mobile app</a>
+            <a href="index.html#mobile-app">Mobile app</a>
           </li>
           <li class="typography-action-link-button">
             <a href="#contact">Contact us</a>
@@ -104,7 +104,7 @@
           <span class="typography-accent">It’s coffee time!</span>
         </h2>
         <div class="socials">
-          <button>
+          <a href="https://twitter.com" target="_blank" class="social-link">
             <svg
               width="24"
               height="24"
@@ -119,8 +119,8 @@
                 stroke-linejoin="round"
               />
             </svg>
-          </button>
-          <button>
+          </a>
+          <a href="https://instagram.com" target="_blank" class="social-link">
             <svg
               width="24"
               height="24"
@@ -145,8 +145,8 @@
                 stroke-linejoin="round"
               />
             </svg>
-          </button>
-          <button>
+          </a>
+          <a href="https://facebook.com" target="_blank" class="social-link">
             <svg
               width="24"
               height="24"
@@ -161,7 +161,7 @@
                 stroke-linejoin="round"
               />
             </svg>
-          </button>
+          </a>
         </div>
       </div>
 
@@ -259,6 +259,55 @@
         </div>
       </div>
     </footer>
+
+    <!-- Modal Window -->
+    <div class="modal-window" id="modal">
+      <div class="modal-div">
+        <div class="gifts-img" id="cur-img"></div>
+        <div class="modal-description">
+          <div class="title">
+            <h3 class="typography-heading-3" id="name">${item.name}</h3>
+            <p class="typography-body-medium">${item.description}</p>
+          </div>
+          <div class="size">
+            <p class="typography-body-medium">Size</p>
+            <div class="size-tabs">
+              <div
+                class="size-tab size-tab-active typography-action-link-button"
+                id="small"
+              >
+                <div class="circle">S</div>
+                ${item.sizes.s}
+              </div>
+
+              <div class="size-tab typography-action-link-button" id="medium">
+                <div class="circle">S</div>
+                ${item.sizes.s}
+              </div>
+              <div class="size-tab typography-action-link-button" id="large">
+                <div class="circle">S</div>
+                ${item.sizes.s}
+              </div>
+            </div>
+          </div>
+          <div class="modal-bottom">
+            <h4 class="typography-body-medium">Adds superpowers to:</h4>
+            <div class="rating">
+              <div class="power">
+                <p>Live</p>
+                <p class="s500" id="power1">+</p>
+                <div id="snowflakes1">
+                  <img src="" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
     <script src="./js/burger-menu.js"></script>
     <script src="./js/menu-cards.js"></script>
   </body>

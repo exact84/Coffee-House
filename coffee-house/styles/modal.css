@@ -1,0 +1,79 @@
+@import url('./general.css');
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+  z-index: 998;
+}
+
+.overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-window {
+  position: fixed;
+  max-width: 400px;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  border-radius: 20px;
+  background: #ecf3f8;
+  display: flex;
+  flex-direction: column;
+  transform: translate(-50%, -50%) translateX(300%);
+  transition: transform 0.3s ease;
+  z-index: 999;
+}
+
+.modal-window.show {
+  transform: translate(-50%, -50%) translateX(0);
+  opacity: 1;
+}
+
+.modal-div {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.gifts-img {
+  background: url("") center no-repeat;
+  background-size: cover;
+  width: 100%;
+}
+
+.modal-description {
+  display: flex;
+  padding: 20px;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+
+  border-radius: 20px;
+  background: #fff;
+}
+.modal-top {
+  display: flex;
+  padding: 0 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+}
+
+.modal-bottom {
+  display: flex;
+  padding: 0 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+}

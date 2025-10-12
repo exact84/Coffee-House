@@ -18,13 +18,6 @@ header {
     justify-content: space-between;
     align-items: center;
 
-    .nav-left-item {
-      display: flex;
-      padding: 8px 20px;
-      align-items: center;
-      gap: 8px;
-    }
-
     ul.nav-bar {
       display: flex;
       gap: 40px;
@@ -33,7 +26,6 @@ header {
       list-style-type: none;
       flex: 1;
       height: 100%;
-      margin-top: -2px;
       margin-left: -2px;
     }
 
@@ -106,12 +98,14 @@ header {
     align-items: center;
     gap: 8px;
     height: 100%;
-    padding-bottom: 2px;
+    /* margin-top: -2px; */
   }
 
-  /* ul.menu {
-    display: none;
-  } */
+  @media (hover: hover) and (pointer: fine) {
+    .coffee-menu a:hover {
+      border-bottom: 2px solid var(--color-border-dark);
+    }
+  }
 
   .burger-toggle {
     display: none;
@@ -130,8 +124,8 @@ header {
     transition: transform 0.5s ease;
     z-index: 999;
     pointer-events: none;
-    gap: 59px;
-    padding: 60px 40px;
+    gap: 62px;
+    padding: 62px 40px;
     align-items: center;
     list-style-type: none;
   }
