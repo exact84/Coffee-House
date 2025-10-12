@@ -7,9 +7,9 @@ let isButton = false;
 const grid = document.getElementById("grid");
 
 const buttonContainer = document.createElement("div");
-buttonContainer.className = "load-more-container";
+buttonContainer.classList.add("load-more-container");
 const loadMoreBtn = document.createElement("button");
-loadMoreBtn.className = "load-more-btn button-more";
+loadMoreBtn.classList.add("load-more-btn", "button-more");
 const buttonIcon = document.createElement("img");
 buttonIcon.src = "assets/img/refresh.svg";
 buttonIcon.alt = "arrow";
@@ -38,17 +38,23 @@ document.querySelectorAll(".tab-item").forEach((tab) => {
   });
 });
 
-window.addEventListener("resize", () => {
-  const nowDesktop = window.innerWidth > 768;
-  if (visibleCount > 4 && !nowDesktop) {
-    visibleCount = 4;
-    renderCards();
-  }
+let resizeTimeout;
 
-  if (isButton && nowDesktop) {
-    visibleCount = filteredItems.length;
-    renderCards();
-  }
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(() => {
+    const nowDesktop = window.innerWidth > 768;
+
+    if (visibleCount > 4 && !nowDesktop) {
+      visibleCount = 4;
+      renderCards();
+    }
+
+    if (isButton && nowDesktop) {
+      visibleCount = filteredItems.length;
+      renderCards();
+    }
+  }, 230);
 });
 
 getTabData();
@@ -88,7 +94,7 @@ async function renderCards() {
     }
 
     const card = document.createElement("div");
-    card.className = "card";
+    card.classList.add("card");
     card.innerHTML = `
       <div class="image"><img src="${imageName}" alt="${item.name}" /></div>
       <div class="description">

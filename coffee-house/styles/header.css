@@ -30,11 +30,14 @@ header {
     }
 
     @media (max-width: 768px) {
-    /* screen and (max-width: 768px) { */
       ul.nav-bar, .coffee-menu {
         display: none;
       }
 
+      .non-link {
+        cursor: default;
+      }
+      
       .coffee-menu-vertical {
         display: flex;
         margin-top: 24px;
@@ -85,7 +88,11 @@ header {
         transform: translateY(-4px) rotate(-45deg);
       }
 
-      .burger-toggle:checked + .burger-menu > ul.menu {
+      /* .burger-toggle:checked + .burger-menu > ul.menu {
+        transform: translateX(0);
+        pointer-events: auto;
+      } */
+      .burger-toggle:checked + .burger-menu ~ .menu {
         transform: translateX(0);
         pointer-events: auto;
       }
