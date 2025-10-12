@@ -10,15 +10,13 @@ btnRight.onclick = right;
 btnLeft.onclick = left;
 window.addEventListener("resize", resize);
 let widthVisble = section.offsetWidth;
-// let widthSlider = slider.offsetWidth;
 
 let position = 0;
 let currentSlide = 0;
 let slidesCount = 3;
 const autoScrollTime = 5000;
 
-let autoScrollInterval;
-let progressInterval;
+let autoScrollTimeout;
 
 let progressStartTime = 0;
 let remainingTime = autoScrollTime;
@@ -39,55 +37,34 @@ function right() {
 
   const step = getStep();
   currentSlide = (currentSlide + 1) % slidesCount;
-
-  // if (currentSlide === 0) {
-  //   position = 0;
-  // } else {
-  //   position = -currentSlide * step;
-  // }
   position = -currentSlide * step;
 
   // console.log("position:", position);
   slider.style.transform = `translateX(${position}px)`;
+  isPaused = false;
   updateControls();
   startAutoScroll();
 }
 
 function left() {
   stopAutoScroll();
-
-  // widthVisble = section.offsetWidth;
-  // widthSlider = slider.scrollWidth;
   const step = getStep();
   currentSlide = (currentSlide - 1 + slidesCount) % slidesCount;
-
-  // if (currentSlide === slidesCount - 1) {
-  //   position = -(slidesCount - 1) * step;
-  // } else {
-  //   position = -currentSlide * step;
-  // }
   position = -currentSlide * step;
 
   slider.style.transform = `translateX(${position}px)`;
+  isPaused = false;
   updateControls();
   startAutoScroll();
 }
 
-section.addEventListener("mouseenter", function () {
-  stopAutoScroll();
-  pauseProgress();
-});
-
-section.addEventListener("mouseleave", function () {
-  resumeProgress();
-  startAutoScroll();
-});
+section.addEventListener("mouseenter", pauseProgress);
+section.addEventListener("mouseleave", resumeProgress);
 
 function resize() {
   const oldWidthVisible = widthVisble;
   const oldPosition = position;
   widthVisble = section.offsetWidth;
-  // widthSlider = slider.scrollWidth;
 
   if (oldWidthVisible > 0) {
     position = (oldPosition / oldWidthVisible) * widthVisble;
@@ -105,9 +82,6 @@ function resize() {
 }
 
 function updateControls() {
-  // const step = getStep();
-  // currentSlide = Math.abs(Math.round(position / step));
-
   controls.forEach((control, index) => {
     if (index === currentSlide) {
       control.classList.add("slider-control-activ");
@@ -118,31 +92,43 @@ function updateControls() {
 }
 
 function startAutoScroll() {
+  // console.log("startAutoScroll, isPaused:", isPaused);
   // return;
   stopAutoScroll();
+  if (isPaused) return;
   resetProgress();
-  setTimeout(() => {
-    startProgress();
-    autoScrollInterval = setInterval(() => {
-      right();
-    }, autoScrollTime);
-  }, 50);
+  startProgress();
+  autoScrollTimeout = setTimeout(() => {
+    right();
+  }, remainingTime);
 }
 
 function stopAutoScroll() {
-  clearInterval(autoScrollInterval);
-  clearInterval(progressInterval);
+  // console.log("stopAutoScroll");
+  if (autoScrollTimeout) {
+    clearTimeout(autoScrollTimeout);
+    autoScrollTimeout = null;
+  }
 }
 
 function startProgress() {
+  if (isPaused) return;
+  // console.log("startProgress");
   const progressBar = controls[currentSlide].querySelector(".slider-progress");
-  progressBar.style.transition = `width ${autoScrollTime}ms linear`;
+
+  const duration = remainingTime || autoScrollTime;
+
+  progressBar.style.transition = "none";
+  progressBar.offsetWidth;
+  progressBar.style.transition = `width ${duration}ms linear`;
   progressBar.style.width = "100%";
+
   progressStartTime = Date.now();
   isPaused = false;
 }
 
 function resetProgress() {
+  // console.log("resetProgress");
   remainingTime = autoScrollTime;
   isPaused = false;
   controls.forEach((control) => {
@@ -154,32 +140,42 @@ function resetProgress() {
 
 function pauseProgress() {
   if (isPaused) return;
+  stopAutoScroll();
 
   const progressBar = controls[currentSlide].querySelector(".slider-progress");
   const elapsedTime = Date.now() - progressStartTime;
-  remainingTime = autoScrollTime - elapsedTime;
+  remainingTime = Math.max(0, autoScrollTime - elapsedTime);
+  // console.log("pauseProgress, remainingTime:", remainingTime);
 
   const computedStyle = window.getComputedStyle(progressBar);
+  const currentWidth = computedStyle.width;
   progressBar.style.transition = "none";
-  progressBar.style.width = computedStyle.width;
-
+  progressBar.style.width = currentWidth;
   isPaused = true;
 }
 
 function resumeProgress() {
+  // console.log("resumeProgress");
   if (!isPaused) return;
-  startProgress();
+  isPaused = false;
+
+  const progressBar = controls[currentSlide].querySelector(".slider-progress");
+  progressBar.style.transition = `width ${remainingTime}ms linear`;
+  progressBar.style.width = "100%";
+
+  progressStartTime = Date.now() - (autoScrollTime - remainingTime);
+  autoScrollTimeout = setTimeout(() => right(), remainingTime);
 }
 
 let startX = 0;
 let currentX = 0;
 let isSwiping = false;
 
+section.addEventListener("touchstart", handleTouchStart);
 section.addEventListener("touchmove", handleTouchMove);
 section.addEventListener("touchend", handleTouchEnd);
 
 function handleTouchStart(e) {
-  stopAutoScroll();
   pauseProgress();
   startX = e.touches[0].clientX;
   currentX = startX;
@@ -192,23 +188,21 @@ function handleTouchMove(e) {
 }
 
 function handleTouchEnd(e) {
-  if (!isSwiping) {
-    resumeProgress();
-    startAutoScroll();
-    return;
-  }
+  if (!isSwiping) return;
+
   const diffX = startX - currentX;
   const minSwipeDistance = 50;
 
-  if (diffX > minSwipeDistance) {
-    right();
-  } else if (diffX < -minSwipeDistance) {
-    left();
+  if (Math.abs(diffX) < minSwipeDistance) {
+    resumeProgress();
+  } else {
+    if (diffX > 0) {
+      right();
+    } else {
+      left();
+    }
   }
 
   isSwiping = false;
-  startAutoScroll();
 }
-
-section.addEventListener("touchstart", handleTouchStart);
 
