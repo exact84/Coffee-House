@@ -1,0 +1,143 @@
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/Inter-3.19/Inter Web/Inter-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/INTER-3.19/Inter Web/Inter-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/INTER-3.19/Inter Web/Inter-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/INTER-3.19/Inter Web/Inter-SemiBoldItalic.woff2') format('woff2');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  --font-family-base: 'Inter', sans-serif;
+
+  --heading-1-size: 72px;
+  --heading-1-line-height: 75.6px;
+  --heading-2-size: 60px;
+  --heading-2-line-height: 75px;
+  --heading-3-size: 24px;
+  --heading-3-line-height: 30px;
+
+  --body-medium-size: 16px;
+  --body-medium-line-height: 24px;
+  --caption-size: 10px;
+  --caption-line-height: 14px;
+
+  --action-link-size: 16px;
+  --action-link-line-height: 24px;
+  --burger-link-size: 32px;
+  --burger-link-line-height: 40px;
+
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+}
+
+.typography-heading-1 {
+  font-family: var(--font-family-base);
+  font-size: var(--heading-1-size);
+  line-height: var(--heading-1-line-height);
+  font-weight: var(--font-weight-semibold);
+  font-style: normal;
+  text-transform: none;
+  text-decoration: none;
+  font-optical-sizing: auto;
+}
+
+.typography-accent {
+  font-style: italic;
+  color: var(--color-text-accent)
+}
+
+.typography-heading-2 {
+  font-family: var(--font-family-base);
+  font-size: var(--heading-2-size);
+  line-height: var(--heading-2-line-height);
+  font-weight: var(--font-weight-semibold);
+  font-style: normal;
+  font-optical-sizing: auto;
+}
+
+.typography-heading-3 {
+  font-family: var(--font-family-base);
+  font-size: var(--heading-3-size);
+  line-height: var(--heading-3-line-height);
+  font-weight: var(--font-weight-semibold);
+  font-style: normal;
+  font-optical-sizing: auto;
+}
+
+.typography-body-medium {
+  font-family: var(--font-family-base);
+  font-size: var(--body-medium-size);
+  line-height: var(--body-medium-line-height);
+  font-weight: var(--font-weight-regular);
+  font-style: normal;
+  letter-spacing: 0;
+  font-optical-sizing: auto;
+}
+
+.typography-caption {
+  font-family: var(--font-family-base);
+  font-size: var(--caption-size);
+  line-height: var(--caption-line-height);
+  font-weight: var(--font-weight-semibold);
+  font-style: normal;
+  letter-spacing: 0;
+  font-optical-sizing: auto;
+}
+
+.typography-action-link-button {
+  font-family: var(--font-family-base);
+  font-size: var(--action-link-size);
+  line-height: var(--action-link-line-height);
+  font-weight: var(--font-weight-semibold);
+  font-style: normal;
+  letter-spacing: 0;
+  font-optical-sizing: auto;
+}
+
+.typography-burger-link {
+  font-family: var(--font-family-base);
+  font-size: var(--burger-link-size);
+  line-height: var(--burger-link-line-height);
+  font-weight: var(--font-weight-semibold);
+  font-style: normal;
+  letter-spacing: 0;
+  font-optical-sizing: auto;
+}
+
+@media (max-width: 700px) {
+  .typography-heading-1,
+  .typography-heading-1-accent {
+    font-size: 42px;
+    line-height: 48.3px;
+  }
+
+  .typography-heading-2,
+  .typography-heading-2-accent {
+    font-size: 32px;
+    line-height: 40px;
+  }
+}
