@@ -356,7 +356,7 @@ main {
         } */
       }
 
-      @media (max-width: 840px) {
+      @media (max-width: 769px) {
         flex-direction: column;
 
         .images-column {

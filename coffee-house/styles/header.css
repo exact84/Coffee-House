@@ -111,6 +111,10 @@ header {
     a:hover, .coffee-menu a:hover {
       border-color: var(--color-border-dark);
     }
+
+    .nav > a:hover {
+      border-color: transparent;
+    }
   }
 
   .burger-toggle {

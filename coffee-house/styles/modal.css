@@ -1,79 +1,156 @@
 @import url('./general.css');
 
 .overlay {
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease;
-  z-index: 998;
+  transition: opacity 0.5s ease;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 50px;
 }
 
 .overlay.show {
-  opacity: 1;
-  visibility: visible;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .modal-window {
-  position: fixed;
-  max-width: 400px;
-  width: 100%;
-  top: 50%;
-  left: 50%;
-  border-radius: 20px;
-  background: #ecf3f8;
+  /* display: none; */
   display: flex;
-  flex-direction: column;
-  transform: translate(-50%, -50%) translateX(300%);
-  transition: transform 0.3s ease;
-  z-index: 999;
-}
-
-.modal-window.show {
-  transform: translate(-50%, -50%) translateX(0);
-  opacity: 1;
+  border-radius: 40px;
+  background: var(--color-background-body);
+  /* transform: translate(-50%, -45%); */
+  transition: transform 0.5s ease;
+  padding: 16px 16px;
+  width: 800px;
+  height: 504px;
+  /* height: fit-content; */
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .modal-div {
   display: flex;
-  flex-direction: column;
-  width: 100%;
 }
 
 .gifts-img {
-  background: url("") center no-repeat;
-  background-size: cover;
+  /* background: url("") center no-repeat; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
+  max-height: 310px;
+  max-width: 310px;
+  border-radius: 40px;
+  overflow: hidden;
+
+  img {
+    /* display: block; */
+    border-radius: 40px;
+    width: 340px;
+    height: 340px;
+    object-fit: contain;
+  }
 }
 
 .modal-description {
   display: flex;
-  padding: 20px;
+  padding-left: 20px;
   flex-direction: column;
   gap: 20px;
-  width: 100%;
-
-  border-radius: 20px;
-  background: #fff;
-}
-.modal-top {
-  display: flex;
-  padding: 0 0;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
-  align-self: stretch;
 }
 
-.modal-bottom {
+.title {
   display: flex;
-  padding: 0 0;
   flex-direction: column;
-  align-items: flex-start;
+  gap: 12px;
+}
+
+.size, .additives{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.size-tabs, .additives-tabs {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: flex-start;
+}
+
+.size-tab, .additives-tab {
+  display: flex;
+  padding: 8px 16px 8px 8px;
+  border-radius: 100px;
+  border: solid 1px var(--color-border-light);
+  cursor: pointer;
+  transition: background-color 0.5s ease;
+  align-items: center;
+}
+
+.circle {
+  display: flex;
+  border-radius: 100px;
+  background-color: var(--color-border-light);
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  transition: background-color 0.5s ease;
+  margin-right: 5px
+}
+
+.size-tab:hover {
+  background-color: var(--color-background-container);
+  .circle {
+    background-color: var(--color-background-body);
+  }
+}
+
+.size-tab-active {
+  background-color: var(--color-background-container);
+  .circle {
+    background-color: var(--color-background-body);
+  }
+}
+
+.size-tab-active .circle {
+  background-color: var(--color-background-body);
+}
+
+.size-tab .circle:hover {
+  background-color: var(--color-background-body);
+}
+
+.price {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.alert {
+  display: flex;
+  flex-direction: row;
   gap: 8px;
-  align-self: stretch;
+  border-top: solid 1px var(--color-border-light);
+  padding: 11px 0 10px 0;
+}
+
+.close-btn {
+  border: solid 1px var(--color-border-light);
+  border-radius: 40px;
+  padding: 10px 0;
+  transition: background-color 0.5s ease-in-out;
+}
+
+.close-btn:hover {
+  background-color: var(--color-background-container);
 }
