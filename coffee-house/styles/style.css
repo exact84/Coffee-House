@@ -59,14 +59,15 @@ main {
           justify-content: center;
           gap: 0px;
           padding-left: 16px;
-          transition: gap 0.3s ease;
+          transition: gap 0.5s ease-in-out;
 
         .button-icon {
           opacity: 0;
+          padding-top: 8px;
           transform: translateX(-5px);
           transition: 
-            opacity 0.3s ease,
-            transform 0.3s ease;
+            opacity 0.5s ease-in-out,
+            transform 0.5s ease-in-out;
         }
       }
 
@@ -134,7 +135,7 @@ main {
           border-radius: 100px;
           border: 1px solid var(--color-text-dark);
           margin: 5px;
-          transition: transform 0.5s ease;
+          transition: transform 0.5s ease-in-out;
           flex-shrink: 0;
 
           svg path {
@@ -151,12 +152,12 @@ main {
           .slider-button:hover {
             cursor: pointer;
             background-color: var(--color-background-container);
-            transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+            transition: background-color 0.5s ease-in-out, border-color 0.5s ease-in-out;
 
           }
           .slider-button:hover svg path {
             stroke: var(--color-text-light);
-            transition: stroke 0.3s ease;
+            transition: stroke 0.5s ease;
           }
         }
         
@@ -178,7 +179,7 @@ main {
             align-items: center; 
             gap: 40px;
             scroll-behavior: smooth;
-            transition: transform 0.5s ease;
+            transition: transform 0.5s ease-in-out;
             width: 100%;
 
             .slider-card {
@@ -334,17 +335,25 @@ main {
         }
         
         img {
-          width: 726px;
+          width: 110%;
           height: auto;
           object-fit: contain;
           display: block;
+          transition: transform 0.5s ease-in-out;
         }
-
-        @media (max-width: 1440px) {
-          img {
-            max-width: 100%;
+        
+        @media (pointer: fine) and (hover: hover) {
+          .square-image img:hover, .rect-image img:hover {
+            transform: scale(0.92);
+            cursor: pointer;
           }
         }
+
+        /* @media (max-width: 1440px) {
+          img { */
+            /* max-width: 100%; */
+          /* }
+        } */
       }
 
       @media (max-width: 840px) {
@@ -361,6 +370,7 @@ main {
           
             img {
               max-width: none;
+              width: 726px;
             }
           }
 
@@ -402,6 +412,7 @@ main {
           padding: 10px 20px;
           color: var(--color-text-dark);
           gap: 8px;
+          transition: background-color 0.5s ease-in-out;
 
           .button-app-icon {
             display: flex;
@@ -409,6 +420,9 @@ main {
             height: 36px;
             align-items: end;
             justify-content: center;
+            svg path {
+              transition: background-color 0.5s ease-in-out;
+            }
           }
 
           .button-app-text {
@@ -420,6 +434,7 @@ main {
             div {
               display: flex;
               justify-content: flex-start;
+              transition: background-color 0.5s ease-in-out;
             }
           }
         }

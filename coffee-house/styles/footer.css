@@ -30,13 +30,14 @@ footer.contact {
         justify-content: center;
         width: 60px;
         height: 60px;
+        transition: background-color 0.5s ease;
       }
 
       @media (hover: hover) and (pointer: fine) {
         .social-link:hover {
           background-color: var(--color-background-body);
           svg path {
-            stroke: var(--color-text-dark);
+          stroke: var(--color-text-dark);
           }
         }
       }
@@ -50,7 +51,7 @@ footer.contact {
 
       @media (hover: hover) and (pointer: fine) {
         a:hover {
-          border-bottom: 2px solid var(--color-border-light);
+          border-color: var(--color-border-light);
         }
       }
 
@@ -58,7 +59,8 @@ footer.contact {
         display: flex;
         color: var(--color-text-light);
         gap: 4px;
-        margin-bottom: 2px;
+        border-bottom: 2px solid transparent;
+        transition: border-bottom 0.5s ease-in-out;
         width: fit-content;
 
         .contact-line {
