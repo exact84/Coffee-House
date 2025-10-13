@@ -51,24 +51,33 @@ main {
         width: 200px;
         height: 64px;
         color: var(--color-text-dark);
+        background-color: var(--color-background-body);
         border-radius: 100px;
-          display: flex;
-          flex-direction: row;
+        /* padding-bottom: 2px; */
+          display: inline-flex;
           align-items: center;
           justify-content: center;
-          gap: 4px;
-          /* padding-bottom: 2px; */
+          gap: 0px;
+          padding-left: 16px;
+          transition: gap 0.3s ease;
 
         .button-icon {
-          display: none;
+          opacity: 0;
+          transform: translateX(-5px);
+          transition: 
+            opacity 0.3s ease,
+            transform 0.3s ease;
         }
       }
 
       @media (hover: hover) and (pointer: fine) {
         .button:hover {
-          background-color: var(--color-background-body);
+          padding-left: 0px;
+          gap: 6px;
+
           .button-icon {
-            display: block;
+            opacity: 1;
+            transform: translateY(0);
             padding-top: 8px;
           }
         }
