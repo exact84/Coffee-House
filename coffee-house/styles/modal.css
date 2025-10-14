@@ -94,7 +94,8 @@
   border-radius: 100px;
   border: solid 1px var(--color-border-light);
   cursor: pointer;
-  transition: background-color 0.5s ease;
+  transition: background-color 0.5s ease-in-out;
+  transition: color 0.5s ease-in-out;
   align-items: center;
 }
 
@@ -106,8 +107,10 @@
   justify-content: center;
   width: 30px;
   height: 30px;
-  transition: background-color 0.5s ease;
-  margin-right: 5px
+  transition: background-color 0.5s ease-in-out;
+  transition: color 0.5s ease-in-out;
+  margin-right: 5px;
+  color: var(--color-text-dark);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -123,8 +126,10 @@
 
 .size-tab-active {
   background-color: var(--color-background-container);
+  color: var(--color-text-light);
   .circle {
     background-color: var(--color-background-body);
+    color: var(--color-text-dark);
   }
 }
 
