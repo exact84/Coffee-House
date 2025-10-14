@@ -83,6 +83,19 @@ main {
           }
         }
       }
+
+      @media (max-width: 768px) {
+        .button {
+          padding-left: 0px;
+          gap: 6px;
+
+          .button-icon {
+            opacity: 1;
+            transform: translateY(0);
+            padding-top: 8px;
+          }
+        }
+      }
     }
 
     @media (max-width: 840px) {
@@ -228,7 +241,9 @@ main {
           /* display: flex; */
           width: 40px;
           height: 4px;
-          border: 1px solid var(--color-border-dark);
+          /* border: 1px solid var(--color-border-dark); */
+          background-color: var(--color-border-light);
+          border-radius: 100px;
             position: relative;
             overflow: hidden;
 
@@ -406,7 +421,7 @@ main {
           display: flex;
           flex-direction: row;
           border-radius: 40px;
-          border: black 1px solid;
+          border: var(--color-border-dark) 1px solid;
           width: 200px;
           height: 64px;
           padding: 10px 20px;
