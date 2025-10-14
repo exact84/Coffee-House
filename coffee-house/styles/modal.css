@@ -65,6 +65,7 @@
   padding-left: 20px;
   flex-direction: column;
   gap: 20px;
+  color: var(--color-text-dark);
 }
 
 .title {
@@ -112,8 +113,10 @@
 @media (hover: hover) and (pointer: fine) {
   .size-tab:hover {
     background-color: var(--color-background-container);
+    color: var(--color-text-light);
     .circle {
       background-color: var(--color-background-body);
+      color: var(--color-text-dark);
     }
   }
 }
@@ -160,6 +163,7 @@
 @media (hover: hover) and (pointer: fine) {
   .close-btn:hover {
     background-color: var(--color-background-container);
+    color: var(--color-text-light);
   }
 }
 

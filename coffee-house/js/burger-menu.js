@@ -16,6 +16,8 @@ burgerToggle.addEventListener("change", function () {
 window.addEventListener("resize", () => {
   if (window.innerWidth > 768 && burgerToggle.checked) {
     burgerToggle.checked = false;
+    body.classList.remove("no-scroll");
+    html.classList.remove("no-scroll");
   }
 });
 
