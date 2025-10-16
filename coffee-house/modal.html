@@ -1,0 +1,42 @@
+<div id="overlay" class="overlay">
+  <!-- Modal Window -->
+  <div class="modal-window" id="modal">
+    <div class="modal-div">
+      <div class="gifts-img" id="cur-img"></div>
+      <div class="modal-description">
+        <div class="title">
+          <h3 class="typography-heading-3" id="name">${item.name}</h3>
+          <p class="typography-body-medium" id="description">
+            ${item.description}
+          </p>
+        </div>
+        <div class="size">
+          <p class="typography-body-medium">Size</p>
+          <div class="size-tabs" id="size-tabs"></div>
+        </div>
+
+        <div class="additives">
+          <p class="typography-body-medium">Additives</p>
+          <div class="additives-tabs" id="additives-tabs"></div>
+        </div>
+        <div class="price">
+          <h3 class="typography-heading-3">Total:</h3>
+          <h3 id="total-price" class="typography-heading-3">${item.price}</h3>
+        </div>
+
+        <div class="alert">
+          <div><img src="./assets/img/info-empty.svg" alt="alert" /></div>
+          <div class="typography-caption">
+            The cost is not final. Download our mobile app to see the final
+            price and place your order. Earn loyalty points and enjoy your
+            favorite coffee with up to 20% discount.
+          </div>
+        </div>
+        <button class="close-btn typography-action-link-button" id="close-btn">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
