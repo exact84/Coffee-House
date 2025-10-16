@@ -1,5 +1,5 @@
 const burgerToggle = document.getElementById("burger-toggle");
-const menuLinks = document.querySelectorAll(".menu a");
+const menu = document.querySelector(".menu");
 const body = document.body;
 const html = document.documentElement;
 
@@ -13,17 +13,17 @@ burgerToggle.addEventListener("change", function () {
   }
 });
 
-menuLinks.forEach((item) => {
-  item.addEventListener("click", () => {
-    burgerToggle.checked = false;
-    body.classList.remove("no-scroll");
-    html.classList.remove("no-scroll");
-  });
-});
-
 window.addEventListener("resize", () => {
   if (window.innerWidth > 768 && burgerToggle.checked) {
     burgerToggle.checked = false;
+    body.classList.remove("no-scroll");
+    html.classList.remove("no-scroll");
   }
+});
+
+menu.addEventListener("click", (e) => {
+  burgerToggle.checked = false;
+  body.classList.remove("no-scroll");
+  html.classList.remove("no-scroll");
 });
 

@@ -2,6 +2,7 @@
 @import url('./general.css');
 @import url('./header.css');
 @import url('./footer.css');
+@import url('./modal.css');
 
 *{
   box-sizing: border-box;
@@ -9,30 +10,19 @@
   padding: 0 0;
 }
 
-* {
+/* * {
   outline: 1px solid red;
-}
+} */
 
 .coffee-menu {
   cursor: default;
 }
-
-/* body {
-  padding: 20px 40px 40px 40px;
-}
-
-@media (max-width: 480px) {
-    body {
-        padding: 20px 16px 40px 16px;
-    }
-} */
 
 main {
   display: flex;
   flex-direction: column;
   width: 1440px;
   gap: 40px;
-  border: #ff4646 1px solid;
   width: 100%;
 
   .top {
@@ -46,6 +36,7 @@ main {
       display: flex;
       flex-direction: column;
       gap: 40px;
+      margin-top: 2px;
 
       h2 {
         text-align: center;
@@ -56,20 +47,22 @@ main {
       .tabs {
         display: flex;
         flex-direction: row;
-        gap: 16px;
+        gap: 15px;
         color: var(--color-text-light);
         justify-content: center;
 
         .tab-item {
           display: flex;
           gap: 8px;
-          padding: 8px 16px 8px 8px;
+          padding: 7px 16px 7px 7px;
           cursor: pointer;
           border-radius: 25px;
+          border: solid 1px var(--color-border-light);
           align-items: center;
           align-content: center;
           justify-items: center;
           color: var(--color-text-dark);
+          transition: background-color 0.5s ease;
 
           .tab-icon {
             background-color: var(--color-border-light);
@@ -79,6 +72,7 @@ main {
             align-items: center;
             width: 30px;
             height: 30px;
+            transition: background-color 0.5s ease;
           }
 
           .tab-icon-active {
@@ -103,6 +97,16 @@ main {
           cursor: default;
           pointer-events: none;
         }
+
+        @media (hover: hover) and (pointer: fine) {
+          .tab-item:hover {
+            background-color: var(--color-background-container);
+            color: var(--color-text-light);
+            .tab-icon {
+              background-color: var(--color-background-body);
+            }
+          }
+        }
       }
     }
 
@@ -118,20 +122,15 @@ main {
         border: 1px solid var(--color-border-light);
         display: flex;
         flex-direction: column;
-        /* transition: transform 0.2s ease; */
         overflow: hidden;
         width: 310px;
-        /* width: 100%; */
         height: 506px;
-        /* height: 100%; */
 
         .image {
           display: flex;
           justify-content: center;
           align-items: center;
-          /* width: 310px; */
           width: 100%;
-          /* max-width: 310px; */
           max-height: 310px;
           border-radius: 40px;
           overflow: hidden;
@@ -142,6 +141,7 @@ main {
             width: 340px;
             height: 340px;
             object-fit: contain;
+          transition: transform 0.5s ease-in-out;
           }
         }
 
@@ -160,19 +160,22 @@ main {
           }
 
           .price {
-            padding-top: 12px;
+            /* padding-top: 8px; */
             display: flex;
           }
         }
       }
 
-      .card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        cursor: pointer;
-        transition: transform 0.3s ease;
+      @media (hover: hover) and (pointer: fine) {
+        .card:hover {
+          cursor: pointer;
+          img {
+            transform: scale(0.92);
+          }
+        }
       }
     }
+
     .button-more {
       display: flex;
       justify-content: center;
@@ -193,7 +196,7 @@ main {
           width: 100%;
         }
         .tabs {
-          gap: 8px;
+          gap: 14px;
         }
       }
       .menu-grid {
@@ -204,4 +207,24 @@ main {
       }
     }
   }
+}
+
+@media (max-width: 700px) {
+  main {
+    .top {
+      .offer {
+        h2 {
+          width: 100%;
+        }
+        .tabs {
+          gap: 8px;
+        }
+      }
+    }
+  }
+}
+
+.coffee-menu {
+  /* margin-top: -2px; */
+      border-bottom: 2px solid var(--color-border-dark)!important;
 }

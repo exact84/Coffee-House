@@ -51,10 +51,49 @@ main {
         width: 200px;
         height: 64px;
         color: var(--color-text-dark);
+        background-color: var(--color-background-body);
         border-radius: 100px;
+        /* padding-bottom: 2px; */
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0px;
+          padding-left: 16px;
+          transition: gap 0.5s ease-in-out;
 
         .button-icon {
-          display: none;
+          opacity: 0;
+          padding-top: 8px;
+          transform: translateX(-5px);
+          transition: 
+            opacity 0.5s ease-in-out,
+            transform 0.5s ease-in-out;
+        }
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        .button:hover {
+          padding-left: 0px;
+          gap: 6px;
+
+          .button-icon {
+            opacity: 1;
+            transform: translateY(0);
+            padding-top: 8px;
+          }
+        }
+      }
+
+      @media (max-width: 768px) {
+        .button {
+          padding-left: 0px;
+          gap: 6px;
+
+          .button-icon {
+            opacity: 1;
+            transform: translateY(0);
+            padding-top: 8px;
+          }
         }
       }
     }
@@ -62,20 +101,6 @@ main {
     @media (max-width: 840px) {
       .enjoy-content {
         padding: 100px 60px;
-        
-        .button {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: center;
-          gap: 4px;
-          padding-bottom: 2px;
-          background-color: var(--color-background-body);
-
-          .button-icon {
-            display: block;
-          }
-        }
       }
     }
 
@@ -123,7 +148,7 @@ main {
           border-radius: 100px;
           border: 1px solid var(--color-text-dark);
           margin: 5px;
-          transition: transform 0.5s ease;
+          transition: transform 0.5s ease-in-out;
           flex-shrink: 0;
 
           svg path {
@@ -140,14 +165,15 @@ main {
           .slider-button:hover {
             cursor: pointer;
             background-color: var(--color-background-container);
-            transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+            transition: background-color 0.5s ease-in-out, border-color 0.5s ease-in-out;
 
           }
           .slider-button:hover svg path {
             stroke: var(--color-text-light);
-            transition: stroke 0.3s ease;
+            transition: stroke 0.5s ease;
           }
         }
+        
         .slider-row {
           display: flex;
           flex-direction: row;
@@ -166,7 +192,7 @@ main {
             align-items: center; 
             gap: 40px;
             scroll-behavior: smooth;
-            transition: transform 0.5s ease;
+            transition: transform 0.5s ease-in-out;
             width: 100%;
 
             .slider-card {
@@ -215,7 +241,9 @@ main {
           /* display: flex; */
           width: 40px;
           height: 4px;
-          border: 1px solid var(--color-border-dark);
+          /* border: 1px solid var(--color-border-dark); */
+          background-color: var(--color-border-light);
+          border-radius: 100px;
             position: relative;
             overflow: hidden;
 
@@ -225,13 +253,13 @@ main {
             left: 0;
             height: 100%;
             width: 0%;
-            background-color: red;
+            background-color: var(--color-border-light);
             transition: width linear;
           }
         }
 
         .slider-control-activ {
-          background-color: #fff;
+          background-color: var(--color-border-dark);
           .slider-progress {
             width: 100%;
           }
@@ -322,20 +350,28 @@ main {
         }
         
         img {
-          width: 726px;
+          width: 110%;
           height: auto;
           object-fit: contain;
           display: block;
+          transition: transform 0.5s ease-in-out;
         }
-
-        @media (max-width: 1440px) {
-          img {
-            max-width: 100%;
+        
+        @media (pointer: fine) and (hover: hover) {
+          .square-image img:hover, .rect-image img:hover {
+            transform: scale(0.92);
+            cursor: pointer;
           }
         }
+
+        /* @media (max-width: 1440px) {
+          img { */
+            /* max-width: 100%; */
+          /* }
+        } */
       }
 
-      @media (max-width: 840px) {
+      @media (max-width: 769px) {
         flex-direction: column;
 
         .images-column {
@@ -349,6 +385,7 @@ main {
           
             img {
               max-width: none;
+              width: 726px;
             }
           }
 
@@ -384,12 +421,13 @@ main {
           display: flex;
           flex-direction: row;
           border-radius: 40px;
-          border: black 1px solid;
+          border: var(--color-border-dark) 1px solid;
           width: 200px;
           height: 64px;
           padding: 10px 20px;
           color: var(--color-text-dark);
           gap: 8px;
+          transition: background-color 0.5s ease-in-out;
 
           .button-app-icon {
             display: flex;
@@ -397,6 +435,9 @@ main {
             height: 36px;
             align-items: end;
             justify-content: center;
+            svg path {
+              transition: background-color 0.5s ease-in-out;
+            }
           }
 
           .button-app-text {
@@ -408,6 +449,22 @@ main {
             div {
               display: flex;
               justify-content: flex-start;
+              transition: background-color 0.5s ease-in-out;
+            }
+          }
+        }
+        @media (hover: hover) and (pointer: fine) {
+          .button-app:hover {
+            background-color: var(--color-background-container);
+
+            .button-app-icon {
+              svg path {
+                fill: var(--color-text-light);
+              }
+            }
+
+            .button-app-text {
+              color: var(--color-text-light);
             }
           }
         }

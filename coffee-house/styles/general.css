@@ -31,7 +31,7 @@ a {
   color: var(--color-text-dark);
 }
 
-button {
+div.div-button, button {
   cursor: pointer;
   background: none;
   border: none;

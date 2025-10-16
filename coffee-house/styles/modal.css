@@ -1,0 +1,244 @@
+@import url('./general.css');
+
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  transition: opacity 0.5s ease;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 50px;
+}
+
+.overlay.show {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-window {
+  /* display: none; */
+  display: flex;
+  border-radius: 40px;
+  background: var(--color-background-body);
+  /* transform: translate(-50%, -45%); */
+  transition: transform 0.5s ease;
+  padding: 16px 16px;
+  width: 800px;
+  height: 504px;
+  /* height: fit-content; */
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.modal-div {
+  display: flex;
+}
+
+.gifts-img {
+  /* background: url("") center no-repeat; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-height: 310px;
+  max-width: 310px;
+  border-radius: 40px;
+  overflow: hidden;
+  object-fit: contain;
+
+  img {
+    /* display: block; */
+    border-radius: 40px;
+    width: 340px;
+    height: 340px;
+    object-fit: contain;
+  }
+}
+
+.modal-description {
+  display: flex;
+  padding-left: 20px;
+  flex-direction: column;
+  gap: 20px;
+  color: var(--color-text-dark);
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.size, .additives{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.size-tabs, .additives-tabs {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.size-tab, .additives-tab {
+  display: flex;
+  padding: 8px 16px 8px 8px;
+  border-radius: 100px;
+  border: solid 1px var(--color-border-light);
+  cursor: pointer;
+  transition: background-color 0.5s ease-in-out;
+  transition: color 0.5s ease-in-out;
+  align-items: center;
+}
+
+.circle {
+  display: flex;
+  border-radius: 100px;
+  background-color: var(--color-border-light);
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  transition: background-color 0.5s ease-in-out;
+  transition: color 0.5s ease-in-out;
+  margin-right: 5px;
+  color: var(--color-text-dark);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .size-tab:hover {
+    background-color: var(--color-background-container);
+    color: var(--color-text-light);
+    .circle {
+      background-color: var(--color-background-body);
+      color: var(--color-text-dark);
+    }
+  }
+}
+
+.size-tab-active {
+  background-color: var(--color-background-container);
+  color: var(--color-text-light);
+  .circle {
+    background-color: var(--color-background-body);
+    color: var(--color-text-dark);
+  }
+}
+
+.size-tab-active .circle {
+  background-color: var(--color-background-body);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .size-tab .circle:hover {
+    background-color: var(--color-background-body);
+  }
+}
+
+.price {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.alert {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  border-top: solid 1px var(--color-border-light);
+  padding: 11px 0 10px 0;
+}
+
+.close-btn {
+  border: solid 1px var(--color-border-light);
+  border-radius: 40px;
+  padding: 10px 0;
+  transition: background-color 0.5s ease-in-out;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .close-btn:hover {
+    background-color: var(--color-background-container);
+    color: var(--color-text-light);
+  }
+}
+
+@media (max-width: 768px) {
+  .overlay {
+    padding-top: 48px;
+  }
+
+  .modal-window {
+    width: 688px;
+    height: 626px;
+  }
+
+  .gifts-img {
+    width: 310px;
+    height: 310px;
+      flex-shrink: 0;
+
+    img {
+      display: block;
+      width: 110%;
+      height: 110%;
+    }
+  }
+
+  .size-tabs, .additives-tabs {
+    gap: 8px;
+  }
+
+  .size-tab, .additives-tab {
+  padding: 7px 16px 8px 8px;
+  }
+}
+
+@media (max-width: 650px) {
+  .overlay {
+    align-items: flex-start;
+  }
+
+  .modal-window {
+    margin-top: 52px; 
+    width: 342px;
+    height: fit-content;
+  }
+
+  .gifts-img {
+    display: none;
+  }
+
+  .modal-description {
+    padding-left: 0px;
+  }
+}
+
+@media (max-width: 380px) {
+  .overlay {
+    align-items: flex-start;
+  }
+
+  .modal-window {
+    margin-top: 52px; 
+    width: 342px;
+    height: fit-content;
+  }
+
+  .gifts-img {
+    display: none;
+  }
+
+  .modal-description {
+    padding-left: 0px;
+  }
+}

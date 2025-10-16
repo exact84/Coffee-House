@@ -18,13 +18,6 @@ header {
     justify-content: space-between;
     align-items: center;
 
-    .nav-left-item {
-      display: flex;
-      padding: 8px 20px;
-      align-items: center;
-      gap: 8px;
-    }
-
     ul.nav-bar {
       display: flex;
       gap: 40px;
@@ -33,16 +26,19 @@ header {
       list-style-type: none;
       flex: 1;
       height: 100%;
-      margin-top: -2px;
       margin-left: -2px;
+      margin-top: -2px;
     }
 
     @media (max-width: 768px) {
-    /* screen and (max-width: 768px) { */
       ul.nav-bar, .coffee-menu {
         display: none;
       }
 
+      .non-link {
+        cursor: default;
+      }
+      
       .coffee-menu-vertical {
         display: flex;
         margin-top: 24px;
@@ -82,7 +78,7 @@ header {
         height: 1px;
         background-color: black;
         border-radius: 2px;
-        transition: transform 0.3s ease;
+        transition: transform 0.5s ease;
       }
 
       .burger-toggle:checked + .burger-menu span:nth-child(1) {
@@ -93,7 +89,7 @@ header {
         transform: translateY(-4px) rotate(-45deg);
       }
 
-      .burger-toggle:checked + .burger-menu > ul.menu {
+      .burger-toggle:checked + .burger-menu ~ .menu {
         transform: translateX(0);
         pointer-events: auto;
       }
@@ -106,12 +102,20 @@ header {
     align-items: center;
     gap: 8px;
     height: 100%;
-    padding-bottom: 2px;
+    margin-bottom: -2px;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.5s ease-in-out;
   }
 
-  /* ul.menu {
-    display: none;
-  } */
+  @media (hover: hover) and (pointer: fine) {
+    a:hover, .coffee-menu a:hover {
+      border-color: var(--color-border-dark);
+    }
+
+    .nav > a:hover {
+      border-color: transparent;
+    }
+  }
 
   .burger-toggle {
     display: none;
@@ -127,11 +131,11 @@ header {
     height: 100%;
     background-color: var(--color-background-body);
     transform: translateX(100%);
-    transition: transform 0.5s ease;
+    transition: transform 0.5s ease-in-out;
     z-index: 999;
     pointer-events: none;
-    gap: 59px;
-    padding: 60px 40px;
+    gap: 62px;
+    padding: 62px 40px;
     align-items: center;
     list-style-type: none;
   }
