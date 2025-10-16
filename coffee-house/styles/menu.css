@@ -224,6 +224,7 @@ main {
   }
 }
 
-a, .coffee-menu {
-  margin-top: -2px;
+.coffee-menu {
+  /* margin-top: -2px; */
+      border-bottom: 2px solid var(--color-border-dark)!important;
 }
