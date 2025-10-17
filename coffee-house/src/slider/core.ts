@@ -1,9 +1,15 @@
 import { SliderElements, SliderState } from './types';
-import {scrollTime} from './consts';
+import { scrollTime } from './consts';
 
-export function setupSlider({ section, slider, btnLeft, btnRight, controls }: SliderElements): void {
+export function setupSlider({
+  section,
+  slider,
+  btnLeft,
+  btnRight,
+  controls,
+}: SliderElements): void {
   const slidesCount = controls.length;
-  let state: SliderState = {
+  const state: SliderState = {
     position: 0,
     currentSlide: 0,
     slidesCount,
@@ -35,7 +41,9 @@ export function setupSlider({ section, slider, btnLeft, btnRight, controls }: Sl
   }
 
   function updateControls(): void {
-    controls.forEach((c, i) => c.classList.toggle('slider-control-activ', i === state.currentSlide));
+    controls.forEach((c, i) =>
+      c.classList.toggle('slider-control-activ', i === state.currentSlide)
+    );
   }
 
   function resetProgress(): void {
@@ -57,7 +65,7 @@ export function setupSlider({ section, slider, btnLeft, btnRight, controls }: Sl
 
     const duration = state.remainingTime || state.autoScrollTime;
     progressBar.style.transition = 'none';
-    progressBar.offsetWidth;
+    // progressBar.offsetWidth;
     progressBar.style.transition = `width ${duration}ms linear`;
     progressBar.style.width = '100%';
     state.progressStartTime = Date.now();
@@ -156,7 +164,11 @@ export function setupSlider({ section, slider, btnLeft, btnRight, controls }: Sl
     const minSwipe = 50;
 
     if (Math.abs(diffX) < minSwipe) resumeProgress();
-    else diffX > 0 ? right() : left();
+    else if (diffX > 0) {
+      right();
+    } else {
+      left();
+    }
     isSwiping = false;
   }
 

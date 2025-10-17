@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "coffee-house",
   "version": "1.0.0",
   "main": "index.js",
@@ -6,7 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "format": "prettier --write ."
   },
   "keywords": [],
   "author": "",
@@ -14,7 +18,12 @@
   "description": "",
   "devDependencies": {
     "@types/node": "^24.8.1",
+    "eslint": "^9.38.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "^3.6.2",
     "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.1",
     "vite": "^7.1.10"
   }
 }
