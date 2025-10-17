@@ -1,10 +1,12 @@
-let filteredItems = [];
-let items = [];
+import { CardItem } from "./types";
+
+let filteredItems: CardItem [] = [];
+let items: CardItem [] = [];
 let visibleCount = 4;
-let isDesktop = window.innerWidth > 768;
+// let isDesktop = window.innerWidth > 768;
 let isButton = false;
 
-let resizeTimeout;
+let resizeTimeout: number;
 const debounceTimeout = 230;
 
 const imageMap = {
@@ -44,9 +46,8 @@ buttonIcon.alt = "arrow";
 loadMoreBtn.appendChild(buttonIcon);
 buttonContainer.appendChild(loadMoreBtn);
 
-getTabData();
-
-function getTabData(category = "coffee") {
+export function getTabData(category = "coffee") {
+  console.log("getTabData", category);
   fetch("./assets/products.json")
     .then((response) => response.json())
     .then((data) => {
@@ -56,13 +57,13 @@ function getTabData(category = "coffee") {
     .catch((err) => console.error("Error loading JSON:", err));
 }
 
-function filterData(category) {
+function filterData(category: string) {
   // console.log("filterData", category, items);
   filteredItems = items
-    .filter((item) => item.category === category)
-    .map((item) => ({
+    .filter((item: CardItem) => item.category === category)
+    .map((item: CardItem) => ({
       ...item,
-      image: `./assets/img/menu/${imageMap[item.name] || "coffee-1.png"}`,
+      image: `./assets/img/menu/${imageMap[item.name as keyof typeof imageMap] || "coffee-1.png"}`,
     }));
   visibleCount = window.innerWidth > 768 ? filteredItems.length : 4;
   renderCards();
@@ -74,7 +75,8 @@ loadMoreBtn.addEventListener("click", () => {
 });
 
 document.querySelectorAll(".tab-item").forEach((tab) => {
-  tab.addEventListener("click", function () {
+  tab.addEventListener("click", function (event) {
+    const target = event.currentTarget as HTMLElement;
     document
       .querySelectorAll(".tab-item")
       .forEach((t) => t.classList.remove("tab-item-active"));
@@ -82,17 +84,17 @@ document.querySelectorAll(".tab-item").forEach((tab) => {
       .querySelectorAll(".tab-icon")
       .forEach((t) => t.classList.remove("tab-icon-active"));
 
-    this.classList.add("tab-item-active");
-    this.children[0].classList.add("tab-icon-active");
+    target.classList.add("tab-item-active");
+    target.children[0].classList.add("tab-icon-active");
 
     // tabType = this.dataset.tab;
-    filterData(this.dataset.tab);
+    if (target.dataset.tab) filterData(target.dataset.tab);
   });
 });
 
 window.addEventListener("resize", () => {
   clearTimeout(resizeTimeout);
-  resizeTimeout = setTimeout(() => {
+  resizeTimeout = window.setTimeout(() => {
     const nowDesktop = window.innerWidth > 768;
 
     if (visibleCount > 4 && !nowDesktop) {
@@ -109,7 +111,7 @@ window.addEventListener("resize", () => {
 
 async function renderCards() {
   // console.log("renderCards", visibleCount, tabType, ". isButton:", isButton);
-  grid.innerHTML = "";
+  if (grid) grid.innerHTML = "";
 
   const limit = Math.min(visibleCount, filteredItems.length);
 
@@ -128,7 +130,7 @@ async function renderCards() {
         <div class="typography-heading-3 price">$${item.price}</div>
       </div>
     `;
-    grid.appendChild(card);
+    if (grid) grid.appendChild(card);
 
     card.addEventListener("click", (event) => {
       modal(item);
@@ -140,16 +142,16 @@ async function renderCards() {
 
   if (filteredItems.length > limit && window.innerWidth <= 768) {
     isButton = true;
-    grid.after(buttonContainer);
+    if (grid) grid.after(buttonContainer);
   } else isButton = false;
 
   // console.log("filteredItems.length > limit. isButton:", isButton);
 }
 
 let modalLoaded = false;
-let overlay, closeBtn;
+let overlay: HTMLElement | null, closeBtn;
 
-function modal(card) {
+function modal(card: CardItem) {
   if (!modalLoaded) {
     fetch("./modal.html")
       .then((res) => res.text())
@@ -167,7 +169,7 @@ function modal(card) {
   }
 }
 
-function initModal(card) {
+function initModal(card: CardItem) {
   overlay = document.getElementById("overlay");
   const closeBtn = document.getElementById("close-btn");
   const curImg = document.getElementById("cur-img");
@@ -177,18 +179,18 @@ function initModal(card) {
   const additivesTabs = document.getElementById("additives-tabs");
   const price = document.getElementById("total-price");
 
-  curImg.innerHTML = "";
-  sizeTabs.innerHTML = "";
-  additivesTabs.innerHTML = "";
-  price.textContent = `$${card.price}`;
+  if (curImg) curImg.innerHTML = "";
+  if (sizeTabs) sizeTabs.innerHTML = "";
+  if (additivesTabs) additivesTabs.innerHTML = "";
+  if (price) price.textContent = `$${card.price}`;
 
   const image = document.createElement("img");
-  image.src = card.image;
+  if (card.image) image.src = card.image;
   image.alt = card.name;
-  curImg.appendChild(image);
+  if (curImg) curImg.appendChild(image);
 
-  name.textContent = card.name;
-  description.textContent = card.description;
+  if (name) name.textContent = card.name;
+  if (description) description.textContent = card.description;
 
   Object.keys(card.sizes).forEach((size, index) => {
     const sizeTab = document.createElement("div");
@@ -196,32 +198,31 @@ function initModal(card) {
     if (index === 0) sizeTab.classList.add("size-tab-active");
     sizeTab.id = size;
     sizeTab.innerHTML = `<div class="circle">${size.toUpperCase()}</div>${
-      card.sizes[size].size
+      card.sizes[size as keyof typeof card.sizes].size
     }`;
     sizeTab.addEventListener("click", () => {
-      sizeTabs
-        .querySelector(".size-tab-active")
-        .classList.remove("size-tab-active");
+      if (sizeTabs) sizeTabs.querySelector(".size-tab-active")?.classList.remove("size-tab-active");
       sizeTab.classList.add("size-tab-active");
       const basePrice = parseFloat(card.price);
-      const addPrice = parseFloat(card.sizes[size]["add-price"]);
-      totalPrice = basePrice + addPrice + additivesTotal;
-      price.textContent = `$${totalPrice.toFixed(2)}`;
+      const addPrice = parseFloat(card.sizes[size as keyof typeof card.sizes]["add-price"]);
+      const totalPrice = basePrice + addPrice + additivesTotal;
+      if (price) price.textContent = `$${totalPrice.toFixed(2)}`;
     });
-    sizeTabs.appendChild(sizeTab);
+    if (sizeTabs) sizeTabs.appendChild(sizeTab);
   });
 
   let additivesTotal = 0;
 
-  Object.keys(card.additives).forEach((add) => {
+  Object.keys(card.additives).forEach((add: string) => {
+    const addIndex = Number(add);
     const additivesTab = document.createElement("div");
     additivesTab.classList.add("size-tab", "typography-action-link-button");
     additivesTab.id = "add1";
     additivesTab.innerHTML = `<div class="circle">${+add + 1}</div>${
-      card.additives[add].name
+      card.additives[addIndex]["name"]
     }`;
     additivesTab.addEventListener("click", () => {
-      const addPrice = parseFloat(card.additives[add]["add-price"]);
+      const addPrice = parseFloat(card.additives[addIndex]["add-price"]);
       console.log("addPrice", addPrice);
       if (additivesTab.classList.contains("size-tab-active")) {
         additivesTab.classList.remove("size-tab-active");
@@ -231,26 +232,27 @@ function initModal(card) {
         additivesTotal += addPrice;
       }
 
-      const sizeActive = sizeTabs.querySelector(".size-tab-active").id;
-      const sizePrice = parseFloat(card.sizes[sizeActive]["add-price"]);
+      const sizeActive: string | undefined = sizeTabs?.querySelector(".size-tab-active")?.id;
+      let sizePrice = 0;
+      if (sizeActive) {sizePrice = parseFloat(card.sizes[sizeActive as keyof typeof card.sizes]["add-price"]);}
       const totalPrice = parseFloat(card.price) + sizePrice + additivesTotal;
-      price.textContent = `$${totalPrice.toFixed(2)}`;
+      if (price) price.textContent = `$${totalPrice.toFixed(2)}`;
     });
-    additivesTabs.appendChild(additivesTab);
+    if (additivesTabs) additivesTabs.appendChild(additivesTab);
   });
 
-  overlay.style.display = "flex";
+  if (overlay) overlay.style.display = "flex";
   document.documentElement.classList.add("no-scroll");
 
-  closeBtn.onclick = closeModal;
-  overlay.onclick = (e) => {
+  if (closeBtn) closeBtn.onclick = closeModal;
+  if (overlay) overlay.onclick = (e) => {
     if (e.target === overlay) closeModal();
   };
 }
 
 function closeModal() {
   const overlay = document.getElementById("overlay");
-  overlay.style.display = "none";
+  if (overlay) overlay.style.display = "none";
   document.documentElement.classList.remove("no-scroll");
 }
 
