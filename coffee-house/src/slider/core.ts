@@ -1,5 +1,7 @@
-import { SliderElements, SliderState } from './types';
+import { FavoritesCoffee, SliderElements, SliderState } from './types';
 import { scrollTime } from './consts';
+import { makeRequest } from './request';
+import { imageMap } from '../consts';
 
 export function setupSlider({
   section,
@@ -20,18 +22,65 @@ export function setupSlider({
     isPaused: false,
   };
 
-  btnRight.addEventListener('click', () => right());
-  btnLeft.addEventListener('click', () => left());
-  window.addEventListener('resize', () => resize());
-  section.addEventListener('mouseenter', pauseProgress);
-  section.addEventListener('mouseleave', resumeProgress);
-  section.addEventListener('touchstart', handleTouchStart);
-  section.addEventListener('touchmove', handleTouchMove);
-  section.addEventListener('touchend', handleTouchEnd);
-
   let startX = 0;
   let currentX = 0;
   let isSwiping = false;
+
+  makeRequest<FavoritesCoffee>()
+    .then((response) => {
+      const dataSet: FavoritesCoffee[] = response.data;
+      console.log(dataSet);
+
+      const sliderContainer = document.getElementById('sliderContainer');
+      if (!sliderContainer) return;
+      sliderContainer.replaceChildren();
+
+      for (const product of dataSet) {
+        const card = document.createElement('div');
+        card.classList.add('slider-card');
+
+        const img = document.createElement('img');
+        console.log(imageMap[product.name as keyof typeof imageMap]);
+        img.src =
+          '../assets/img/menu/' + imageMap[product.name as keyof typeof imageMap] || 'coffee.png';
+        img.alt = product.name;
+
+        const content = document.createElement('div');
+        content.classList.add('card-content');
+
+        const title = document.createElement('h3');
+        title.classList.add('typography-heading-3');
+        title.textContent = product.name;
+
+        const desc = document.createElement('p');
+        desc.classList.add('typography-body-medium');
+        desc.textContent = product.description;
+
+        const price = document.createElement('h3');
+        price.classList.add('typography-heading-3');
+        price.textContent = `$${product.discountPrice ?? product.price}`;
+
+        content.append(title, desc, price);
+        card.append(img, content);
+        sliderContainer.append(card);
+      }
+      // console.log('slider is ready');
+      btnRight.addEventListener('click', () => right());
+      btnLeft.addEventListener('click', () => left());
+      window.addEventListener('resize', () => resize());
+      section.addEventListener('mouseenter', pauseProgress);
+      section.addEventListener('mouseleave', resumeProgress);
+      section.addEventListener('touchstart', handleTouchStart);
+      section.addEventListener('touchmove', handleTouchMove);
+      section.addEventListener('touchend', handleTouchEnd);
+      startAutoScroll();
+      updateControls();
+    })
+    .catch(() => {
+      console.log('Default FavoritesCoffee dataset loaded.');
+      const loader = document.getElementById('loader');
+      if (loader) loader.textContent = 'Something went wrong. Please, refresh the page.';
+    });
 
   function getStep(): number {
     const cards = section.querySelectorAll<HTMLElement>('.slider-card');
@@ -65,7 +114,7 @@ export function setupSlider({
 
     const duration = state.remainingTime || state.autoScrollTime;
     progressBar.style.transition = 'none';
-    // progressBar.offsetWidth;
+    void progressBar.offsetWidth;
     progressBar.style.transition = `width ${duration}ms linear`;
     progressBar.style.width = '100%';
     state.progressStartTime = Date.now();
@@ -171,7 +220,4 @@ export function setupSlider({
     }
     isSwiping = false;
   }
-
-  updateControls();
-  startAutoScroll();
 }

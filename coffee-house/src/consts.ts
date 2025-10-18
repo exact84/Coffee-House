@@ -1,0 +1,26 @@
+export const BASE_URL = 'https://6kt29kkeub.execute-api.eu-central-1.amazonaws.com';
+
+export const imageMap = {
+  'Irish coffee': 'coffee-1.png',
+  'Kahlua coffee': 'coffee-2.png',
+  'Honey raf': 'coffee-3.png',
+  'Ice cappuccino': 'coffee-4.png',
+  Espresso: 'coffee-5.png',
+  Latte: 'coffee-6.png',
+  'Latte macchiato': 'coffee-7.png',
+  'Coffee with cognac': 'coffee-8.png',
+
+  Moroccan: 'tea-1.png',
+  Ginger: 'tea-2.png',
+  Cranberry: 'tea-3.png',
+  'Sea buckthorn': 'tea-4.png',
+
+  'Marble cheesecake': 'dessert-1.png',
+  'Red velvet': 'dessert-2.png',
+  Cheesecakes: 'dessert-3.png',
+  'Creme brulee': 'dessert-4.png',
+  Pancakes: 'dessert-5.png',
+  'Honey cake': 'dessert-6.png',
+  'Chocolate cake': 'dessert-7.png',
+  'Black forest': 'dessert-8.png',
+};

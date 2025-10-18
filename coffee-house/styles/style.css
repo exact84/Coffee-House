@@ -54,18 +54,18 @@ main {
         background-color: var(--color-background-body);
         border-radius: 100px;
         /* padding-bottom: 2px; */
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0px;
-          padding-left: 16px;
-          transition: gap 0.5s ease-in-out;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0px;
+        padding-left: 16px;
+        transition: gap 0.5s ease-in-out;
 
         .button-icon {
           opacity: 0;
           padding-top: 8px;
           transform: translateX(-5px);
-          transition: 
+          transition:
             opacity 0.5s ease-in-out,
             transform 0.5s ease-in-out;
         }
@@ -118,7 +118,7 @@ main {
     justify-content: center;
     gap: 40px;
 
-    .slider-header{
+    .slider-header {
       color: var(--color-text-dark);
       text-align: center;
     }
@@ -165,15 +165,16 @@ main {
           .slider-button:hover {
             cursor: pointer;
             background-color: var(--color-background-container);
-            transition: background-color 0.5s ease-in-out, border-color 0.5s ease-in-out;
-
+            transition:
+              background-color 0.5s ease-in-out,
+              border-color 0.5s ease-in-out;
           }
           .slider-button:hover svg path {
             stroke: var(--color-text-light);
             transition: stroke 0.5s ease;
           }
         }
-        
+
         .slider-row {
           display: flex;
           flex-direction: row;
@@ -183,13 +184,13 @@ main {
           width: 100%;
           overflow-x: auto;
           scroll-behavior: smooth;
-          scrollbar-width: none; 
+          scrollbar-width: none;
 
           .slider-slider {
             display: flex;
             flex-direction: row;
             justify-content: flex-start;
-            align-items: center; 
+            align-items: center;
             gap: 40px;
             scroll-behavior: smooth;
             transition: transform 0.5s ease-in-out;
@@ -201,9 +202,16 @@ main {
               flex-direction: column;
               align-items: center;
               gap: 20px;
-              min-width: 280px; 
-              /* width: 100%; */
+              min-width: 280px;
+              min-height: 480px;
               width: 468px;
+
+              .loading {
+                display: flex;
+                align-items: center;
+                text-align: center;
+                flex-grow: 1;
+              }
 
               img {
                 max-width: 480px;
@@ -244,8 +252,8 @@ main {
           /* border: 1px solid var(--color-border-dark); */
           background-color: var(--color-border-light);
           border-radius: 100px;
-            position: relative;
-            overflow: hidden;
+          position: relative;
+          overflow: hidden;
 
           .slider-progress {
             position: absolute;
@@ -274,6 +282,7 @@ main {
           .slider-row {
             .slider-slider {
               .slider-card {
+                min-height: 348px;
                 img {
                   width: 348px;
                   height: 348px;
@@ -303,7 +312,6 @@ main {
         }
       }
     }
-
   }
 
   .about {
@@ -322,7 +330,7 @@ main {
 
       .images-column {
         display: flex;
-        flex-direction: column; 
+        flex-direction: column;
         gap: 40px;
         max-width: 660px;
         width: 100%;
@@ -348,7 +356,7 @@ main {
           overflow: hidden;
           border-radius: 20px;
         }
-        
+
         img {
           width: 110%;
           height: auto;
@@ -356,9 +364,10 @@ main {
           display: block;
           transition: transform 0.5s ease-in-out;
         }
-        
+
         @media (pointer: fine) and (hover: hover) {
-          .square-image img:hover, .rect-image img:hover {
+          .square-image img:hover,
+          .rect-image img:hover {
             transform: scale(0.92);
             cursor: pointer;
           }
@@ -366,8 +375,8 @@ main {
 
         /* @media (max-width: 1440px) {
           img { */
-            /* max-width: 100%; */
-          /* }
+        /* max-width: 100%; */
+        /* }
         } */
       }
 
@@ -378,11 +387,11 @@ main {
           max-width: none;
 
           .square-image {
-            width: 100%; 
+            width: 100%;
             height: 590px;
             aspect-ratio: auto;
             max-width: none;
-          
+
             img {
               max-width: none;
               width: 726px;
@@ -413,7 +422,7 @@ main {
       flex-grow: 1;
 
       .offer-buttons {
-        display: flex ;
+        display: flex;
         flex-direction: row;
         gap: 20px;
 
@@ -482,14 +491,13 @@ main {
           flex-direction: column;
         }
       }
-
     }
-    
+
     .mobile-image {
       display: flex;
       justify-content: center;
       height: 100%;
-    } 
+    }
 
     img {
       display: block;
@@ -502,7 +510,6 @@ main {
 }
 
 @media (max-width: 830px) {
-
   .images {
     flex-direction: column;
   }
