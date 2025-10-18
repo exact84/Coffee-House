@@ -17,19 +17,3 @@ export interface SliderState {
   isPaused: boolean;
   autoScrollTimeout?: number;
 }
-
-export interface FavoritesCoffee {
-  id: number;
-  name: string;
-  description: string;
-  price: string;
-  discountPrice: string;
-  category: string;
-  image?: string;
-}
-
-export type ApiResponse<T> = {
-  data: T[];
-  message: string;
-  error: string;
-};

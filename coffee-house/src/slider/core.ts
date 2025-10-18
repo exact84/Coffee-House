@@ -1,7 +1,8 @@
-import { FavoritesCoffee, SliderElements, SliderState } from './types';
+import { SliderElements, SliderState } from './types';
 import { scrollTime } from './consts';
-import { makeRequest } from './request';
+import { makeRequest } from '../request';
 import { imageMap } from '../consts';
+import { Products } from '../responseTypes';
 
 export function setupSlider({
   section,
@@ -26,9 +27,9 @@ export function setupSlider({
   let currentX = 0;
   let isSwiping = false;
 
-  makeRequest<FavoritesCoffee>()
+  makeRequest<Products>('/products/favorites')
     .then((response) => {
-      const dataSet: FavoritesCoffee[] = response.data;
+      const dataSet: Products[] = response.data;
       console.log(dataSet);
 
       const sliderContainer = document.getElementById('sliderContainer');
@@ -64,7 +65,6 @@ export function setupSlider({
         card.append(img, content);
         sliderContainer.append(card);
       }
-      // console.log('slider is ready');
       btnRight.addEventListener('click', () => right());
       btnLeft.addEventListener('click', () => left());
       window.addEventListener('resize', () => resize());
@@ -77,7 +77,6 @@ export function setupSlider({
       updateControls();
     })
     .catch(() => {
-      console.log('Default FavoritesCoffee dataset loaded.');
       const loader = document.getElementById('loader');
       if (loader) loader.textContent = 'Something went wrong. Please, refresh the page.';
     });

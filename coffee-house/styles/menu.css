@@ -4,7 +4,7 @@
 @import url('./footer.css');
 @import url('./modal.css');
 
-*{
+* {
   box-sizing: border-box;
   margin: 0 0;
   padding: 0 0;
@@ -113,7 +113,7 @@ main {
     .menu-grid {
       display: grid;
       gap: 39px;
-      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      grid-template-columns: 1fr;
       width: 100%;
       justify-items: center;
 
@@ -134,14 +134,14 @@ main {
           max-height: 310px;
           border-radius: 40px;
           overflow: hidden;
-        
+
           img {
             /* display: block; */
             border-radius: 40px;
             width: 340px;
             height: 340px;
             object-fit: contain;
-          transition: transform 0.5s ease-in-out;
+            transition: transform 0.5s ease-in-out;
           }
         }
 
@@ -162,6 +162,12 @@ main {
           .price {
             /* padding-top: 8px; */
             display: flex;
+            justify-content: start;
+          }
+
+          .old-price {
+            text-decoration: line-through;
+            opacity: 0.6;
           }
         }
       }
@@ -226,5 +232,5 @@ main {
 
 .coffee-menu {
   /* margin-top: -2px; */
-      border-bottom: 2px solid var(--color-border-dark)!important;
+  border-bottom: 2px solid var(--color-border-dark) !important;
 }

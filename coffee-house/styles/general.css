@@ -1,6 +1,6 @@
 @import url('./colors.css');
 
-*{
+* {
   box-sizing: border-box;
   margin: 0 0;
   padding: 0 0;
@@ -31,10 +31,18 @@ a {
   color: var(--color-text-dark);
 }
 
-div.div-button, button {
+div.div-button,
+button {
   cursor: pointer;
   background: none;
   border: none;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  flex-grow: 1;
 }
 
 @media (max-width: 830px) {

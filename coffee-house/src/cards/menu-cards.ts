@@ -1,8 +1,11 @@
 import { CardItem } from './types';
 import { imageMap } from '../consts';
+import { modal } from './modal';
+import { makeRequest, makeRequestbyID } from '../request';
+import { Products } from '../responseTypes';
 
-let filteredItems: CardItem[] = [];
-let items: CardItem[] = [];
+let filteredItems: Products[] = [];
+let items: Products[] = [];
 let visibleCount = 4;
 // let isDesktop = window.innerWidth > 768;
 let isButton = false;
@@ -23,22 +26,27 @@ loadMoreBtn.appendChild(buttonIcon);
 buttonContainer.appendChild(loadMoreBtn);
 
 export function getTabData(category = 'coffee') {
-  fetch('./assets/products.json')
-    .then((response) => response.json())
-    .then((data) => {
-      items = data;
+  makeRequest<Products>('/products')
+    .then((response) => {
+      items = response.data;
       filterData(category);
+      if (grid) {
+        grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(310px, 1fr))';
+      }
     })
-    .catch((err) => console.error('Error loading JSON:', err));
+    .catch(() => {
+      const loader = document.getElementById('loader');
+      if (loader) loader.textContent = 'Something went wrong. Please, refresh the page.';
+    });
 }
 
 function filterData(category: string) {
   // console.log("filterData", category, items);
   filteredItems = items
-    .filter((item: CardItem) => item.category === category)
-    .map((item: CardItem) => ({
+    .filter((item: Products) => item.category === category)
+    .map((item: Products) => ({
       ...item,
-      image: `./assets/img/menu/${imageMap[item.name as keyof typeof imageMap] || 'coffee-1.png'}`,
+      image: `./assets/img/menu/${imageMap[item.name as keyof typeof imageMap] || 'coffee.png'}`,
     }));
   visibleCount = window.innerWidth > 768 ? filteredItems.length : 4;
   renderCards();
@@ -89,22 +97,63 @@ async function renderCards() {
     const item = filteredItems[i];
 
     const card = document.createElement('div');
+    card.id = item.id.toString();
     card.classList.add('card');
-    card.innerHTML = `
-      <div class="image"><img src="${item.image}" alt="${item.name}" /></div>
-      <div class="description">
-        <div class="title">
-          <h3 class="typography-heading-3">${item.name}</h3>
-          <p class="typography-body-medium">${item.description}</p>
-        </div>
-        <div class="typography-heading-3 price">$${item.price}</div>
-      </div>
-    `;
+
+    const imageWrapper = document.createElement('div');
+    imageWrapper.classList.add('image');
+    const img = document.createElement('img');
+    img.src = item.image || 'placeholder.png'; // Проверить
+    img.alt = item.name;
+    imageWrapper.appendChild(img);
+
+    // description
+    const description = document.createElement('div');
+    description.classList.add('description');
+
+    // title
+    const titleBlock = document.createElement('div');
+    titleBlock.classList.add('title');
+
+    const title = document.createElement('h3');
+    title.classList.add('typography-heading-3');
+    title.textContent = item.name;
+
+    const paragraph = document.createElement('p');
+    paragraph.classList.add('typography-body-medium');
+    paragraph.textContent = item.description;
+
+    titleBlock.appendChild(title);
+    titleBlock.appendChild(paragraph);
+
+    // price
+    const priceBlock = document.createElement('div');
+    priceBlock.classList.add('typography-heading-3', 'price');
+
+    // добавить лоигин
+    if (!item.discountPrice) priceBlock.textContent = `$${item.price}`;
+    else {
+      priceBlock.textContent = `$${item.discountPrice}`;
+      const oldPrice = document.createElement('span');
+      oldPrice.classList.add('old-price');
+      oldPrice.textContent = `$${item.price}`;
+      priceBlock.appendChild(oldPrice);
+    }
+
+    description.appendChild(titleBlock);
+    description.appendChild(priceBlock);
+
+    card.appendChild(imageWrapper);
+    card.appendChild(description);
     if (grid) grid.appendChild(card);
 
     card.addEventListener('click', (event) => {
-      modal(item);
       event.stopPropagation(); // надо ли?
+      makeRequestbyID<CardItem>('/products', '2').then((response) => {
+        const selectedProduct: CardItem = response.data;
+        console.log(selectedProduct);
+        modal(selectedProduct);
+      });
     });
   }
 
@@ -114,117 +163,4 @@ async function renderCards() {
     isButton = true;
     if (grid) grid.after(buttonContainer);
   } else isButton = false;
-
-  // console.log("filteredItems.length > limit. isButton:", isButton);
-}
-
-let modalLoaded = false;
-let overlay: HTMLElement | null;
-
-function modal(card: CardItem) {
-  if (!modalLoaded) {
-    fetch('./modal.html')
-      .then((res) => res.text())
-      .then((html) => {
-        document.body.insertAdjacentHTML('beforeend', html);
-        modalLoaded = true;
-
-        requestAnimationFrame(() => {
-          initModal(card);
-        });
-      })
-      .catch((error) => console.log(error));
-  } else {
-    initModal(card);
-  }
-}
-
-function initModal(card: CardItem) {
-  overlay = document.getElementById('overlay');
-  const closeBtn = document.getElementById('close-btn');
-  const curImg = document.getElementById('cur-img');
-  const name = document.getElementById('name');
-  const description = document.getElementById('description');
-  const sizeTabs = document.getElementById('size-tabs');
-  const additivesTabs = document.getElementById('additives-tabs');
-  const price = document.getElementById('total-price');
-
-  if (curImg) curImg.innerHTML = '';
-  if (sizeTabs) sizeTabs.innerHTML = '';
-  if (additivesTabs) additivesTabs.innerHTML = '';
-  if (price) price.textContent = `$${card.price}`;
-
-  const image = document.createElement('img');
-  if (card.image) image.src = card.image;
-  image.alt = card.name;
-  if (curImg) curImg.appendChild(image);
-
-  if (name) name.textContent = card.name;
-  if (description) description.textContent = card.description;
-
-  Object.keys(card.sizes).forEach((size, index) => {
-    const sizeTab = document.createElement('div');
-    sizeTab.classList.add('size-tab', 'typography-action-link-button');
-    if (index === 0) sizeTab.classList.add('size-tab-active');
-    sizeTab.id = size;
-    sizeTab.innerHTML = `<div class="circle">${size.toUpperCase()}</div>${
-      card.sizes[size as keyof typeof card.sizes].size
-    }`;
-    sizeTab.addEventListener('click', () => {
-      if (sizeTabs) sizeTabs.querySelector('.size-tab-active')?.classList.remove('size-tab-active');
-      sizeTab.classList.add('size-tab-active');
-      const basePrice = parseFloat(card.price);
-      const addPrice = parseFloat(card.sizes[size as keyof typeof card.sizes]['add-price']);
-      const totalPrice = basePrice + addPrice + additivesTotal;
-      if (price) price.textContent = `$${totalPrice.toFixed(2)}`;
-    });
-    if (sizeTabs) sizeTabs.appendChild(sizeTab);
-  });
-
-  let additivesTotal = 0;
-
-  Object.keys(card.additives).forEach((add: string) => {
-    const addIndex = Number(add);
-    const additivesTab = document.createElement('div');
-    additivesTab.classList.add('size-tab', 'typography-action-link-button');
-    additivesTab.id = 'add1';
-    additivesTab.innerHTML = `<div class="circle">${+add + 1}</div>${
-      card.additives[addIndex]['name']
-    }`;
-    additivesTab.addEventListener('click', () => {
-      const addPrice = parseFloat(card.additives[addIndex]['add-price']);
-      // console.log('addPrice', addPrice);
-      if (additivesTab.classList.contains('size-tab-active')) {
-        additivesTab.classList.remove('size-tab-active');
-        additivesTotal -= addPrice;
-      } else {
-        additivesTab.classList.add('size-tab-active');
-        additivesTotal += addPrice;
-      }
-
-      const sizeActive: string | undefined = sizeTabs?.querySelector('.size-tab-active')?.id;
-      let sizePrice = 0;
-      if (sizeActive) {
-        sizePrice = parseFloat(card.sizes[sizeActive as keyof typeof card.sizes]['add-price']);
-      }
-      const totalPrice = parseFloat(card.price) + sizePrice + additivesTotal;
-      if (price) price.textContent = `$${totalPrice.toFixed(2)}`;
-    });
-    if (additivesTabs) additivesTabs.appendChild(additivesTab);
-  });
-
-  if (overlay) overlay.style.display = 'flex';
-  document.documentElement.classList.add('no-scroll');
-
-  if (closeBtn) closeBtn.onclick = closeModal;
-  if (overlay)
-    overlay.onclick = (e) => {
-      if (e.target === overlay) closeModal();
-    };
-}
-
-function closeModal() {
-  const overlay = document.getElementById('overlay');
-  if (overlay) overlay.style.display = 'none';
-  document.documentElement.classList.remove('no-scroll');
 }

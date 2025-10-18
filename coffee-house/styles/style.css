@@ -206,13 +206,6 @@ main {
               min-height: 480px;
               width: 468px;
 
-              .loading {
-                display: flex;
-                align-items: center;
-                text-align: center;
-                flex-grow: 1;
-              }
-
               img {
                 max-width: 480px;
                 width: 100%;
