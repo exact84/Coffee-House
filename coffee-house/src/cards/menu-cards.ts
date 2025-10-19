@@ -1,7 +1,6 @@
-import { CardItem } from './types';
 import { imageMap } from '../consts';
 import { modal } from './modal';
-import { makeRequest, makeRequestbyID } from '../request';
+import { makeRequest } from '../request';
 import { Products } from '../responseTypes';
 
 let filteredItems: Products[] = [];
@@ -9,6 +8,7 @@ let items: Products[] = [];
 let visibleCount = 4;
 // let isDesktop = window.innerWidth > 768;
 let isButton = false;
+let isError = false;
 
 let resizeTimeout: number;
 const debounceTimeout = 230;
@@ -35,6 +35,7 @@ export function getTabData(category = 'coffee') {
       }
     })
     .catch(() => {
+      isError = true;
       const loader = document.getElementById('loader');
       if (loader) loader.textContent = 'Something went wrong. Please, refresh the page.';
     });
@@ -59,6 +60,7 @@ loadMoreBtn.addEventListener('click', () => {
 
 document.querySelectorAll('.tab-item').forEach((tab) => {
   tab.addEventListener('click', function (event) {
+    if (isError) return;
     const target = event.currentTarget as HTMLElement;
     document.querySelectorAll('.tab-item').forEach((t) => t.classList.remove('tab-item-active'));
     document.querySelectorAll('.tab-icon').forEach((t) => t.classList.remove('tab-icon-active'));
@@ -130,7 +132,7 @@ async function renderCards() {
     const priceBlock = document.createElement('div');
     priceBlock.classList.add('typography-heading-3', 'price');
 
-    // добавить лоигин
+    // добавить логин
     if (!item.discountPrice) priceBlock.textContent = `$${item.price}`;
     else {
       priceBlock.textContent = `$${item.discountPrice}`;
@@ -149,11 +151,9 @@ async function renderCards() {
 
     card.addEventListener('click', (event) => {
       event.stopPropagation(); // надо ли?
-      makeRequestbyID<CardItem>('/products', '2').then((response) => {
-        const selectedProduct: CardItem = response.data;
-        console.log(selectedProduct);
-        modal(selectedProduct);
-      });
+      const target = event.target as HTMLElement;
+      const cardElement = target.closest('.card') as HTMLElement | null;
+      if (cardElement) modal(cardElement.id);
     });
   }
 

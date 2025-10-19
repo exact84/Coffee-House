@@ -11,7 +11,19 @@
   transition: opacity 0.5s ease;
   justify-content: center;
   align-items: center;
-  padding-bottom: 50px;
+  padding-bottom: 32px;
+
+  .loading {
+    display: flex;
+    color: var(--color-text-dark);
+    padding: 20px 20px;
+    justify-content: center;
+    font-size: 48px;
+    background-color: var(--color-background-body);
+    border-radius: 40px;
+    margin: 0px 20px;
+    white-space: pre-line;
+  }
 }
 
 .overlay.show {
@@ -21,7 +33,20 @@
 }
 
 .modal-window {
-  /* display: none; */
+  display: flex;
+  flex-direction: column;
+}
+
+.close-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.close-button {
+  display: flex;
+}
+
+.modal-div {
   display: flex;
   border-radius: 40px;
   background: var(--color-background-body);
@@ -29,14 +54,8 @@
   transition: transform 0.5s ease;
   padding: 16px 16px;
   width: 800px;
-  height: 504px;
-  /* height: fit-content; */
   justify-content: center;
   align-items: flex-start;
-}
-
-.modal-div {
-  display: flex;
 }
 
 .gifts-img {
@@ -52,7 +71,6 @@
   object-fit: contain;
 
   img {
-    /* display: block; */
     border-radius: 40px;
     width: 340px;
     height: 340px;
@@ -74,13 +92,15 @@
   gap: 12px;
 }
 
-.size, .additives{
+.size,
+.additives {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.size-tabs, .additives-tabs {
+.size-tabs,
+.additives-tabs {
   display: flex;
   flex-direction: row;
   gap: 10px;
@@ -88,7 +108,8 @@
   flex-wrap: wrap;
 }
 
-.size-tab, .additives-tab {
+.size-tab,
+.additives-tab {
   display: flex;
   padding: 8px 16px 8px 8px;
   border-radius: 100px;
@@ -105,11 +126,13 @@
   background-color: var(--color-border-light);
   align-items: center;
   justify-content: center;
-  width: 30px;
+  min-width: 30px;
+  width: fit-content;
   height: 30px;
   transition: background-color 0.5s ease-in-out;
   transition: color 0.5s ease-in-out;
   margin-right: 5px;
+  padding: 0 6px;
   color: var(--color-text-dark);
 }
 
@@ -185,7 +208,7 @@
   .gifts-img {
     width: 310px;
     height: 310px;
-      flex-shrink: 0;
+    flex-shrink: 0;
 
     img {
       display: block;
@@ -194,12 +217,14 @@
     }
   }
 
-  .size-tabs, .additives-tabs {
+  .size-tabs,
+  .additives-tabs {
     gap: 8px;
   }
 
-  .size-tab, .additives-tab {
-  padding: 7px 16px 8px 8px;
+  .size-tab,
+  .additives-tab {
+    padding: 7px 16px 8px 8px;
   }
 }
 
@@ -209,7 +234,7 @@
   }
 
   .modal-window {
-    margin-top: 52px; 
+    margin-top: 52px;
     width: 342px;
     height: fit-content;
   }
@@ -229,7 +254,7 @@
   }
 
   .modal-window {
-    margin-top: 52px; 
+    margin-top: 52px;
     width: 342px;
     height: fit-content;
   }

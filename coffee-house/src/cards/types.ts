@@ -7,15 +7,15 @@ export interface CardItem {
   sizes: Sizes;
   additives: {
     name: string;
-    'add-price': string;
+    price: string;
   }[];
 }
 
 type Sizes = Record<DrinkSizeKey, SizeOption>;
 
-type DrinkSizeKey = 's' | 'm' | 'l';
+type DrinkSizeKey = 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl';
 
 type SizeOption = {
   size: string;
-  'add-price': string;
+  price: string;
 };
