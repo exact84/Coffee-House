@@ -1,0 +1,26 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1440px;
+  gap: 40px;
+  padding: 0 40px;
+
+  .list-items {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .totat {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+  }
+}
