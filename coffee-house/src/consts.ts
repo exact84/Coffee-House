@@ -24,3 +24,6 @@ export const imageMap = {
   'Chocolate cake': 'dessert-7.png',
   'Black forest': 'dessert-8.png',
 };
+
+export const ERR_MSG_LOGIN = 'Login must start with letter and contain at least 3 characters';
+export const ERR_MSG_PASS = 'Password must contain at least 6 characters and one special';

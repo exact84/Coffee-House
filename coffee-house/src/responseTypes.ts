@@ -41,3 +41,34 @@ type SizeOption = {
   size: string;
   'add-price': string;
 };
+
+export type AuthResponse = {
+  data: UserData;
+  message: string;
+  error: string;
+};
+
+export type UserData = {
+  access_token: string;
+  user: User;
+};
+
+export type User = {
+  id: number;
+  login: string;
+  city: string;
+  street: string;
+  houseNumber: number;
+  paymentMethod: string;
+  createdAt: string;
+};
+
+export type RegisterData = {
+  login: string;
+  password: string;
+  confirmPassword: string;
+  city: string;
+  street: string;
+  houseNumber: number;
+  paymentMethod: string;
+};
