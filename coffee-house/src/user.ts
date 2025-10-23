@@ -1,22 +1,36 @@
-import { UserData } from './responseTypes';
+import { getProfile } from './request';
+import { AuthResponse, UserData } from './responseTypes';
 
 export class CurrentUser {
   public static instance: CurrentUser | undefined;
   public userData: UserData | undefined;
 
   constructor(userData: UserData) {
-    if (CurrentUser.instance) return CurrentUser.instance;
+    if (CurrentUser.instance) {
+      CurrentUser.instance.userData = userData;
+      return CurrentUser.instance;
+    }
     this.userData = userData;
     CurrentUser.instance = this;
-    sessionStorage.setItem('CoffeeHouseUser', JSON.stringify(userData));
+    if (userData.access_token) localStorage.setItem('CoffeeHouseUser', userData.access_token);
+    console.log('Профиль сохранён: ', userData);
   }
-  public static restoreInstance(): void {
-    const userData = JSON.parse(sessionStorage.getItem('CoffeeHouseUser') ?? '{}');
-    if (userData) CurrentUser.instance = new CurrentUser(userData);
+
+  public static async restoreInstance(): Promise<void> {
+    const savedUserToken = localStorage.getItem('CoffeeHouseUser');
+    if (savedUserToken) {
+      try {
+        const profileResponse: AuthResponse = await getProfile();
+        CurrentUser.instance = new CurrentUser(profileResponse.data);
+        console.log('Профиль восстановлен: ', profileResponse);
+      } catch (error) {
+        console.log('Профиль не восстановлен: ', error);
+      }
+    }
   }
 
   public static clearInstance(): void {
-    sessionStorage.removeItem('CoffeeHouseUser');
+    localStorage.removeItem('CoffeeHouseUser');
     CurrentUser.instance = undefined;
   }
 }
