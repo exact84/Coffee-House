@@ -1,5 +1,6 @@
+import { CartItem } from './cards/types';
 import { getProfile } from './request';
-import { AuthResponse, UserData } from './responseTypes';
+import { ApiResponseItem, User, UserData } from './responseTypes';
 
 export class CurrentUser {
   public static instance: CurrentUser | undefined;
@@ -18,10 +19,14 @@ export class CurrentUser {
 
   public static async restoreInstance(): Promise<void> {
     const savedUserToken = localStorage.getItem('CoffeeHouseUser');
+    console.log('Токен: ', savedUserToken);
     if (savedUserToken) {
       try {
-        const profileResponse: AuthResponse = await getProfile();
-        CurrentUser.instance = new CurrentUser(profileResponse.data);
+        const profileResponse: ApiResponseItem<User> = await getProfile();
+        CurrentUser.instance = new CurrentUser({
+          access_token: savedUserToken,
+          user: profileResponse.data,
+        });
         console.log('Профиль восстановлен: ', profileResponse);
       } catch (error) {
         console.log('Профиль не восстановлен: ', error);
@@ -32,5 +37,19 @@ export class CurrentUser {
   public static clearInstance(): void {
     localStorage.removeItem('CoffeeHouseUser');
     CurrentUser.instance = undefined;
+  }
+
+  public static addToCart(cartItem: CartItem): void {
+    const cartName = 'CoffeeHouseCartItems-' + CurrentUser.instance?.userData?.user?.login;
+    const cartItems = localStorage.getItem(cartName);
+    if (cartItems) {
+      const items: CartItem[] = JSON.parse(cartItems);
+      cartItem.id = items[items.length - 1].id + 1;
+      items.push(cartItem);
+      localStorage.setItem(cartName, JSON.stringify(items));
+      return;
+    } else {
+      localStorage.setItem(cartName, JSON.stringify([cartItem]));
+    }
   }
 }

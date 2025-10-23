@@ -1,13 +1,14 @@
 import { imageMap } from '../consts';
 import { makeRequestbyID } from '../request';
-import { CardItem } from './types';
+import { CurrentUser } from '../user';
+import { CardItem, CartItem } from './types';
 
 let modalLoaded = false;
 let overlay: HTMLElement | null;
 
 export function modal(id: string) {
   if (!modalLoaded) {
-    fetch('./modal.html')
+    fetch('./src/modal.html')
       .then((res) => res.text())
       .then((html) => {
         overlay?.remove();
@@ -50,6 +51,7 @@ export function initModal(id: string) {
   loading.textContent = 'Loading...';
   overlay?.appendChild(loading);
   let card: CardItem = {} as CardItem;
+  let cartItemId = 0;
 
   makeRequestbyID<CardItem>('/products', id)
     .then((response) => {
@@ -60,6 +62,10 @@ export function initModal(id: string) {
       if (modalWindow) overlay?.appendChild(modalWindow);
 
       const closeBtn = document.getElementById('close-btn');
+      console.log('Текущий пользователь: ', CurrentUser.instance?.userData);
+      if (CurrentUser.instance && closeBtn) {
+        closeBtn.textContent = 'Add to Cart';
+      }
       const curImg = document.getElementById('cur-img');
       const name = document.getElementById('name');
       const description = document.getElementById('description');
@@ -133,8 +139,36 @@ export function initModal(id: string) {
       });
 
       if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+      function closeModal() {
+        document.documentElement.classList.remove('no-scroll');
+        document.removeEventListener('keydown', handleKey);
+        // closeBtn.removeEventListener('click', closeModal);
+        const overlay = document.getElementById('overlay');
+        if (!overlay) return;
+        overlay.style.display = 'none';
+        overlay.removeEventListener('click', handleClick);
+
+        if (CurrentUser.instance) {
+          const cartItem: CartItem = {
+            id: (cartItemId += 1),
+            name: card.name,
+            description: card.description,
+            price: card.price,
+            discountPrice: card.price, // - discount
+            category: card.category,
+            image: card.image,
+            size: sizeTabs?.querySelector('.size-tab-active')?.id || '',
+            'add-price': additivesTotal.toFixed(2),
+            quantity: 1,
+            totalPrice: (parseFloat(card.price) + additivesTotal).toFixed(2),
+          };
+          CurrentUser.addToCart(cartItem);
+        }
+      }
     })
     .catch(() => {
+      // console.log(e);
       modalLoaded = false;
       loading.textContent = 'Something went wrong.\n Please, try again.';
     });

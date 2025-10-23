@@ -1,6 +1,6 @@
 import { BASE_URL } from './consts';
 import { isApiResponse, isApiResponseItem } from './typeGuard';
-import { ApiResponse, ApiResponseItem, AuthResponse, UserData } from './responseTypes';
+import { ApiResponse, ApiResponseItem, AuthResponse, User, UserData } from './responseTypes';
 
 export async function makeRequest<T>(url: string): Promise<ApiResponse<T>> {
   const response = await fetch(BASE_URL + url, {
@@ -27,15 +27,16 @@ export async function makeRequestbyID<T>(url: string, id: string): Promise<ApiRe
       'Content-Type': 'application/json',
     },
   });
+  const responseBody: ApiResponseItem<T> = await response.json();
+
   if (!response.ok) {
     throw new Error('Network response was not ok');
   }
-  const res: ApiResponseItem<T> = await response.json();
 
-  if (!isApiResponse<T>(res)) {
+  if (!isApiResponseItem<T>(responseBody)) {
     throw new Error('Invalid API response structure');
   }
-  return res;
+  return responseBody;
 }
 
 export async function authRequest<T>(
@@ -63,25 +64,24 @@ export async function authRequest<T>(
   return responseBody;
 }
 
-// export async function register<AuthResponse>(
-//   registerData: RegisterData
-// ): Promise<ApiResponseItem<AuthResponse>> {
-//   const response = await fetch(BASE_URL + '/auth/register', {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify(registerData),
-//   });
-//   const responseBody = await response.json();
-//   if (!response.ok) {
-//     console.log('Ответ Регистрации - Ошибка', responseBody);
-//     throw new Error(responseBody.error || 'Network response was not ok');
-//   }
+export async function getProfile(): Promise<ApiResponseItem<User>> {
+  const response = await fetch(BASE_URL + '/auth/profile', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + localStorage.getItem('CoffeeHouseUser'),
+    },
+  });
 
-//   if (!isApiResponseItem<AuthResponse>(responseBody)) {
-//     console.log('Ответ Регистрации - Неверный формат', responseBody);
-//     throw new Error('Invalid API response structure');
-//   }
-//   return responseBody;
-// }
+  const responseBody: ApiResponseItem<User> = await response.json();
+  if (!response.ok) {
+    console.log('Ответ - Ошибка', responseBody);
+    throw new Error(responseBody.error || 'Network response was not ok');
+  }
+
+  if (!isApiResponseItem<User>(responseBody)) {
+    console.log('Ответ Профиль - Неверный формат', responseBody);
+    throw new Error('Invalid API response structure');
+  }
+  return responseBody;
+}

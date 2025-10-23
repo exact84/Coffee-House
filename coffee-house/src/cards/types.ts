@@ -19,3 +19,17 @@ type SizeOption = {
   size: string;
   price: string;
 };
+
+export type CartItem = {
+  id: number;
+  name: string;
+  description: string;
+  price: string;
+  discountPrice: string;
+  category: string;
+  image?: string;
+  size: string;
+  'add-price': string;
+  quantity: number;
+  totalPrice: string;
+};
