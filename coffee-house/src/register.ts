@@ -1,7 +1,7 @@
 import { checkFormValidity, hideError, loadLayout, newElement, showError } from './utils';
 import { CurrentUser } from './user';
-import { register } from './request';
-import { ApiResponseItem, UserData } from './responseTypes';
+import { authRequest } from './request';
+import { ApiResponseItem, RegisterData, UserData } from './responseTypes';
 import { ERR_MSG_LOGIN, ERR_MSG_PASS } from './consts';
 
 const cities = ['Almaty', 'Astana', 'Karaganda'];
@@ -65,6 +65,7 @@ export function registerUser(): void {
   const inputName = newElement('input', '', labelName, ['input-field'], {
     id: 'username',
     type: 'text',
+    placeholder: 'Placeholder',
   });
 
   const labelPass = newElement('label', 'Password', inputContainer, ['label-input'], {
@@ -73,6 +74,7 @@ export function registerUser(): void {
   const inputPass = newElement('input', '', labelPass, ['input-field'], {
     id: 'password',
     type: 'password',
+    placeholder: 'Placeholder',
   });
 
   const labelPassConfirm = newElement(
@@ -87,6 +89,7 @@ export function registerUser(): void {
   const inputPassConfirm = newElement('input', '', labelPassConfirm, ['input-field'], {
     id: 'conf-password',
     type: 'password',
+    placeholder: 'Placeholder',
   });
 
   const labelCity = newElement('label', 'City', inputContainer, ['label-input', 'label-small'], {
@@ -150,6 +153,7 @@ export function registerUser(): void {
   const inputHouseNumber = newElement('input', '', labelHouseNumber, ['input-field'], {
     id: 'houseNumber',
     type: 'text',
+    placeholder: 'Placeholder',
   });
 
   const labelPaymentMethod = newElement('label', 'Pay by', inputContainer, ['label-radio'], {
@@ -197,7 +201,9 @@ export function registerUser(): void {
     btnRegister.disabled = !checkFormValidity(inputContainer);
   });
 
-  inputContainer.addEventListener('focusout', (event) => {
+  inputContainer.addEventListener('focusout', validateInput);
+
+  function validateInput(event: FocusEvent) {
     const target = event.target as HTMLInputElement;
     if (!target.classList.contains('input-field')) return;
     const value = target.value.trim();
@@ -249,7 +255,7 @@ export function registerUser(): void {
       hideError(target);
     }
     btnRegister.disabled = !checkFormValidity(inputContainer);
-  });
+  }
 
   async function handleRegisterUser(): Promise<void> {
     let result: ApiResponseItem<UserData> | undefined = undefined;
@@ -269,7 +275,7 @@ export function registerUser(): void {
     if (!divError.textContent) {
       divError.classList.remove('visible');
       try {
-        result = await register(request);
+        result = await authRequest<RegisterData>(request, 'register');
       } catch (error) {
         divError.textContent = error instanceof Error ? error.message : 'Auth error';
       }

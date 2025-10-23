@@ -72,3 +72,8 @@ export type RegisterData = {
   houseNumber: number;
   paymentMethod: string;
 };
+
+export type AuthData = {
+  login: string;
+  password: string;
+};
