@@ -3,12 +3,10 @@ export interface CardItem {
   name: string;
   description: string;
   price: string;
+  discountPrice: string;
   category: string;
   sizes: Sizes;
-  additives: {
-    name: string;
-    price: string;
-  }[];
+  additives: Additives[];
 }
 
 type Sizes = Record<DrinkSizeKey, SizeOption>;
@@ -18,6 +16,7 @@ type DrinkSizeKey = 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl';
 type SizeOption = {
   size: string;
   price: string;
+  discountPrice?: string;
 };
 
 export type CartItem = {
@@ -29,7 +28,13 @@ export type CartItem = {
   category: string;
   image?: string;
   size: string;
-  'add-price': string;
+  additives: string[];
   quantity: number;
   totalPrice: string;
+};
+
+export type Additives = {
+  name: string;
+  price: string;
+  discountPrice?: string;
 };

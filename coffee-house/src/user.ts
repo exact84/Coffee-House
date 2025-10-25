@@ -5,6 +5,7 @@ import { ApiResponseItem, User, UserData } from './responseTypes';
 export class CurrentUser {
   public static instance: CurrentUser | undefined;
   public userData: UserData | undefined;
+  public countCart = 0;
 
   constructor(userData: UserData) {
     if (CurrentUser.instance) {
@@ -14,12 +15,10 @@ export class CurrentUser {
     this.userData = userData;
     CurrentUser.instance = this;
     if (userData.access_token) localStorage.setItem('CoffeeHouseUser', userData.access_token);
-    console.log('Профиль сохранён: ', userData);
   }
 
   public static async restoreInstance(): Promise<void> {
     const savedUserToken = localStorage.getItem('CoffeeHouseUser');
-    console.log('Токен: ', savedUserToken);
     if (savedUserToken) {
       try {
         const profileResponse: ApiResponseItem<User> = await getProfile();
@@ -27,6 +26,11 @@ export class CurrentUser {
           access_token: savedUserToken,
           user: profileResponse.data,
         });
+
+        const cartName = 'CoffeeHouseCartItems-' + CurrentUser.instance?.userData?.user?.login;
+        const cartItems = localStorage.getItem(cartName);
+        CurrentUser.instance.countCart = cartItems ? JSON.parse(cartItems).length : 0;
+
         console.log('Профиль восстановлен: ', profileResponse);
       } catch (error) {
         console.log('Профиль не восстановлен: ', error);
@@ -44,9 +48,14 @@ export class CurrentUser {
     const cartItems = localStorage.getItem(cartName);
     if (cartItems) {
       const items: CartItem[] = JSON.parse(cartItems);
-      cartItem.id = items[items.length - 1].id + 1;
+      if (items.length === 0) {
+        cartItem.id = 1;
+      } else {
+        cartItem.id = items[items.length - 1].id + 1;
+      }
       items.push(cartItem);
       localStorage.setItem(cartName, JSON.stringify(items));
+      CurrentUser.instance!.countCart = items.length;
       return;
     } else {
       localStorage.setItem(cartName, JSON.stringify([cartItem]));

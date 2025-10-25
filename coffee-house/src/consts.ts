@@ -14,6 +14,12 @@ export const imageMap = {
   Ginger: 'tea-2.png',
   Cranberry: 'tea-3.png',
   'Sea buckthorn': 'tea-4.png',
+  'English Breakfast': 'tea-5.png',
+  'Green Jasmine': 'tea-6.png',
+  Mint: 'tea-7.png',
+  Chamomile: 'tea-8.png',
+  'Jasmine Pearl': 'tea-9.png',
+  'Berry Hibiscus': 'tea-10.png',
 
   'Marble cheesecake': 'dessert-1.png',
   'Red velvet': 'dessert-2.png',

@@ -17,6 +17,7 @@ header {
     width: 100%;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: -2px;
 
     ul.nav-bar {
       display: flex;
@@ -27,19 +28,22 @@ header {
       flex: 1;
       height: 100%;
       margin-left: -2px;
-      margin-top: -2px;
+      margin-top: -4px;
     }
 
     @media (max-width: 768px) {
-      ul.nav-bar, .coffee-menu {
+      ul.nav-bar,
+      .coffee-menu,
+      .cart-menu {
         display: none;
       }
 
       .non-link {
         cursor: default;
       }
-      
-      .coffee-menu-vertical {
+
+      .coffee-menu-vertical,
+      .cart-menu-vertical {
         display: flex;
         margin-top: 24px;
         gap: 14px;
@@ -51,7 +55,8 @@ header {
         }
       }
 
-      div.coffee-menu-vertical {
+      div.coffee-menu-vertical,
+      div.cart-menu-vertical {
         padding-top: 11px;
       }
 
@@ -96,19 +101,32 @@ header {
     }
   }
 
-  a, .coffee-menu {
+  a,
+  .coffee-menu,
+  .cart-menu {
     display: flex;
     flex-direction: row;
-    align-items: center;
     gap: 8px;
     height: 100%;
     margin-bottom: -2px;
-      border-bottom: 2px solid transparent;
-      transition: border-color 0.5s ease-in-out;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.5s ease-in-out;
+  }
+
+  .coffee-menu {
+    margin-left: 32px;
+  }
+
+  @media (max-width: 840px) {
+    .coffee-menu {
+      margin-left: 12px;
+    }
   }
 
   @media (hover: hover) and (pointer: fine) {
-    a:hover, .coffee-menu a:hover {
+    a:hover,
+    .coffee-menu a:hover,
+    .cart-menu a:hover {
       border-color: var(--color-border-dark);
     }
 
@@ -123,7 +141,7 @@ header {
 
   ul.menu {
     position: fixed;
-    display: flex; 
+    display: flex;
     flex-direction: column;
     top: 100px;
     right: 0;
@@ -141,6 +159,7 @@ header {
   }
 }
 
-body.no-scroll, html.no-scroll {
+body.no-scroll,
+html.no-scroll {
   overflow: hidden;
 }

@@ -36,6 +36,7 @@ export async function makeRequestbyID<T>(url: string, id: string): Promise<ApiRe
   if (!isApiResponseItem<T>(responseBody)) {
     throw new Error('Invalid API response structure');
   }
+  // console.log(responseBody);
   return responseBody;
 }
 
@@ -65,11 +66,12 @@ export async function authRequest<T>(
 }
 
 export async function getProfile(): Promise<ApiResponseItem<User>> {
+  const token = localStorage.getItem('CoffeeHouseUser');
   const response = await fetch(BASE_URL + '/auth/profile', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + localStorage.getItem('CoffeeHouseUser'),
+      Authorization: 'Bearer ' + token,
     },
   });
 

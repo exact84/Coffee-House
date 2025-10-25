@@ -1,3 +1,5 @@
+import { CurrentUser } from './user';
+
 export function newElement<K extends keyof HTMLElementTagNameMap>(
   tag: K,
   text: string,
@@ -32,6 +34,8 @@ export async function loadLayout() {
 
   document.getElementById('header')!.innerHTML = header;
   document.getElementById('contact')!.innerHTML = footer;
+
+  updateCartCount();
 }
 
 export function showError(target: HTMLInputElement, message: string) {
@@ -61,4 +65,11 @@ export function checkFormValidity(inputContainer: HTMLElement): boolean {
     return true;
   });
   return allValid;
+}
+
+export function updateCartCount() {
+  const cartCountEl = document.getElementById('cart-count');
+  if (cartCountEl && CurrentUser.instance) {
+    cartCountEl.textContent = CurrentUser.instance.countCart.toString();
+  }
 }

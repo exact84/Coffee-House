@@ -1,28 +1,23 @@
 import { imageMap } from '../consts';
 import { makeRequestbyID } from '../request';
 import { CurrentUser } from '../user';
+import { newElement, updateCartCount } from '../utils';
 import { CardItem, CartItem } from './types';
 
-let modalLoaded = false;
 let overlay: HTMLElement | null;
 
 export function modal(id: string) {
-  if (!modalLoaded) {
-    fetch('./src/modal.html')
-      .then((res) => res.text())
-      .then((html) => {
-        overlay?.remove();
-        document.body.insertAdjacentHTML('beforeend', html);
-        modalLoaded = true;
+  fetch('./src/modal.html')
+    .then((res) => res.text())
+    .then((html) => {
+      overlay?.remove();
+      document.body.insertAdjacentHTML('beforeend', html);
 
-        requestAnimationFrame(() => {
-          initModal(id);
-        });
-      })
-      .catch((error) => console.log(error));
-  } else {
-    initModal(id);
-  }
+      requestAnimationFrame(() => {
+        initModal(id);
+      });
+    })
+    .catch((error) => console.log(error));
 }
 
 export function initModal(id: string) {
@@ -57,88 +52,154 @@ export function initModal(id: string) {
     .then((response) => {
       response.data.image = `./assets/img/menu/${imageMap[response.data.name as keyof typeof imageMap] || 'coffee.png'}`;
       card = response.data;
-      // console.log(card);
+      console.log(card);
       overlay?.removeChild(loading);
       if (modalWindow) overlay?.appendChild(modalWindow);
+      else return;
 
-      const closeBtn = document.getElementById('close-btn');
-      console.log('Текущий пользователь: ', CurrentUser.instance?.userData);
-      if (CurrentUser.instance && closeBtn) {
-        closeBtn.textContent = 'Add to Cart';
-      }
-      const curImg = document.getElementById('cur-img');
-      const name = document.getElementById('name');
-      const description = document.getElementById('description');
-      const sizeTabs = document.getElementById('size-tabs');
-      const additivesTabs = document.getElementById('additives-tabs');
-      const price = document.getElementById('total-price');
+      const modalDiv = newElement('div', '', modalWindow, ['modal-div'], { id: 'modal-div' });
+      const curImg = newElement('div', '', modalDiv, ['gifts-img'], { id: 'cur-img' });
+      newElement('img', '', curImg, [], {
+        src: card.image || '/assets/img/menu/coffee.png',
+        alt: card.name,
+      });
+      const modalDescription = newElement('div', '', modalDiv, ['modal-description'], {
+        id: 'modal-description',
+      });
 
-      if (curImg) curImg.innerHTML = '';
-      if (sizeTabs) sizeTabs.innerHTML = '';
-      if (additivesTabs) additivesTabs.innerHTML = '';
-      if (price) price.textContent = `$${card.price}`;
+      // Заголовок
+      const titleDiv = newElement('div', '', modalDescription, ['title']);
+      newElement('h3', card.name, titleDiv, ['typography-heading-3'], { id: 'name' });
+      newElement('p', card.description, titleDiv, ['typography-body-medium'], {
+        id: 'description',
+      });
 
-      const image = document.createElement('img');
-      if (card.image) image.src = card.image;
-      image.alt = card.name;
-      if (curImg) curImg.appendChild(image);
+      // Size
+      const sizeDiv = newElement('div', '', modalDescription, ['size']);
+      newElement('p', 'Size', sizeDiv, ['typography-body-medium']);
+      const sizeTabs = newElement('div', '', sizeDiv, ['size-tabs'], { id: 'size-tabs' });
 
-      if (name) name.textContent = card.name;
-      if (description) description.textContent = card.description;
+      // Additives
+      const additivesDiv = newElement('div', '', modalDescription, ['additives']);
+      newElement('p', 'Additives', additivesDiv, ['typography-body-medium']);
+      const additivesTabs = newElement('div', '', additivesDiv, ['additives-tabs'], {
+        id: 'additives-tabs',
+      });
+
+      // Price
+      const price = newElement('div', '', modalDescription, [
+        'typography-heading-3',
+        'total-price',
+      ]);
+      newElement('div', 'Total: ', price, ['typography-heading-3']);
+      const totalPriceDiv = newElement('div', '', price, ['typography-heading-3', 'prices']);
+      const priceDiv = newElement('div', '', totalPriceDiv, ['typography-heading-3', 'price']);
+      const discontedPriceDiv = newElement('div', card.discountPrice, totalPriceDiv, [
+        'typography-heading-3',
+        'price',
+      ]);
+      // if (card.discountPrice) {
+      //   priceDiv.classList.add('striked-price');
+      // }
 
       Object.keys(card.sizes).forEach((size, index) => {
-        const sizeTab = document.createElement('div');
-        sizeTab.classList.add('size-tab', 'typography-action-link-button');
+        if (!sizeTabs) return;
+        const sizeTab = newElement(
+          'div',
+          '',
+          sizeTabs,
+          ['size-tab', 'typography-action-link-button'],
+          { id: size }
+        );
         if (index === 0) sizeTab.classList.add('size-tab-active');
-        sizeTab.id = size;
         sizeTab.setAttribute('title', '$' + card.sizes[size as keyof typeof card.sizes]['price']);
-        sizeTab.innerHTML = `<div class="circle">${size.toUpperCase()}</div>${
-          card.sizes[size as keyof typeof card.sizes].size
-        }`;
+        newElement('div', size.toUpperCase(), sizeTab, ['circle']);
+        newElement('div', card.sizes[size as keyof typeof card.sizes].size, sizeTab, ['size']);
         sizeTab.addEventListener('click', () => {
           if (sizeTabs)
             sizeTabs.querySelector('.size-tab-active')?.classList.remove('size-tab-active');
           sizeTab.classList.add('size-tab-active');
           const basePrice = parseFloat(card.sizes[size as keyof typeof card.sizes]['price']);
           const totalPrice = basePrice + additivesTotal;
-          if (price) price.textContent = `$${totalPrice.toFixed(2)}`;
+          priceDiv.textContent = '$' + totalPrice;
+          const discPrice = card.sizes[size as keyof typeof card.sizes].discountPrice;
+          console.log(discPrice);
+          priceDiv.classList.remove('striked-price');
+          discontedPriceDiv.textContent = '';
+          if (card.sizes[size as keyof typeof card.sizes].discountPrice) {
+            discontedPriceDiv.textContent =
+              '$' + card.sizes[size as keyof typeof card.sizes].discountPrice;
+            priceDiv.classList.add('striked-price');
+          }
+
+          calcPrice();
         });
-        if (sizeTabs) sizeTabs.appendChild(sizeTab);
       });
 
       let additivesTotal = 0;
+      let additivesDiscount = 0;
+      // const additives = new Set<{ name: string; price: string; discountPrice?: string }>();
+      const additives = new Set<string>();
 
       Object.keys(card.additives).forEach((add: string) => {
         const addIndex = Number(add);
+        const additive = card.additives[addIndex];
+        const key = additive.name;
+
         const additivesTab = document.createElement('div');
         additivesTab.classList.add('size-tab', 'typography-action-link-button');
         additivesTab.id = 'add1';
-        additivesTab.setAttribute('title', '$' + card.additives[addIndex]['price']);
-        additivesTab.innerHTML = `<div class="circle">${+add + 1}</div>${
-          card.additives[addIndex]['name']
-        }`;
+        additivesTab.setAttribute('title', '$' + additive.price);
+        additivesTab.innerHTML = `<div class="circle">${addIndex + 1}</div>${additive.name}`;
         additivesTab.addEventListener('click', () => {
-          const addPrice = parseFloat(card.additives[addIndex]['price']);
+          const addPrice = parseFloat(additive.price);
+          const addDiscPrice = parseFloat(additive.discountPrice || additive.price);
+          console.log('Add Price: ', addPrice, addDiscPrice);
           if (additivesTab.classList.contains('size-tab-active')) {
             additivesTab.classList.remove('size-tab-active');
             additivesTotal -= addPrice;
+            additivesDiscount -= addDiscPrice;
+            additives.delete(key);
+            console.log(additives);
           } else {
             additivesTab.classList.add('size-tab-active');
             additivesTotal += addPrice;
+            additivesDiscount += addDiscPrice;
+            additives.add(key);
+            // console.log(additives);
           }
-
-          const sizeActive: string | undefined = sizeTabs?.querySelector('.size-tab-active')?.id;
-          let sizePrice = 0;
-          if (sizeActive) {
-            sizePrice = parseFloat(card.sizes[sizeActive as keyof typeof card.sizes]['price']);
-          }
-          const totalPrice = sizePrice + additivesTotal;
-          if (price) price.textContent = `$${totalPrice.toFixed(2)}`;
+          calcPrice();
         });
         if (additivesTabs) additivesTabs.appendChild(additivesTab);
       });
 
-      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      function calcPrice() {
+        const sizeActive: string = sizeTabs.querySelector('.size-tab-active')?.id || '';
+        const sizePrice = parseFloat(card.sizes[sizeActive as keyof typeof card.sizes].price);
+        const discSizePrice = parseFloat(
+          card.sizes[sizeActive as keyof typeof card.sizes].discountPrice ||
+            card.sizes[sizeActive as keyof typeof card.sizes].price
+        );
+        console.log('Size Price: ', sizePrice, discSizePrice);
+
+        const totalPrice = sizePrice + additivesTotal;
+        const totalDiscPrice = discSizePrice + additivesDiscount;
+        console.log('Total Price: ', totalPrice, totalDiscPrice);
+        if (totalPrice !== totalDiscPrice) priceDiv.textContent = `$${totalPrice.toFixed(2)}`;
+        else priceDiv.textContent = '';
+        priceDiv.classList.add('striked-price');
+        discontedPriceDiv.textContent = `$${totalDiscPrice.toFixed(2)}`;
+      }
+      calcPrice();
+
+      const closeBtn = newElement(
+        'button',
+        'Add to Cart',
+        modalDescription,
+        ['close-btn', 'typography-action-link-button'],
+        { id: 'close-btn' }
+      );
+      closeBtn.addEventListener('click', closeModal);
 
       function closeModal() {
         document.documentElement.classList.remove('no-scroll');
@@ -150,26 +211,31 @@ export function initModal(id: string) {
         overlay.removeEventListener('click', handleClick);
 
         if (CurrentUser.instance) {
+          console.log(additives);
           const cartItem: CartItem = {
             id: (cartItemId += 1),
             name: card.name,
             description: card.description,
-            price: card.price,
-            discountPrice: card.price, // - discount
+            price: priceDiv.textContent.slice(1),
+            discountPrice: discontedPriceDiv.textContent.slice(1),
             category: card.category,
             image: card.image,
-            size: sizeTabs?.querySelector('.size-tab-active')?.id || '',
-            'add-price': additivesTotal.toFixed(2),
+            size:
+              sizeTabs?.querySelector('.size-tab-active .size')?.textContent.replace(/\s+/g, '') ||
+              '',
+            additives: Array.from(additives),
             quantity: 1,
-            totalPrice: (parseFloat(card.price) + additivesTotal).toFixed(2),
+            totalPrice: (parseFloat(card.price) + additivesTotal).toFixed(2), // не информативно
           };
+          console.log('Добавили в Корзину: ', cartItem);
           CurrentUser.addToCart(cartItem);
+          updateCartCount();
         }
       }
     })
     .catch(() => {
       // console.log(e);
-      modalLoaded = false;
+      // modalLoaded = false;
       loading.textContent = 'Something went wrong.\n Please, try again.';
     });
 
