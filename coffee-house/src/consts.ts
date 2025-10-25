@@ -1,3 +1,5 @@
+import { UserData } from './responseTypes';
+
 export const BASE_URL = 'https://6kt29kkeub.execute-api.eu-central-1.amazonaws.com';
 
 export const imageMap = {
@@ -29,7 +31,26 @@ export const imageMap = {
   'Honey cake': 'dessert-6.png',
   'Chocolate cake': 'dessert-7.png',
   'Black forest': 'dessert-8.png',
+  'Apple pie': 'dessert-9.png',
+  'Fruit tart': 'dessert-10.png',
+  'Lemon mousse': 'dessert-11.png',
+  Brownie: 'dessert-12.png',
+  Tiramisu: 'dessert-13.png',
+  Pavlova: 'dessert-14.png',
 };
 
 export const ERR_MSG_LOGIN = 'Login must start with letter and contain at least 3 characters';
 export const ERR_MSG_PASS = 'Password must contain at least 6 characters and one special';
+
+export const undefinedUserData: UserData = {
+  access_token: '',
+  user: {
+    id: -1,
+    login: 'guest',
+    city: '',
+    street: '',
+    houseNumber: 0,
+    paymentMethod: '',
+    createdAt: '',
+  },
+};
