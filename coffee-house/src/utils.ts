@@ -29,8 +29,8 @@ export function newElement<K extends keyof HTMLElementTagNameMap>(
 }
 
 export async function loadLayout() {
-  const header = await fetch('../src/components/header.html').then((response) => response.text());
-  const footer = await fetch('../src/components/footer.html').then((response) => response.text());
+  const header = await fetch('./components/header.html').then((response) => response.text());
+  const footer = await fetch('./components/footer.html').then((response) => response.text());
 
   document.getElementById('header')!.innerHTML = header;
   document.getElementById('contact')!.innerHTML = footer;
