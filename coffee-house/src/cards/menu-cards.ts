@@ -2,6 +2,7 @@ import { imageMap } from '../consts';
 import { modal } from './modal';
 import { makeRequest } from '../request';
 import { Products } from '../responseTypes';
+import { CurrentUser } from '../user';
 
 let filteredItems: Products[] = [];
 let items: Products[] = [];
@@ -132,8 +133,9 @@ async function renderCards() {
     const priceBlock = document.createElement('div');
     priceBlock.classList.add('typography-heading-3', 'price');
 
-    // добавить логин
-    if (!item.discountPrice) priceBlock.textContent = `$${item.price}`;
+    // discount
+    if (!item.discountPrice || CurrentUser.instance?.userData?.user.id == -1)
+      priceBlock.textContent = `$${item.price}`;
     else {
       priceBlock.textContent = `$${item.discountPrice}`;
       const oldPrice = document.createElement('span');

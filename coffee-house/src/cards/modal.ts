@@ -94,10 +94,13 @@ export function initModal(id: string) {
       newElement('div', 'Total: ', price, ['typography-heading-3']);
       const totalPriceDiv = newElement('div', '', price, ['typography-heading-3', 'prices']);
       const priceDiv = newElement('div', '', totalPriceDiv, ['typography-heading-3', 'price']);
-      const discontedPriceDiv = newElement('div', card.discountPrice, totalPriceDiv, [
+      const discontedPriceDiv = newElement('div', '', totalPriceDiv, [
         'typography-heading-3',
         'price',
       ]);
+      if (CurrentUser.instance?.userData?.user.id != -1) {
+        discontedPriceDiv.textContent = '$' + card.discountPrice;
+      }
       // if (card.discountPrice) {
       //   priceDiv.classList.add('striked-price');
       // }
@@ -138,7 +141,6 @@ export function initModal(id: string) {
 
       let additivesTotal = 0;
       let additivesDiscount = 0;
-      // const additives = new Set<{ name: string; price: string; discountPrice?: string }>();
       const additives = new Set<string>();
 
       Object.keys(card.additives).forEach((add: string) => {
@@ -183,7 +185,11 @@ export function initModal(id: string) {
         console.log('Size Price: ', sizePrice, discSizePrice);
 
         const totalPrice = sizePrice + additivesTotal;
-        const totalDiscPrice = discSizePrice + additivesDiscount;
+        let totalDiscPrice = discSizePrice + additivesDiscount;
+
+        if (CurrentUser.instance?.userData?.user.id == -1) {
+          totalDiscPrice = totalPrice; /////////////////////////////
+        }
         console.log('Total Price: ', totalPrice, totalDiscPrice);
         if (totalPrice !== totalDiscPrice) priceDiv.textContent = `$${totalPrice.toFixed(2)}`;
         else priceDiv.textContent = '';
@@ -204,45 +210,45 @@ export function initModal(id: string) {
       function closeModal() {
         document.documentElement.classList.remove('no-scroll');
         document.removeEventListener('keydown', handleKey);
-        // closeBtn.removeEventListener('click', closeModal);
         const overlay = document.getElementById('overlay');
         if (!overlay) return;
         overlay.style.display = 'none';
         overlay.removeEventListener('click', handleClick);
 
-        if (CurrentUser.instance) {
-          console.log(additives);
-          const cartItem: CartItem = {
-            id: (cartItemId += 1),
-            name: card.name,
-            description: card.description,
-            price: priceDiv.textContent.slice(1),
-            discountPrice: discontedPriceDiv.textContent.slice(1),
-            category: card.category,
-            image: card.image,
-            size:
-              sizeTabs?.querySelector('.size-tab-active .size')?.textContent.replace(/\s+/g, '') ||
-              '',
-            additives: Array.from(additives),
-            quantity: 1,
-            totalPrice: (parseFloat(card.price) + additivesTotal).toFixed(2), // не информативно
-          };
-          console.log('Добавили в Корзину: ', cartItem);
-          CurrentUser.addToCart(cartItem);
-          updateCartCount();
+        const cartItem: CartItem = {
+          id: (cartItemId += 1),
+          name: card.name,
+          description: card.description,
+          price: priceDiv.textContent.slice(1),
+          discountPrice: '',
+          category: card.category,
+          image: card.image,
+          size:
+            sizeTabs?.querySelector('.size-tab-active .size')?.textContent.replace(/\s+/g, '') ||
+            '',
+          additives: Array.from(additives),
+          quantity: 1,
+          totalPrice: (parseFloat(card.price) + additivesTotal).toFixed(2), // не информативно
+        };
+
+        if (CurrentUser.instance?.userData?.user.id != -1) {
+          cartItem.discountPrice = discontedPriceDiv.textContent.slice(1);
+        } else {
+          // cartItem.discountPrice = priceDiv.textContent.slice(1);
+          cartItem.price = discontedPriceDiv.textContent.slice(1);
         }
+        console.log('Добавили в Корзину: ', cartItem);
+        CurrentUser.addToCart(cartItem);
+        updateCartCount();
       }
     })
     .catch(() => {
-      // console.log(e);
-      // modalLoaded = false;
       loading.textContent = 'Something went wrong.\n Please, try again.';
     });
 
   function closeModal() {
     document.documentElement.classList.remove('no-scroll');
     document.removeEventListener('keydown', handleKey);
-    // closeBtn.removeEventListener('click', closeModal);
     const overlay = document.getElementById('overlay');
     if (!overlay) return;
     overlay.style.display = 'none';

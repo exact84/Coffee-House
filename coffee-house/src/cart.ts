@@ -12,45 +12,56 @@ export function initCart() {
   // Create
   const main = document.querySelector('main')!;
   const container = newElement('div', '', main, ['cart-container']);
-
   newElement('h1', 'Cart', container, ['typography-heading-2', 'title-cart']);
-  const list = newElement('div', '', container, ['list-items']);
 
-  console.log('Запрос товаров: ', CurrentUser.instance?.userData?.user);
+  // console.log('Запрос товаров: ', CurrentUser.instance?.userData?.user);
   const cartItems: CartItem[] = getItems(currentUser?.login) as CartItem[];
-  const cartItem: HTMLElement[] = [];
-  if (list && cartItems) {
+  if (cartItems) {
+    const list = newElement('div', '', container, ['list-items']);
     cartItems.forEach((item: CartItem, index) => {
-      cartItem[index] = newElement('div', '', list, ['list-item'], { id: index.toString() });
+      const itemElement = newElement('div', '', list, ['list-item']);
 
-      const deleteBtn = newElement('button', '', cartItem[index], []);
+      const deleteBtn = newElement('button', '', itemElement, []);
       newElement('img', '', deleteBtn, ['icon'], {
         src: './assets/img/trash.svg',
         alt: 'delete icon',
       });
       deleteBtn.addEventListener('click', () => {
-        cartItem[index].remove();
-        totalPrice.textContent = calcTotaPrice();
-        console.log('Удаляем Номер:  ', index);
-        cartItems.splice(index, 1);
-        console.log('Корзина после удаления: ', cartItems);
-        CurrentUser.instance!.countCart = cartItems.length;
-        localStorage.setItem(
-          'CoffeeHouseCartItems-' + currentUser?.login,
-          JSON.stringify(cartItems)
-        );
-        updateCartCount();
+        const currentIndex = cartItems.indexOf(item);
+
+        if (currentIndex !== -1) {
+          itemElement.remove();
+          console.log('Удаляем Номер:  ', index);
+          cartItems.splice(currentIndex, 1);
+          totalPrice.textContent = calcTotalPrice();
+          console.log(totalPrice.textContent, discPrice.textContent);
+          if (
+            totalPrice.textContent === discPrice.textContent &&
+            discPrice.textContent !== '$0.00'
+          ) {
+            totalPrice.textContent = '';
+          }
+          if (cartItems.length === 0) {
+            totalPrice.style.display = 'flex';
+            totalPrice.textContent = '$0.00';
+          }
+          CurrentUser.instance!.countCart = cartItems.length;
+          localStorage.setItem(
+            'CoffeeHouseCartItems-' + currentUser?.login,
+            JSON.stringify(cartItems)
+          );
+          updateCartCount();
+        }
       });
 
-      newElement('img', '', cartItem[index], ['list-item-img'], {
+      newElement('img', '', itemElement, ['list-item-img'], {
         src: `./assets/img/menu/${imageMap[item.name as keyof typeof imageMap] || 'coffee.png'}`,
         alt: item.name,
       });
 
-      const itemInfo = newElement('div', '', cartItem[index], ['item-info']);
+      const itemInfo = newElement('div', '', itemElement, ['item-info']);
       newElement('div', item.name, itemInfo, ['typography-heading-3', 'title']);
 
-      // console.log(item.additives);
       let additiveNames = '';
       if (item.additives) {
         additiveNames = item.additives.map((add) => add).join(', ');
@@ -59,38 +70,51 @@ export function initCart() {
         'typography-body-medium',
       ]);
 
-      newElement('div', item.price, cartItem[index], ['typography-heading-3', 'price']);
-      newElement('div', item.discountPrice, cartItem[index], [
+      const itemPrice = newElement('div', item.price ? '$' + item.price : '', itemElement, [
         'typography-heading-3',
-        'disc-price',
       ]);
+      if (currentUser?.id != -1) {
+        itemPrice.classList.add('price');
+        newElement('div', '$' + item.discountPrice, itemElement, [
+          'typography-heading-3',
+          'disc-price',
+        ]);
+      }
     });
   }
 
   const total = newElement('div', '', container, ['total', 'typography-heading-3']);
-
   const totalPriceDiv = newElement('div', '', total, ['total-line']);
   newElement('div', 'Total:', totalPriceDiv, ['max-width']);
   const totalPrice = newElement('div', '', totalPriceDiv, ['price']);
   const discPrice = newElement('div', '', totalPriceDiv, ['disc-price']);
-  totalPrice.textContent = calcTotaPrice();
+  totalPrice.textContent = calcTotalPrice();
 
-  const AddressDiv = newElement('div', '', total, ['total-line']);
-  newElement('div', 'Address:', AddressDiv, []);
-  newElement(
-    'div',
-    currentUser?.city + ', ' + currentUser?.street + ', ' + currentUser?.houseNumber ||
-      'No address',
-    AddressDiv,
-    []
-  );
+  if (CurrentUser.instance?.userData?.user.id !== -1) {
+    console.log(CurrentUser.instance?.userData?.user.id);
+    const AddressDiv = newElement('div', '', total, ['total-line']);
+    newElement('div', 'Address:', AddressDiv, []);
+    newElement(
+      'div',
+      currentUser?.city + ', ' + currentUser?.street + ', ' + currentUser?.houseNumber ||
+        'No address',
+      AddressDiv,
+      []
+    );
 
-  const payBy = newElement('div', '', total, ['total-line']);
-  newElement('div', 'Pay by:', payBy, []);
-  newElement('div', currentUser?.paymentMethod || 'No payment method', payBy, []);
+    const payBy = newElement('div', '', total, ['total-line']);
+    newElement('div', 'Pay by:', payBy, []);
+    newElement('div', currentUser?.paymentMethod || 'No payment method', payBy, []);
+  } else {
+    // discPrice.textContent = '';
+    // totalPrice.classList.remove('price');
+    console.log('убрали скидку');
+  }
 
+  if ((currentUser?.id !== -1 && cartItems?.length == 0) || !cartItems) return;
+  console.log(currentUser, cartItems?.length);
   const buttons = newElement('div', '', container, ['buttons']);
-  if (!currentUser) {
+  if (currentUser?.id == -1) {
     const loginBtn = newElement('button', 'login', buttons, [
       'typography-action-link-button',
       'button',
@@ -101,7 +125,7 @@ export function initCart() {
       'button',
     ]);
     registerBtn.addEventListener('click', loadRegisterForm);
-  } else if (cartItems.length > 0) {
+  } else if (cartItems?.length > 0) {
     const orderBtn = newElement('button', 'Confirm', buttons, [
       'typography-action-link-button',
       'button',
@@ -111,20 +135,39 @@ export function initCart() {
     });
   }
 
-  function calcTotaPrice() {
+  function calcTotalPrice() {
     if (!cartItems) {
+      discPrice.style.display = 'none';
+      totalPrice.classList.remove('price');
       return '$0.00';
-    } else {
-      discPrice.textContent = cartItems
-        .reduce((acc, item) => acc + Number(item.discountPrice), 0)
-        .toFixed(2);
-      console.log('итоговая корзина: ', cartItems);
-      console.log(
-        'пересчитываем итогову цену: ',
-        cartItems.reduce((acc, item) => acc + Number(item.price), 0).toFixed(2)
-      );
-      return '$' + cartItems.reduce((acc, item) => acc + Number(item.price), 0).toFixed(2);
     }
+    if (cartItems.length === 0) {
+      discPrice.style.display = 'none';
+      totalPrice.classList.remove('price');
+      return '$0.00';
+    }
+    const regularPrice = cartItems
+      .reduce((acc, item) => acc + Number(item.price || item.discountPrice), 0)
+      .toFixed(2);
+    const discountPrice = cartItems
+      .reduce((acc, item) => acc + Number(item.discountPrice || item.price), 0)
+      .toFixed(2);
+
+    console.log('итоговая корзина: ', cartItems);
+    console.log('обычная цена: ', regularPrice);
+    console.log('скидочная цена: ', discountPrice);
+
+    totalPrice.textContent = '$' + regularPrice;
+    discPrice.textContent = '$' + discountPrice;
+    if ((regularPrice === '0.00' || discountPrice === regularPrice) && cartItems.length > 0) {
+      totalPrice.style.display = 'none';
+      // discPrice.classList.remove('price');
+      // discPrice.style.display = 'flex';
+      discPrice.textContent = '$' + regularPrice;
+      console.log('новая Цена со скидкой: ', discPrice.textContent);
+      return '$0.00';
+    }
+    return '$' + regularPrice;
   }
 }
 
@@ -144,6 +187,6 @@ function loadLoginForm() {
 
 function loadRegisterForm() {
   {
-    window.location.href = '/registration.html';
+    window.location.href = '/register.html';
   }
 }

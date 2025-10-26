@@ -160,9 +160,9 @@ main {
           }
 
           .price {
-            /* padding-top: 8px; */
             display: flex;
             justify-content: start;
+            gap: 8px;
           }
 
           .old-price {

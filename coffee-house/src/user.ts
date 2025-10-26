@@ -1,4 +1,5 @@
 import { CartItem } from './cards/types';
+import { undefinedUserData } from './consts';
 import { getProfile } from './request';
 import { ApiResponseItem, User, UserData } from './responseTypes';
 
@@ -27,20 +28,27 @@ export class CurrentUser {
           user: profileResponse.data,
         });
 
-        const cartName = 'CoffeeHouseCartItems-' + CurrentUser.instance?.userData?.user?.login;
-        const cartItems = localStorage.getItem(cartName);
-        CurrentUser.instance.countCart = cartItems ? JSON.parse(cartItems).length : 0;
+        // Clear guest-cart
+        //localStorage.removeItem('CoffeeHouseCartItems-guest');
 
         console.log('Профиль восстановлен: ', profileResponse);
       } catch (error) {
         console.log('Профиль не восстановлен: ', error);
+        CurrentUser.clearInstance();
       }
+    } else {
+      CurrentUser.clearInstance();
+    }
+    if (CurrentUser.instance) {
+      const cartName = 'CoffeeHouseCartItems-' + CurrentUser.instance?.userData?.user?.login;
+      const cartItems = localStorage.getItem(cartName);
+      CurrentUser.instance.countCart = cartItems ? JSON.parse(cartItems).length : 0;
     }
   }
 
   public static clearInstance(): void {
     localStorage.removeItem('CoffeeHouseUser');
-    CurrentUser.instance = undefined;
+    new CurrentUser(undefinedUserData);
   }
 
   public static addToCart(cartItem: CartItem): void {

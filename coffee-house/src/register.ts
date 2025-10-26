@@ -166,7 +166,7 @@ export function registerUser(): void {
   newElement('input', '', cashContainer, ['input-radio'], {
     type: 'radio',
     name: 'payment',
-    value: 'cash',
+    value: 'Cash',
     id: 'cash',
     checked: true,
   });
@@ -176,7 +176,7 @@ export function registerUser(): void {
   newElement('input', '', cardContainer, ['input-radio'], {
     type: 'radio',
     name: 'payment',
-    value: 'card',
+    value: 'Card',
     id: 'card',
   });
   newElement('label', 'Card', cardContainer, ['radio-option'], { for: 'card' });
