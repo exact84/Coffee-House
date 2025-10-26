@@ -31,13 +31,12 @@ export async function makeRequestbyID<T>(url: string, id: string): Promise<ApiRe
   const responseBody: ApiResponseItem<T> = await response.json();
 
   if (!response.ok) {
-    throw new Error('Network response was not ok');
+    throw new Error(responseBody.error || 'Network response was not ok');
   }
 
   if (!isApiResponseItem<T>(responseBody)) {
     throw new Error('Invalid API response structure');
   }
-  // console.log(responseBody);
   return responseBody;
 }
 
@@ -45,7 +44,6 @@ export async function authRequest<T>(
   authData: T,
   path: string
 ): Promise<ApiResponseItem<UserData>> {
-  console.log('authRequest', authData);
   const response = await fetch(BASE_URL + '/auth/' + path, {
     method: 'POST',
     headers: {
@@ -56,12 +54,14 @@ export async function authRequest<T>(
 
   const responseBody: ApiResponseItem<UserData> = await response.json();
   if (!response.ok) {
-    console.log('Ответ - Ошибка', responseBody);
-    throw new Error(responseBody.message[0] || 'Network response was not ok');
+    const message = Array.isArray(responseBody.message)
+      ? responseBody.message[0]
+      : responseBody.message || responseBody.error || 'Network response was not ok';
+
+    throw new Error(message);
   }
 
   if (!isApiResponseItem<AuthResponse>(responseBody)) {
-    console.log('Ответ Регистрации - Неверный формат', responseBody);
     throw new Error('Invalid API response structure');
   }
   return responseBody;
@@ -79,19 +79,16 @@ export async function getProfile(): Promise<ApiResponseItem<User>> {
 
   const responseBody: ApiResponseItem<User> = await response.json();
   if (!response.ok) {
-    console.log('Ответ - Ошибка', responseBody);
     throw new Error(responseBody.error || 'Network response was not ok');
   }
 
   if (!isApiResponseItem<User>(responseBody)) {
-    console.log('Ответ Профиль - Неверный формат', responseBody);
     throw new Error('Invalid API response structure');
   }
   return responseBody;
 }
 
 export async function postOrder(order: OrderData): Promise<ApiResponseItem<UserData>> {
-  console.log('postOrder', order);
   const response = await fetch(BASE_URL + '/orders/confirm', {
     method: 'POST',
     headers: {
@@ -101,15 +98,12 @@ export async function postOrder(order: OrderData): Promise<ApiResponseItem<UserD
   });
 
   const responseBody: ApiResponseItem<UserData> = await response.json();
-  console.log('responseBody', responseBody);
 
   if (!response.ok) {
-    console.log('Ответ - Ошибка', responseBody);
     throw new Error(responseBody.error || 'Network response was not ok');
   }
 
   if (!isApiResponseItem<AuthResponse>(responseBody)) {
-    console.log('Ответ postOrder - Неверный формат', responseBody);
     throw new Error('Invalid API response structure');
   }
   return responseBody;

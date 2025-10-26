@@ -70,7 +70,8 @@ export function checkFormValidity(inputContainer: HTMLElement): boolean {
 export function updateCartCount() {
   const cartCountEl = document.getElementById('cart-count');
   if (cartCountEl && CurrentUser.instance) {
-    cartCountEl.textContent = CurrentUser.instance.countCart.toString();
+    cartCountEl.textContent =
+      CurrentUser.instance.countCart === 0 ? '' : CurrentUser.instance.countCart.toString();
   }
 }
 

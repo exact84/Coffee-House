@@ -7,17 +7,6 @@ import { CardItem, CartItem } from './types';
 let overlay: HTMLElement | null;
 
 export function modal(id: string) {
-  // fetch('./src/modal.html')
-  //   .then((res) => res.text())
-  //   .then((html) => {
-  //     overlay?.remove();
-  //     document.body.insertAdjacentHTML('beforeend', html);
-
-  //     requestAnimationFrame(() => {
-  //       initModal(id);
-  //     });
-  //   })
-  //   .catch((error) => console.log(error));
   overlay?.remove();
 
   const html = `
@@ -42,6 +31,18 @@ export function modal(id: string) {
 export function initModal(id: string) {
   overlay = document.getElementById('overlay');
   if (!overlay) return;
+  const oldNotification = document.getElementById('notification');
+  if (oldNotification) oldNotification.remove();
+  const notification = newElement(
+    'div',
+    '',
+    document.body,
+    ['notification', 'typography-heading-3'],
+    {
+      id: 'notification',
+    }
+  );
+  const errorMessage = newElement('div', '', notification, ['typography-body-medium']);
   const modalWindow = document.getElementById('modal');
   overlay.innerHTML = '';
   overlay.style.display = 'flex';
@@ -71,7 +72,6 @@ export function initModal(id: string) {
     .then((response) => {
       response.data.image = `./assets/img/menu/${imageMap[response.data.name as keyof typeof imageMap] || 'coffee.png'}`;
       card = response.data;
-      console.log(card);
       overlay?.removeChild(loading);
       if (modalWindow) overlay?.appendChild(modalWindow);
       else return;
@@ -86,7 +86,7 @@ export function initModal(id: string) {
         id: 'modal-description',
       });
 
-      // Заголовок
+      // Title
       const titleDiv = newElement('div', '', modalDescription, ['title']);
       newElement('h3', card.name, titleDiv, ['typography-heading-3'], { id: 'name' });
       newElement('p', card.description, titleDiv, ['typography-body-medium'], {
@@ -120,9 +120,6 @@ export function initModal(id: string) {
       if (CurrentUser.instance?.userData?.user.id != -1) {
         discontedPriceDiv.textContent = '$' + card.discountPrice;
       }
-      // if (card.discountPrice) {
-      //   priceDiv.classList.add('striked-price');
-      // }
 
       Object.keys(card.sizes).forEach((size, index) => {
         if (!sizeTabs) return;
@@ -144,8 +141,6 @@ export function initModal(id: string) {
           const basePrice = parseFloat(card.sizes[size as keyof typeof card.sizes]['price']);
           const totalPrice = basePrice + additivesTotal;
           priceDiv.textContent = '$' + totalPrice;
-          const discPrice = card.sizes[size as keyof typeof card.sizes].discountPrice;
-          console.log(discPrice);
           priceDiv.classList.remove('striked-price');
           discontedPriceDiv.textContent = '';
           if (card.sizes[size as keyof typeof card.sizes].discountPrice) {
@@ -175,19 +170,16 @@ export function initModal(id: string) {
         additivesTab.addEventListener('click', () => {
           const addPrice = parseFloat(additive.price);
           const addDiscPrice = parseFloat(additive.discountPrice || additive.price);
-          console.log('Add Price: ', addPrice, addDiscPrice);
           if (additivesTab.classList.contains('size-tab-active')) {
             additivesTab.classList.remove('size-tab-active');
             additivesTotal -= addPrice;
             additivesDiscount -= addDiscPrice;
             additives.delete(key);
-            console.log(additives);
           } else {
             additivesTab.classList.add('size-tab-active');
             additivesTotal += addPrice;
             additivesDiscount += addDiscPrice;
             additives.add(key);
-            // console.log(additives);
           }
           calcPrice();
         });
@@ -201,15 +193,13 @@ export function initModal(id: string) {
           card.sizes[sizeActive as keyof typeof card.sizes].discountPrice ||
             card.sizes[sizeActive as keyof typeof card.sizes].price
         );
-        console.log('Size Price: ', sizePrice, discSizePrice);
 
         const totalPrice = sizePrice + additivesTotal;
         let totalDiscPrice = discSizePrice + additivesDiscount;
 
         if (CurrentUser.instance?.userData?.user.id == -1) {
-          totalDiscPrice = totalPrice; /////////////////////////////
+          totalDiscPrice = totalPrice;
         }
-        console.log('Total Price: ', totalPrice, totalDiscPrice);
         if (totalPrice !== totalDiscPrice) priceDiv.textContent = `$${totalPrice.toFixed(2)}`;
         else priceDiv.textContent = '';
         priceDiv.classList.add('striked-price');
@@ -258,14 +248,22 @@ export function initModal(id: string) {
           cartItem.price = discontedPriceDiv.textContent.slice(1);
           cartItem.totalPrice = cartItem.price;
         }
-        console.log('Добавили в Корзину: ', cartItem);
         CurrentUser.addToCart(cartItem);
         updateCartCount();
       }
     })
-    .catch(() => {
-      loading.textContent = 'Something went wrong.\n Please, try again.';
+    .catch((error) => {
+      // loading.textContent = 'Something went wrong.\n Please, try again.';
+      showNotification('Something went wrong. Please, try again.', error.message || error.error);
+      closeModal();
     });
+
+  function showNotification(message: string, error: string = '') {
+    notification.textContent = message;
+    errorMessage.textContent = error;
+    document.body.prepend(notification);
+    notification.appendChild(errorMessage);
+  }
 
   function closeModal() {
     document.documentElement.classList.remove('no-scroll');

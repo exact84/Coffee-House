@@ -11,6 +11,7 @@ export class CurrentUser {
   constructor(userData: UserData) {
     if (CurrentUser.instance) {
       CurrentUser.instance.userData = userData;
+      if (userData.access_token) localStorage.setItem('CoffeeHouseUser', userData.access_token);
       return CurrentUser.instance;
     }
     this.userData = userData;
@@ -27,13 +28,9 @@ export class CurrentUser {
           access_token: savedUserToken,
           user: profileResponse.data,
         });
-
         // Clear guest-cart
         //localStorage.removeItem('CoffeeHouseCartItems-guest');
-
-        console.log('Профиль восстановлен: ', profileResponse);
-      } catch (error) {
-        console.log('Профиль не восстановлен: ', error);
+      } catch {
         CurrentUser.clearInstance();
       }
     } else {

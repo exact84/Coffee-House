@@ -43,7 +43,6 @@ export function getTabData(category = 'coffee') {
 }
 
 function filterData(category: string) {
-  // console.log("filterData", category, items);
   filteredItems = items
     .filter((item: Products) => item.category === category)
     .map((item: Products) => ({
@@ -81,14 +80,12 @@ window.addEventListener('resize', () => {
     if (window.innerWidth > 768) isDesktop = true;
 
     if (visibleCount > 4 && !nowDesktop && isDesktop) {
-      console.log('visibleCount > 4 && !nowDesktop && isDesktop');
       visibleCount = 4;
       isDesktop = false;
       renderCards();
     }
 
     if (isButton && nowDesktop) {
-      console.log('isButton && nowDesktop');
       visibleCount = filteredItems.length;
       isDesktop = true;
       renderCards();
@@ -97,7 +94,6 @@ window.addEventListener('resize', () => {
 });
 
 async function renderCards() {
-  // console.log("renderCards", visibleCount, tabType, ". isButton:", isButton);
   if (grid) grid.innerHTML = '';
 
   const limit = Math.min(visibleCount, filteredItems.length);
@@ -112,7 +108,7 @@ async function renderCards() {
     const imageWrapper = document.createElement('div');
     imageWrapper.classList.add('image');
     const img = document.createElement('img');
-    img.src = item.image || 'placeholder.png'; // Проверить
+    img.src = item.image || './assets/img/menu/coffee.png';
     img.alt = item.name;
     imageWrapper.appendChild(img);
 
@@ -158,7 +154,7 @@ async function renderCards() {
     if (grid) grid.appendChild(card);
 
     card.addEventListener('click', (event) => {
-      event.stopPropagation(); // надо ли?
+      event.stopPropagation();
       const target = event.target as HTMLElement;
       const cardElement = target.closest('.card') as HTMLElement | null;
       if (cardElement) modal(cardElement.id);

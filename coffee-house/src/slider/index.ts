@@ -8,7 +8,7 @@ export function initSlider(): void {
   const controls = document.querySelectorAll<HTMLElement>('.slider-control');
 
   if (!section || !slider || !btnLeft || !btnRight || controls.length === 0) {
-    console.warn('Slider: elements not found');
+    console.log('Slider: elements not found');
     return;
   }
 

@@ -39,7 +39,6 @@
 .label-input {
   display: flex;
   flex-direction: column;
-  /* gap: 4px; */
   width: 400px;
   background-color: var(--color-background-body);
   color: var(--color-text-dark);
@@ -102,7 +101,7 @@
 }
 
 .input-radio {
-  /* кружочек */
+  /* circle */
   appearance: none;
   width: 16px;
   height: 16px;
@@ -120,7 +119,7 @@
 }
 
 .radio-option {
-  /* текст кружочка */
+  /* circle text */
   display: flex;
   justify-content: flex-end;
   width: 48px;
@@ -154,7 +153,6 @@
   height: 0;
   width: 100%;
   font-size: small;
-  /* padding-top: 10px; */
 }
 
 @media (hover: hover) and (pointer: fine) {

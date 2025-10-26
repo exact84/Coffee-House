@@ -10,10 +10,6 @@
   padding: 0 0;
 }
 
-/* * {
-  outline: 1px solid red;
-} */
-
 .coffee-menu {
   cursor: default;
 }
@@ -136,7 +132,6 @@ main {
           overflow: hidden;
 
           img {
-            /* display: block; */
             border-radius: 40px;
             width: 340px;
             height: 340px;
@@ -231,7 +226,6 @@ main {
 }
 
 .coffee-menu {
-  /* margin-top: -2px; */
   border-bottom: 2px solid var(--color-border-dark) !important;
 }
 

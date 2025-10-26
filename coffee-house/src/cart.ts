@@ -16,16 +16,17 @@ export function initCart() {
     'notification',
     'typography-heading-3',
   ]);
+  const errorMessage = newElement('div', '', notification, ['typography-body-medium']);
   const currentUser = CurrentUser.instance?.userData?.user;
-  // Create
   const main = document.querySelector('main')!;
   const container = newElement('div', '', main, ['cart-container']);
   newElement('h1', 'Cart', container, ['typography-heading-2', 'title-cart']);
 
   const cartItems: CartItem[] = getItems(currentUser?.login) as CartItem[];
+  let list: HTMLElement;
   if (cartItems) {
-    const list = newElement('div', '', container, ['list-items']);
-    cartItems.forEach((item: CartItem, index) => {
+    list = newElement('div', '', container, ['list-items']);
+    cartItems.forEach((item: CartItem) => {
       const itemElement = newElement('div', '', list, ['list-item']);
 
       const deleteBtn = newElement('button', '', itemElement, []);
@@ -38,10 +39,8 @@ export function initCart() {
 
         if (currentIndex !== -1) {
           itemElement.remove();
-          console.log('Удаляем Номер:  ', index);
           cartItems.splice(currentIndex, 1);
           totalPrice.textContent = calcTotalPrice();
-          console.log(totalPrice.textContent, discPrice.textContent);
           if (
             totalPrice.textContent === discPrice.textContent &&
             discPrice.textContent !== '$0.00'
@@ -98,7 +97,6 @@ export function initCart() {
   totalPrice.textContent = calcTotalPrice();
 
   if (CurrentUser.instance?.userData?.user.id !== -1) {
-    console.log(CurrentUser.instance?.userData?.user.id);
     const AddressDiv = newElement('div', '', total, ['total-line']);
     newElement('div', 'Address:', AddressDiv, []);
     newElement(
@@ -108,21 +106,18 @@ export function initCart() {
       AddressDiv,
       []
     );
-
-    const payBy = newElement('div', '', total, ['total-line']);
-    newElement('div', 'Pay by:', payBy, []);
-    newElement('div', currentUser?.paymentMethod || 'No payment method', payBy, []);
-  } else {
-    // discPrice.textContent = '';
-    // totalPrice.classList.remove('price');
-    // console.log('убрали скидку');
+    const payBy = currentUser?.paymentMethod
+      ? currentUser?.paymentMethod?.charAt(0).toUpperCase() + currentUser?.paymentMethod?.slice(1)
+      : '';
+    const payByDiv = newElement('div', '', total, ['total-line']);
+    newElement('div', 'Pay by:', payByDiv, []);
+    newElement('div', payBy || 'No payment method', payByDiv, []);
   }
 
   if (currentUser?.id != -1 && (cartItems?.length == 0 || !cartItems)) return;
-  console.log(currentUser, cartItems?.length);
   const buttons = newElement('div', '', container, ['buttons']);
   if (currentUser?.id == -1) {
-    const loginBtn = newElement('button', 'login', buttons, [
+    const loginBtn = newElement('button', 'Sign In', buttons, [
       'typography-action-link-button',
       'button',
     ]);
@@ -143,12 +138,21 @@ export function initCart() {
       showLoaderOverlay();
       postOrder(transformToOrderData(cartItems))
         .then(() => {
-          // Очищаем корзину
+          cartItems.length = 0;
+          list.remove();
+          totalPrice.textContent = '';
+          discPrice.textContent = '$0.00';
+          CurrentUser.instance!.countCart = 0;
+          localStorage.setItem(
+            'CoffeeHouseCartItems-' + currentUser?.login,
+            JSON.stringify(cartItems)
+          );
+          updateCartCount();
+          buttons.remove();
           showNotification('Thank you for your order! Our manager will contact you shortly.');
         })
         .catch((error) => {
-          console.log('Error:', error);
-          showNotification('Something went wrong. Please, try again.');
+          showNotification('Something went wrong. Please, try again.', error.message);
         })
         .finally(() => {
           hideLoaderOverlay();
@@ -164,9 +168,11 @@ export function initCart() {
     overlay.classList.remove('show');
   }
 
-  function showNotification(message: string) {
+  function showNotification(message: string, error: string = '') {
     notification.textContent = message;
+    errorMessage.textContent = error;
     document.body.prepend(notification);
+    notification.appendChild(errorMessage);
   }
 
   function calcTotalPrice() {
@@ -187,16 +193,11 @@ export function initCart() {
       .reduce((acc, item) => acc + Number(item.discountPrice || item.price), 0)
       .toFixed(2);
 
-    console.log('итоговая корзина: ', cartItems);
-    console.log('обычная цена: ', regularPrice);
-    console.log('скидочная цена: ', discountPrice);
-
     totalPrice.textContent = '$' + regularPrice;
     discPrice.textContent = '$' + discountPrice;
     if ((regularPrice === '0.00' || discountPrice === regularPrice) && cartItems.length > 0) {
       totalPrice.style.display = 'none';
       discPrice.textContent = '$' + regularPrice;
-      console.log('новая Цена со скидкой: ', discPrice.textContent);
       return '$0.00';
     }
     return '$' + regularPrice;

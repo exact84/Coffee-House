@@ -45,10 +45,13 @@ const streetsByCity: Record<string, string[]> = {
   ],
 };
 
-loadLayout();
-registerUser();
+document.addEventListener('DOMContentLoaded', async () => {
+  await CurrentUser.restoreInstance();
+  await loadLayout();
+  createRegister();
+});
 
-export function registerUser(): void {
+export function createRegister(): void {
   const main: HTMLElement | null = document.querySelector('.register');
   if (!main) return;
   const registerContainer = newElement('div', '', main, ['register-container']);
@@ -166,7 +169,7 @@ export function registerUser(): void {
   newElement('input', '', cashContainer, ['input-radio'], {
     type: 'radio',
     name: 'payment',
-    value: 'cash',
+    value: 'Cash',
     id: 'cash',
     checked: true,
   });
@@ -176,7 +179,7 @@ export function registerUser(): void {
   newElement('input', '', cardContainer, ['input-radio'], {
     type: 'radio',
     name: 'payment',
-    value: 'card',
+    value: 'Card',
     id: 'card',
   });
   newElement('label', 'Card', cardContainer, ['radio-option'], { for: 'card' });
@@ -213,8 +216,7 @@ export function registerUser(): void {
 
     switch (id) {
       case 'username':
-        // isValid = /^[A-Za-z][A-Za-z0-9]{2,}$/.test(value);
-        isValid = /^[A-Za-z][A-Za-z0-9]{2,}$/.test(value); // не забыть убрать цифры
+        isValid = /^[A-Za-z][A-Za-z]{2,}$/.test(value);
         message = ERR_MSG_LOGIN;
         break;
 
@@ -246,7 +248,7 @@ export function registerUser(): void {
         break;
     }
 
-    // Подсветка, сообщение ошибки и значок
+    // Highlight invalid inputs
     if (!isValid) {
       target.classList.add('invalid');
       showError(target, message);
@@ -267,10 +269,11 @@ export function registerUser(): void {
       street: inputStreet.value.trim(),
       houseNumber: Number(inputHouseNumber.value.trim()),
       paymentMethod:
-        document.querySelector<HTMLInputElement>('input[name="payment"]:checked')?.value ?? '',
+        document
+          .querySelector<HTMLInputElement>('input[name="payment"]:checked')
+          ?.value.toLowerCase() ?? '',
     };
 
-    // console.log(request);
     divError.textContent = '';
     if (!divError.textContent) {
       divError.classList.remove('visible');
@@ -283,8 +286,7 @@ export function registerUser(): void {
     if (result) {
       if (result.message === 'User registered successfully') {
         new CurrentUser(result.data);
-        // console.log(result.data);
-        window.location.href = '/cart.html';
+        window.location.href = '/menu.html';
       } else {
         divError.classList.add('visible');
         divError.textContent = result.error ?? 'Register error';

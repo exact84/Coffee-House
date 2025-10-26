@@ -4,8 +4,11 @@ import { authRequest } from './request';
 import { ApiResponseItem, AuthData, UserData } from './responseTypes';
 import { ERR_MSG_LOGIN, ERR_MSG_PASS } from './consts';
 
-loadLayout();
-createLogin();
+document.addEventListener('DOMContentLoaded', async () => {
+  await CurrentUser.restoreInstance();
+  await loadLayout();
+  createLogin();
+});
 
 export function createLogin(): void {
   const main: HTMLElement | null = document.querySelector('.login');
@@ -43,26 +46,6 @@ export function createLogin(): void {
   btnLogin.disabled = true;
   const divError = newElement('div', '', buttonContainer, ['error-msg']);
 
-  // requestAnimationFrame(() => {
-  //   const event = new Event('input', { bubbles: true });
-  //   inputName.dispatchEvent(event);
-  // });
-
-  // requestAnimationFrame(() => {
-  //   console.log('Before: ', inputName.value);
-  //   // inputName.focus();
-  //   inputName.blur();
-  //   loginContainer.click();
-  //   setTimeout(() => {
-  //     inputName.focus();
-  //     document.getElementById('username')!.focus();
-  //     console.log('in setTimeout 3000ms: ', inputName.value);
-  //   }, 3000);
-  //   console.log('After: ', inputName.value);
-  //   const formValid = checkFormValidity(inputContainer);
-  //   btnLogin.disabled = !formValid;
-  // });
-
   inputContainer.addEventListener('focusin', (event) => {
     const target = event.target as HTMLInputElement;
     hideError(target);
@@ -76,7 +59,6 @@ export function createLogin(): void {
   });
 
   inputContainer.addEventListener('focusout', (event) => {
-    console.log('focusout: ', inputName.value);
     const target = event.target as HTMLInputElement;
     if (!target.classList.contains('input-field')) return;
     const value = target.value.trim();
@@ -86,8 +68,7 @@ export function createLogin(): void {
 
     switch (id) {
       case 'username':
-        // isValid = /^[A-Za-z][A-Za-z0-9]{2,}$/.test(value);
-        isValid = /^[A-Za-z][A-Za-z0-9]{2,}$/.test(value); // не забыть убрать цифры
+        isValid = /^[A-Za-z][A-Za-z]{2,}$/.test(value);
         message = ERR_MSG_LOGIN;
         break;
 
@@ -97,8 +78,7 @@ export function createLogin(): void {
         break;
     }
 
-    // Подсветка, сообщение ошибки и значок
-    console.log('focusout result, isValid:', isValid);
+    // highlight invalid field
     if (!isValid) {
       target.classList.add('invalid');
       showError(target, message);
@@ -127,18 +107,17 @@ export function createLogin(): void {
     }
     if (result) {
       if (result.message === 'Login successful') {
-        new CurrentUser(result.data);
         console.log(result);
-        window.location.href = '/cart.html';
+        new CurrentUser(result.data);
+        window.location.href = '/menu.html';
       } else {
         divError.classList.add('visible');
-        console.log(result);
         divError.textContent = result.error ?? 'Login error';
       }
     }
   }
 
-  btnLogin.addEventListener('click', (): void => {
+  btnLogin.addEventListener('click', () => {
     void handleLogin();
   });
 

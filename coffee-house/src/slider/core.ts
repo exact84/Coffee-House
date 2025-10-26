@@ -30,7 +30,6 @@ export function setupSlider({
   makeRequest<Products>('/products/favorites')
     .then((response) => {
       const dataSet: Products[] = response.data;
-      // console.log(dataSet);
 
       const sliderContainer = document.getElementById('sliderContainer');
       if (!sliderContainer) return;
@@ -41,7 +40,6 @@ export function setupSlider({
         card.classList.add('slider-card');
 
         const img = document.createElement('img');
-        // console.log(imageMap[product.name as keyof typeof imageMap]);
         img.src =
           '/assets/img/menu/' + imageMap[product.name as keyof typeof imageMap] || 'coffee.png';
         img.alt = product.name;
@@ -162,8 +160,6 @@ export function setupSlider({
     state.position = -state.currentSlide * step;
     slider.style.transform = `translateX(${state.position}px)`;
     updateControls();
-    // stopAutoScroll();
-    // startAutoScroll();
   }
 
   function pauseProgress(): void {
