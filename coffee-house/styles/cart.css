@@ -117,3 +117,60 @@ header a,
   transition: background-color 0.5s ease-in-out;
   width: 200px;
 }
+
+.loader-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loader-overlay.show {
+  display: flex;
+}
+
+.notification {
+  padding: 12px 24px;
+  border: 1px solid var(--color-border-dark);
+  background-color: var(--color-background-body);
+  color: var(--color-text-dark);
+  border-radius: 20px;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .typography-heading-3 {
+    font-size: 16px;
+  }
+
+  .typography-body-medium {
+    font-size: 12px;
+  }
+
+  .list-item {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .list-item-img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .total-line {
+    padding-left: 0px;
+  }
+}
+
+body.no-scroll,
+html.no-scroll {
+  overflow: hidden;
+}

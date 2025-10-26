@@ -10,7 +10,9 @@ createLogin();
 export function createLogin(): void {
   const main: HTMLElement | null = document.querySelector('.login');
   if (!main) return;
-  const loginContainer = newElement('div', '', main, ['login-container']);
+  const loginContainer = newElement('form', '', main, ['login-container'], {
+    autocomplete: 'off',
+  });
   newElement('h2', 'Sign In', loginContainer, ['typography-heading-2']);
   const inputContainer = newElement('form', '', loginContainer, [
     'input-container-login',
@@ -41,6 +43,26 @@ export function createLogin(): void {
   btnLogin.disabled = true;
   const divError = newElement('div', '', buttonContainer, ['error-msg']);
 
+  // requestAnimationFrame(() => {
+  //   const event = new Event('input', { bubbles: true });
+  //   inputName.dispatchEvent(event);
+  // });
+
+  // requestAnimationFrame(() => {
+  //   console.log('Before: ', inputName.value);
+  //   // inputName.focus();
+  //   inputName.blur();
+  //   loginContainer.click();
+  //   setTimeout(() => {
+  //     inputName.focus();
+  //     document.getElementById('username')!.focus();
+  //     console.log('in setTimeout 3000ms: ', inputName.value);
+  //   }, 3000);
+  //   console.log('After: ', inputName.value);
+  //   const formValid = checkFormValidity(inputContainer);
+  //   btnLogin.disabled = !formValid;
+  // });
+
   inputContainer.addEventListener('focusin', (event) => {
     const target = event.target as HTMLInputElement;
     hideError(target);
@@ -54,6 +76,7 @@ export function createLogin(): void {
   });
 
   inputContainer.addEventListener('focusout', (event) => {
+    console.log('focusout: ', inputName.value);
     const target = event.target as HTMLInputElement;
     if (!target.classList.contains('input-field')) return;
     const value = target.value.trim();
@@ -75,7 +98,7 @@ export function createLogin(): void {
     }
 
     // Подсветка, сообщение ошибки и значок
-    console.log('isValid', isValid);
+    console.log('focusout result, isValid:', isValid);
     if (!isValid) {
       target.classList.add('invalid');
       showError(target, message);
@@ -93,7 +116,6 @@ export function createLogin(): void {
       password: inputPass.value.trim(),
     };
 
-    // console.log(request);
     divError.textContent = '';
     if (!divError.textContent) {
       divError.classList.remove('visible');
@@ -124,5 +146,9 @@ export function createLogin(): void {
     if (e.key === 'Enter') {
       void handleLogin();
     }
+  });
+
+  loginContainer.addEventListener('submit', (e) => {
+    e.preventDefault();
   });
 }

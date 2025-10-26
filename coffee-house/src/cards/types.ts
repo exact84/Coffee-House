@@ -21,6 +21,7 @@ type SizeOption = {
 
 export type CartItem = {
   id: number;
+  productId: number;
   name: string;
   description: string;
   price: string;
@@ -37,4 +38,16 @@ export type Additives = {
   name: string;
   price: string;
   discountPrice?: string;
+};
+
+export type OrderItem = {
+  productId: number;
+  size: string;
+  additives: string[];
+  quantity: number;
+};
+
+export type OrderData = {
+  items: OrderItem[];
+  totalPrice: number;
 };

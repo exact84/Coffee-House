@@ -5,7 +5,7 @@ export function initBurgerMenu(): void {
   const html = document.documentElement;
 
   if (!burgerToggle || !menu) {
-    console.warn('burgerToggle or menu not found');
+    console.log('burgerToggle or menu not found');
     return;
   }
 

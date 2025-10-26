@@ -1,3 +1,4 @@
+import { CartItem, OrderData, OrderItem } from './cards/types';
 import { CurrentUser } from './user';
 
 export function newElement<K extends keyof HTMLElementTagNameMap>(
@@ -55,7 +56,6 @@ export function hideError(target: HTMLInputElement) {
 }
 
 export function checkFormValidity(inputContainer: HTMLElement): boolean {
-  // console.log('checkFormValidity');
   const inputs = inputContainer.querySelectorAll<HTMLInputElement | HTMLSelectElement>(
     '.input-field'
   );
@@ -72,4 +72,20 @@ export function updateCartCount() {
   if (cartCountEl && CurrentUser.instance) {
     cartCountEl.textContent = CurrentUser.instance.countCart.toString();
   }
+}
+
+export function transformToOrderData(rawItems: CartItem[]): OrderData {
+  const items: OrderItem[] = rawItems.map((item) => ({
+    productId: item.productId,
+    size: item.size,
+    additives: item.additives,
+    quantity: item.quantity,
+  }));
+
+  const totalPrice = rawItems.reduce((sum, item) => {
+    const itemTotal = parseFloat(item.totalPrice);
+    return sum + (isNaN(itemTotal) ? 0 : itemTotal);
+  }, 0);
+
+  return { items, totalPrice };
 }

@@ -7,7 +7,7 @@ import { CurrentUser } from '../user';
 let filteredItems: Products[] = [];
 let items: Products[] = [];
 let visibleCount = 4;
-// let isDesktop = window.innerWidth > 768;
+let isDesktop = window.innerWidth > 768;
 let isButton = false;
 let isError = false;
 
@@ -78,13 +78,19 @@ window.addEventListener('resize', () => {
   resizeTimeout = window.setTimeout(() => {
     const nowDesktop = window.innerWidth > 768;
 
-    if (visibleCount > 4 && !nowDesktop) {
+    if (window.innerWidth > 768) isDesktop = true;
+
+    if (visibleCount > 4 && !nowDesktop && isDesktop) {
+      console.log('visibleCount > 4 && !nowDesktop && isDesktop');
       visibleCount = 4;
+      isDesktop = false;
       renderCards();
     }
 
     if (isButton && nowDesktop) {
+      console.log('isButton && nowDesktop');
       visibleCount = filteredItems.length;
+      isDesktop = true;
       renderCards();
     }
   }, debounceTimeout);

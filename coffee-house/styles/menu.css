@@ -234,3 +234,8 @@ main {
   /* margin-top: -2px; */
   border-bottom: 2px solid var(--color-border-dark) !important;
 }
+
+.coffee-menu-vertical {
+  pointer-events: none;
+  cursor: default;
+}

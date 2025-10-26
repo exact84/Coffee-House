@@ -1,6 +1,7 @@
 import { BASE_URL } from './consts';
 import { isApiResponse, isApiResponseItem } from './typeGuard';
 import { ApiResponse, ApiResponseItem, AuthResponse, User, UserData } from './responseTypes';
+import { OrderData } from './cards/types';
 
 export async function makeRequest<T>(url: string): Promise<ApiResponse<T>> {
   const response = await fetch(BASE_URL + url, {
@@ -44,6 +45,7 @@ export async function authRequest<T>(
   authData: T,
   path: string
 ): Promise<ApiResponseItem<UserData>> {
+  console.log('authRequest', authData);
   const response = await fetch(BASE_URL + '/auth/' + path, {
     method: 'POST',
     headers: {
@@ -55,7 +57,7 @@ export async function authRequest<T>(
   const responseBody: ApiResponseItem<UserData> = await response.json();
   if (!response.ok) {
     console.log('Ответ - Ошибка', responseBody);
-    throw new Error(responseBody.error || 'Network response was not ok');
+    throw new Error(responseBody.message[0] || 'Network response was not ok');
   }
 
   if (!isApiResponseItem<AuthResponse>(responseBody)) {
@@ -83,6 +85,31 @@ export async function getProfile(): Promise<ApiResponseItem<User>> {
 
   if (!isApiResponseItem<User>(responseBody)) {
     console.log('Ответ Профиль - Неверный формат', responseBody);
+    throw new Error('Invalid API response structure');
+  }
+  return responseBody;
+}
+
+export async function postOrder(order: OrderData): Promise<ApiResponseItem<UserData>> {
+  console.log('postOrder', order);
+  const response = await fetch(BASE_URL + '/orders/confirm', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(order),
+  });
+
+  const responseBody: ApiResponseItem<UserData> = await response.json();
+  console.log('responseBody', responseBody);
+
+  if (!response.ok) {
+    console.log('Ответ - Ошибка', responseBody);
+    throw new Error(responseBody.error || 'Network response was not ok');
+  }
+
+  if (!isApiResponseItem<AuthResponse>(responseBody)) {
+    console.log('Ответ postOrder - Неверный формат', responseBody);
     throw new Error('Invalid API response structure');
   }
   return responseBody;

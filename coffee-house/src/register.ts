@@ -7,7 +7,7 @@ import { ERR_MSG_LOGIN, ERR_MSG_PASS } from './consts';
 const cities = ['Almaty', 'Astana', 'Karaganda'];
 
 const streetsByCity: Record<string, string[]> = {
-  almaty: [
+  Almaty: [
     'Abay',
     'Zhibek Zholy',
     'Pushkin',
@@ -19,7 +19,7 @@ const streetsByCity: Record<string, string[]> = {
     'Satpayev',
     'Kazybek',
   ],
-  astana: [
+  Astana: [
     'Nurly Zhol',
     'Mangilik El',
     'Abai',
@@ -31,7 +31,7 @@ const streetsByCity: Record<string, string[]> = {
     'Satpayev',
     'Yesil',
   ],
-  karaganda: [
+  Karaganda: [
     'Lobody',
     'Bukhar Zhyray',
     'Respublica',
@@ -106,7 +106,7 @@ export function registerUser(): void {
     selected: true,
   });
   cities.forEach((city) => {
-    newElement('option', city, inputCity, [], { value: city.toLowerCase() });
+    newElement('option', city, inputCity, [], { value: city });
   });
 
   const labelStreet = newElement(
@@ -166,7 +166,7 @@ export function registerUser(): void {
   newElement('input', '', cashContainer, ['input-radio'], {
     type: 'radio',
     name: 'payment',
-    value: 'Cash',
+    value: 'cash',
     id: 'cash',
     checked: true,
   });
@@ -176,7 +176,7 @@ export function registerUser(): void {
   newElement('input', '', cardContainer, ['input-radio'], {
     type: 'radio',
     name: 'payment',
-    value: 'Card',
+    value: 'card',
     id: 'card',
   });
   newElement('label', 'Card', cardContainer, ['radio-option'], { for: 'card' });

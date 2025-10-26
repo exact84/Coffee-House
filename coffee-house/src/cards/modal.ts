@@ -236,6 +236,7 @@ export function initModal(id: string) {
 
         const cartItem: CartItem = {
           id: (cartItemId += 1),
+          productId: Number(id),
           name: card.name,
           description: card.description,
           price: priceDiv.textContent.slice(1),
@@ -247,14 +248,15 @@ export function initModal(id: string) {
             '',
           additives: Array.from(additives),
           quantity: 1,
-          totalPrice: (parseFloat(card.price) + additivesTotal).toFixed(2), // не информативно
+          totalPrice: '',
         };
 
         if (CurrentUser.instance?.userData?.user.id != -1) {
           cartItem.discountPrice = discontedPriceDiv.textContent.slice(1);
+          cartItem.totalPrice = cartItem.discountPrice;
         } else {
-          // cartItem.discountPrice = priceDiv.textContent.slice(1);
           cartItem.price = discontedPriceDiv.textContent.slice(1);
+          cartItem.totalPrice = cartItem.price;
         }
         console.log('Добавили в Корзину: ', cartItem);
         CurrentUser.addToCart(cartItem);

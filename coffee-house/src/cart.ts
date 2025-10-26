@@ -1,20 +1,27 @@
+import { initBurgerMenu } from './burger-menu';
 import { CartItem } from './cards/types';
 import { imageMap } from './consts';
+import { postOrder } from './request';
 import { CurrentUser } from './user';
-import { loadLayout, newElement, updateCartCount } from './utils';
+import { loadLayout, newElement, transformToOrderData, updateCartCount } from './utils';
 
 await CurrentUser.restoreInstance();
 await loadLayout();
+initBurgerMenu();
 initCart();
 
 export function initCart() {
+  const overlay = document.querySelector('.loader-overlay') as HTMLElement;
+  const notification = newElement('div', '', document.body, [
+    'notification',
+    'typography-heading-3',
+  ]);
   const currentUser = CurrentUser.instance?.userData?.user;
   // Create
   const main = document.querySelector('main')!;
   const container = newElement('div', '', main, ['cart-container']);
   newElement('h1', 'Cart', container, ['typography-heading-2', 'title-cart']);
 
-  // console.log('Запрос товаров: ', CurrentUser.instance?.userData?.user);
   const cartItems: CartItem[] = getItems(currentUser?.login) as CartItem[];
   if (cartItems) {
     const list = newElement('div', '', container, ['list-items']);
@@ -108,10 +115,10 @@ export function initCart() {
   } else {
     // discPrice.textContent = '';
     // totalPrice.classList.remove('price');
-    console.log('убрали скидку');
+    // console.log('убрали скидку');
   }
 
-  if ((currentUser?.id !== -1 && cartItems?.length == 0) || !cartItems) return;
+  if (currentUser?.id != -1 && (cartItems?.length == 0 || !cartItems)) return;
   console.log(currentUser, cartItems?.length);
   const buttons = newElement('div', '', container, ['buttons']);
   if (currentUser?.id == -1) {
@@ -130,9 +137,36 @@ export function initCart() {
       'typography-action-link-button',
       'button',
     ]);
+
     orderBtn.addEventListener('click', () => {
-      console.log('Заказать');
+      overlay.classList.remove('show');
+      showLoaderOverlay();
+      postOrder(transformToOrderData(cartItems))
+        .then(() => {
+          // Очищаем корзину
+          showNotification('Thank you for your order! Our manager will contact you shortly.');
+        })
+        .catch((error) => {
+          console.log('Error:', error);
+          showNotification('Something went wrong. Please, try again.');
+        })
+        .finally(() => {
+          hideLoaderOverlay();
+        });
     });
+  }
+
+  function showLoaderOverlay() {
+    overlay.classList.add('show');
+  }
+
+  function hideLoaderOverlay() {
+    overlay.classList.remove('show');
+  }
+
+  function showNotification(message: string) {
+    notification.textContent = message;
+    document.body.prepend(notification);
   }
 
   function calcTotalPrice() {
@@ -161,8 +195,6 @@ export function initCart() {
     discPrice.textContent = '$' + discountPrice;
     if ((regularPrice === '0.00' || discountPrice === regularPrice) && cartItems.length > 0) {
       totalPrice.style.display = 'none';
-      // discPrice.classList.remove('price');
-      // discPrice.style.display = 'flex';
       discPrice.textContent = '$' + regularPrice;
       console.log('новая Цена со скидкой: ', discPrice.textContent);
       return '$0.00';
