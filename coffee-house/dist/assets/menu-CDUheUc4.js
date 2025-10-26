@@ -1,4 +1,4 @@
-import{a as V,i as K,n as t,C as P,u as X,m as Y,l as Z}from"./utils-CLgF_lQx.js";import{i as _}from"./burger-menu-Cuu3i9nX.js";let p;function ee(d){p?.remove(),document.body.insertAdjacentHTML("beforeend",`
+import{a as V,i as K,n as t,C as P,u as X,m as Y,l as Z}from"./utils-oMve5g-9.js";import{i as _}from"./burger-menu-Cuu3i9nX.js";let p;function ee(d){p?.remove(),document.body.insertAdjacentHTML("beforeend",`
     <div id="overlay" class="overlay">
       <div class="modal-window" id="modal">
         <div class="close-row" id="close-row">

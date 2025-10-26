@@ -67,6 +67,7 @@ export class CurrentUser {
       return;
     } else {
       localStorage.setItem(cartName, JSON.stringify([cartItem]));
+      CurrentUser.instance!.countCart = 1;
     }
   }
 }
