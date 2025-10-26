@@ -59,7 +59,6 @@
 }
 
 .gifts-img {
-  /* background: url("") center no-repeat; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -182,16 +181,6 @@
   text-decoration: line-through;
   opacity: 0.5;
 }
-/* .price {
-} */
-
-/* .alert {
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
-  border-top: solid 1px var(--color-border-light);
-  padding: 11px 0 10px 0;
-} */
 
 .close-btn {
   border: solid 1px var(--color-border-light);
@@ -208,10 +197,6 @@
 }
 
 @media (max-width: 800px) {
-  /* .overlay { */
-  /* padding-top: 28px; */
-  /* } */
-
   .modal-window {
     width: 688px;
     height: 626px;

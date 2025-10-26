@@ -7,17 +7,36 @@ import { CardItem, CartItem } from './types';
 let overlay: HTMLElement | null;
 
 export function modal(id: string) {
-  fetch('./src/modal.html')
-    .then((res) => res.text())
-    .then((html) => {
-      overlay?.remove();
-      document.body.insertAdjacentHTML('beforeend', html);
+  // fetch('./src/modal.html')
+  //   .then((res) => res.text())
+  //   .then((html) => {
+  //     overlay?.remove();
+  //     document.body.insertAdjacentHTML('beforeend', html);
 
-      requestAnimationFrame(() => {
-        initModal(id);
-      });
-    })
-    .catch((error) => console.log(error));
+  //     requestAnimationFrame(() => {
+  //       initModal(id);
+  //     });
+  //   })
+  //   .catch((error) => console.log(error));
+  overlay?.remove();
+
+  const html = `
+    <div id="overlay" class="overlay">
+      <div class="modal-window" id="modal">
+        <div class="close-row" id="close-row">
+          <button class="close-button" id="close-button">
+            <img src="/assets/img/button-close.svg" alt="close" />
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.body.insertAdjacentHTML('beforeend', html);
+
+  requestAnimationFrame(() => {
+    initModal(id);
+  });
 }
 
 export function initModal(id: string) {
