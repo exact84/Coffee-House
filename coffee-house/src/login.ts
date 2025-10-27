@@ -80,11 +80,10 @@ export function createLogin(): void {
 
     // highlight invalid field
     if (!isValid) {
-      target.classList.add('invalid');
       showError(target, message);
     } else {
-      target.classList.remove('invalid');
       hideError(target);
+      target.classList.add('valid');
     }
     btnLogin.disabled = !checkFormValidity(inputContainer);
   });
@@ -107,7 +106,6 @@ export function createLogin(): void {
     }
     if (result) {
       if (result.message === 'Login successful') {
-        console.log(result);
         new CurrentUser(result.data);
         window.location.href = '/menu.html';
       } else {

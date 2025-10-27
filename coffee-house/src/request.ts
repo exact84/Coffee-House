@@ -54,9 +54,12 @@ export async function authRequest<T>(
 
   const responseBody: ApiResponseItem<UserData> = await response.json();
   if (!response.ok) {
-    const message = Array.isArray(responseBody.message)
+    let message = Array.isArray(responseBody.message)
       ? responseBody.message[0]
       : responseBody.message || responseBody.error || 'Network response was not ok';
+    if (message === 'Invalid credentials') {
+      message = 'Incorrect login or password';
+    }
 
     throw new Error(message);
   }

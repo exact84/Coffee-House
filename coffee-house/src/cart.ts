@@ -12,6 +12,7 @@ initCart();
 
 export function initCart() {
   const overlay = document.querySelector('.loader-overlay') as HTMLElement;
+  newElement('h3', 'Loading...', overlay, ['loading']);
   const notification = newElement('div', '', document.body, [
     'notification',
     'typography-heading-3',
@@ -24,7 +25,7 @@ export function initCart() {
 
   const cartItems: CartItem[] = getItems(currentUser?.login) as CartItem[];
   let list: HTMLElement;
-  if (cartItems) {
+  if (cartItems && cartItems.length > 0) {
     list = newElement('div', '', container, ['list-items']);
     cartItems.forEach((item: CartItem) => {
       const itemElement = newElement('div', '', list, ['list-item']);
@@ -57,6 +58,14 @@ export function initCart() {
             JSON.stringify(cartItems)
           );
           updateCartCount();
+          if (cartItems.length === 0) {
+            buttons.remove();
+            list.remove();
+            if (currentUser?.id == -1) {
+              document.getElementById('cart-menu')!.style.display = 'none';
+              document.getElementById('cart-menu-vertical')!.style.display = 'none';
+            }
+          }
         }
       });
 

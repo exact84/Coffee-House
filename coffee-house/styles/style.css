@@ -205,6 +205,10 @@ main {
               min-height: 480px;
               width: 468px;
 
+              .loading {
+                color: var(--color-text-dark);
+              }
+
               img {
                 max-width: 480px;
                 width: 100%;

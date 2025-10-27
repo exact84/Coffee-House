@@ -227,6 +227,8 @@ main {
 
 .coffee-menu {
   border-bottom: 2px solid var(--color-border-dark) !important;
+  pointer-events: none;
+  cursor: default;
 }
 
 .coffee-menu-vertical {

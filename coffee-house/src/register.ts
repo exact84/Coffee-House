@@ -57,10 +57,15 @@ export function createRegister(): void {
   const registerContainer = newElement('div', '', main, ['register-container']);
 
   newElement('h2', 'Registration', registerContainer, ['typography-heading-2']);
-  const inputContainer = newElement('form', '', registerContainer, [
-    'input-container',
-    'typography-body-medium',
-  ]);
+  const inputContainer = newElement(
+    'form',
+    '',
+    registerContainer,
+    ['input-container', 'typography-body-medium'],
+    {
+      autocomplete: 'off',
+    }
+  );
 
   const labelName = newElement('label', 'Login', inputContainer, ['label-input'], {
     for: 'username',
@@ -69,6 +74,7 @@ export function createRegister(): void {
     id: 'username',
     type: 'text',
     placeholder: 'Placeholder',
+    autocomplete: 'off',
   });
 
   const labelPass = newElement('label', 'Password', inputContainer, ['label-input'], {
@@ -78,6 +84,7 @@ export function createRegister(): void {
     id: 'password',
     type: 'password',
     placeholder: 'Placeholder',
+    autocomplete: 'off',
   });
 
   const labelPassConfirm = newElement(
@@ -98,7 +105,7 @@ export function createRegister(): void {
   const labelCity = newElement('label', 'City', inputContainer, ['label-input', 'label-small'], {
     for: 'city',
   });
-  const inputCity = newElement('select', '', labelCity, ['input-field', 'dropdown'], {
+  const inputCity = newElement('select', '', labelCity, ['input-field'], {
     id: 'city',
     name: 'city',
     type: 'text',
@@ -159,9 +166,7 @@ export function createRegister(): void {
     placeholder: 'Placeholder',
   });
 
-  const labelPaymentMethod = newElement('label', 'Pay by', inputContainer, ['label-radio'], {
-    for: 'paymentMethod',
-  });
+  const labelPaymentMethod = newElement('label', 'Pay by', inputContainer, ['label-radio']);
 
   const paymentContainer = newElement('div', '', labelPaymentMethod, ['payment-container']);
 
@@ -250,11 +255,10 @@ export function createRegister(): void {
 
     // Highlight invalid inputs
     if (!isValid) {
-      target.classList.add('invalid');
       showError(target, message);
     } else {
-      target.classList.remove('invalid');
       hideError(target);
+      target.classList.add('valid');
     }
     btnRegister.disabled = !checkFormValidity(inputContainer);
   }

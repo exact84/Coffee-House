@@ -11,7 +11,16 @@ export interface CardItem {
 
 type Sizes = Record<DrinkSizeKey, SizeOption>;
 
-type DrinkSizeKey = 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl';
+// type DrinkSizeKey = 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl';
+
+export enum DrinkSizeKey {
+  S = 's',
+  M = 'm',
+  L = 'l',
+  XL = 'xl',
+  XXL = 'xxl',
+  XXXL = 'xxxl',
+}
 
 type SizeOption = {
   size: string;

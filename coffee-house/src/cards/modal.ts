@@ -2,7 +2,7 @@ import { imageMap } from '../consts';
 import { makeRequestbyID } from '../request';
 import { CurrentUser } from '../user';
 import { newElement, updateCartCount } from '../utils';
-import { CardItem, CartItem } from './types';
+import { CardItem, CartItem, DrinkSizeKey } from './types';
 
 let overlay: HTMLElement | null;
 
@@ -121,8 +121,8 @@ export function initModal(id: string) {
         discontedPriceDiv.textContent = '$' + card.discountPrice;
       }
 
-      Object.keys(card.sizes).forEach((size, index) => {
-        if (!sizeTabs) return;
+      Object.values(DrinkSizeKey).forEach((size, index) => {
+        if (!sizeTabs || !card.sizes[size]) return;
         const sizeTab = newElement(
           'div',
           '',
@@ -131,21 +131,41 @@ export function initModal(id: string) {
           { id: size }
         );
         if (index === 0) sizeTab.classList.add('size-tab-active');
-        sizeTab.setAttribute('title', '$' + card.sizes[size as keyof typeof card.sizes]['price']);
+        const sizeInfo = card.sizes[size as keyof typeof card.sizes];
+
+        let hintPrice = '';
+        if (CurrentUser.instance?.userData?.user.id == -1) {
+          hintPrice = `
+          <span>$${sizeInfo.price}</span>
+        `;
+        } else if (sizeInfo.discountPrice) {
+          hintPrice = `
+          <span class="striked-price">$${sizeInfo.price}</span>
+          <span>$${sizeInfo.discountPrice}</span>
+        `;
+        } else {
+          hintPrice = `
+          <span>$${sizeInfo.price}</span>
+        `;
+        }
+
         newElement('div', size.toUpperCase(), sizeTab, ['circle']);
-        newElement('div', card.sizes[size as keyof typeof card.sizes].size, sizeTab, ['size']);
+        newElement('div', sizeInfo.size, sizeTab, ['size']);
+        const toolTip = newElement('div', '', sizeTab, ['tool-tip']);
+        toolTip.innerHTML = hintPrice;
+
         sizeTab.addEventListener('click', () => {
           if (sizeTabs)
             sizeTabs.querySelector('.size-tab-active')?.classList.remove('size-tab-active');
           sizeTab.classList.add('size-tab-active');
-          const basePrice = parseFloat(card.sizes[size as keyof typeof card.sizes]['price']);
+          const basePrice = parseFloat(sizeInfo.price);
           const totalPrice = basePrice + additivesTotal;
+
           priceDiv.textContent = '$' + totalPrice;
           priceDiv.classList.remove('striked-price');
           discontedPriceDiv.textContent = '';
-          if (card.sizes[size as keyof typeof card.sizes].discountPrice) {
-            discontedPriceDiv.textContent =
-              '$' + card.sizes[size as keyof typeof card.sizes].discountPrice;
+          if (sizeInfo.discountPrice) {
+            discontedPriceDiv.textContent = '$' + sizeInfo.discountPrice;
             priceDiv.classList.add('striked-price');
           }
 
@@ -164,9 +184,27 @@ export function initModal(id: string) {
 
         const additivesTab = document.createElement('div');
         additivesTab.classList.add('size-tab', 'typography-action-link-button');
-        additivesTab.id = 'add1';
-        additivesTab.setAttribute('title', '$' + additive.price);
-        additivesTab.innerHTML = `<div class="circle">${addIndex + 1}</div>${additive.name}`;
+        additivesTab.id = (addIndex + 1).toString();
+
+        let hintPrice = '';
+        if (CurrentUser.instance?.userData?.user.id == -1) {
+          hintPrice = `<span>$${additive.price}</span>`;
+        } else if (additive.discountPrice) {
+          hintPrice = `
+            <span class="striked-price">$${additive.price}</span>
+            <span>$${additive.discountPrice}</span>
+          `;
+        } else {
+          hintPrice = `<span>$${additive.price}</span>`;
+        }
+
+        additivesTab.innerHTML = `
+          <div class="circle">${addIndex + 1}</div>
+          <div class="add-name">${additive.name}</div>
+        `;
+
+        const toolTip = newElement('div', '', additivesTab, ['tool-tip']);
+        toolTip.innerHTML = hintPrice;
         additivesTab.addEventListener('click', () => {
           const addPrice = parseFloat(additive.price);
           const addDiscPrice = parseFloat(additive.discountPrice || additive.price);
@@ -250,10 +288,12 @@ export function initModal(id: string) {
         }
         CurrentUser.addToCart(cartItem);
         updateCartCount();
+
+        document.getElementById('cart-menu')!.style.display = 'flex';
+        document.getElementById('cart-menu-vertical')!.style.display = 'flex';
       }
     })
     .catch((error) => {
-      // loading.textContent = 'Something went wrong.\n Please, try again.';
       showNotification('Something went wrong. Please, try again.', error.message || error.error);
       closeModal();
     });

@@ -117,6 +117,7 @@
     background-color 0.5s ease-in-out,
     color 0.5s ease-in-out;
   align-items: center;
+  position: relative;
 }
 
 .circle {
@@ -199,6 +200,29 @@
   color: var(--color-text-dark);
   border-radius: 20px;
   text-align: center;
+}
+
+.tool-tip {
+  position: absolute;
+  top: 105%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  color: black;
+  border: 1px solid #ccc;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 400;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease-in-out;
+  z-index: 10;
+}
+
+.size-tab:hover .tool-tip {
+  opacity: 1;
 }
 
 @media (hover: hover) and (pointer: fine) {

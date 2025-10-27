@@ -46,6 +46,7 @@ export function showError(target: HTMLInputElement, message: string) {
   } else {
     errorDiv.textContent = message;
   }
+  target.classList.remove('valid');
   target.classList.add('invalid');
 }
 

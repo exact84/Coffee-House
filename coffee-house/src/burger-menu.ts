@@ -1,8 +1,15 @@
+import { CurrentUser } from './user';
+
 export function initBurgerMenu(): void {
   const burgerToggle = document.getElementById('burger-toggle') as HTMLInputElement;
   const menu = document.querySelector('.menu');
   const body = document.body;
   const html = document.documentElement;
+
+  if (CurrentUser.instance?.countCart === 0 && CurrentUser.instance?.userData?.user.id == -1) {
+    document.getElementById('cart-menu')!.style.display = 'none';
+    document.getElementById('cart-menu-vertical')!.style.display = 'none';
+  }
 
   if (!burgerToggle || !menu) {
     console.log('burgerToggle or menu not found');
