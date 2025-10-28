@@ -1,0 +1,1 @@
+export const scrollTime = 5000;
