@@ -1,0 +1,63 @@
+<div class="slider" #slider>
+  <button class="slider-button" (click)="left()" aria-label="left">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M18.5 12H6M6 12L12 6M6 12L12 18"
+        stroke="white"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </button>
+
+  <div class="slider-row" #sliderRow>
+    @if (isLoading()) {
+    <div class="slider-card">
+      <p class="loading typography-heading-3">Loading...</p>
+    </div>
+    } @else if (loadError()) {
+    <div class="slider-card">
+      <p class="loading typography-heading-3">{{ loadError() }}</p>
+    </div>
+    } @else {
+    <div class="slider-slider" [style.transform]="'translateX(' + state.position + 'px)'">
+      @for (item of dataSet; track item.id) {
+      <div
+        class="slider-card"
+        (mouseenter)="pauseProgress()"
+        (mouseleave)="resumeProgress()"
+        (touchstart)="handleTouchStart($event)"
+        (touchmove)="handleTouchMove($event)"
+        (touchend)="handleTouchEnd($event)"
+      >
+        <img [src]="item.image" [alt]="item.name" class="slide-image" />
+        <h3 class="typography-heading-3">{{ item.name }}</h3>
+        <p class="typography-body-medium">{{ item.description }}</p>
+        <h3 class="typography-heading-3">{{ item.price }}$</h3>
+      </div>
+      }
+    </div>
+    }
+  </div>
+
+  <button class="slider-button" (click)="right()" aria-label="right">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M6 12H18.5M18.5 12L12.5 6M18.5 12L12.5 18"
+        stroke="white"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </button>
+</div>
+
+@if (!isLoading && !loadError) {
+<div class="slider-controls">
+  @for (item of dataSet; track item.id) {
+  <div #control class="slider-control" [class.slider-control-activ]="$index === state.currentSlide">
+    <div class="slider-progress"></div>
+  </div>
+  }
+</div>
+}

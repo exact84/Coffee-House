@@ -1,0 +1,76 @@
+<header>
+  <nav class="nav">
+    <a routerLink="/">
+      <img src="/assets/img/logo.png" alt="Logo" />
+    </a>
+
+    <input type="checkbox" id="burger-toggle" class="burger-toggle" />
+    <label for="burger-toggle" class="burger-menu">
+      <span></span>
+      <span></span>
+    </label>
+    <ul class="menu typography-burger-link">
+      <li>
+        <a href="/">Favorite coffee</a>
+      </li>
+      <li>
+        <a href="/">About</a>
+      </li>
+      <li>
+        <a href="/">Mobile app</a>
+      </li>
+      <li>
+        <a href="#contact">Contact us</a>
+      </li>
+      <li>
+        <a routerLink="/menu" class="coffee-menu-vertical">
+          <div class="typography-burger-link">Menu</div>
+          <div>
+            <img src="/assets/img/coffee-cup.svg" alt="coffee-cup" />
+          </div>
+        </a>
+      </li>
+      <li id="cart-menu-vertical">
+        <a routerLink="/cart" class="cart-menu-vertical">
+          <div class="typography-burger-link">Cart</div>
+          <div>
+            <img src="/assets/img/shopping-bag.svg" alt="cart icon" />
+          </div>
+        </a>
+      </li>
+    </ul>
+
+    <ul class="nav-bar">
+      <li class="typography-action-link-button">
+        <a href="#favorite">Favorite coffee</a>
+      </li>
+      <li class="typography-action-link-button">
+        <a href="#about">About</a>
+      </li>
+      <li class="typography-action-link-button">
+        <a href="#mobile-app">Mobile app</a>
+      </li>
+      <li class="typography-action-link-button">
+        <a href="#contact">Contact us</a>
+      </li>
+    </ul>
+    <div class="cart-menu" id="cart-menu">
+      <a routerLink="/cart">
+        <div>
+          <img src="/assets/img/shopping-bag.svg" alt="cart icon" />
+        </div>
+        <div class="typography-action-link-button" id="cart-item-count">
+          <span id="cart-count" class="cart-count">0</span>
+        </div>
+      </a>
+    </div>
+    <div class="coffee-menu">
+      <a routerLink="/menu">
+        <div class="typography-action-link-button">Menu</div>
+        <div>
+          <img src="/assets/img/coffee-cup.svg" alt="coffee-cup" />
+        </div>
+      </a>
+    </div>
+  </nav>
+</header>

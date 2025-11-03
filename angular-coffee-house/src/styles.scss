@@ -1,0 +1,52 @@
+@import 'styles/style.css';
+
+app-root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-background-body);
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 20px 40px 40px 40px;
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-text-dark);
+}
+
+div.div-button,
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  flex-grow: 1;
+}
+
+@media (max-width: 830px) {
+  body {
+    padding: 20px 40px 40px 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 20px 16px 40px 16px;
+  }
+}
