@@ -1,4 +1,5 @@
-import { ApiResponse, ApiResponseItem, UserData } from '../types/api.types';
+import { UserData } from '../../features/auth/model/auth.types';
+import { ApiResponse, ApiResponseItem } from '../types/api.types';
 
 export function isApiResponse<T>(obj: unknown): obj is ApiResponse<T> {
   if (typeof obj !== 'object' || obj === null) return false;
