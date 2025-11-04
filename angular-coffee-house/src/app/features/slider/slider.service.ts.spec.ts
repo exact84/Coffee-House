@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SliderServiceTs } from './slider.service.ts';
+import { SliderService } from './slider.service';
 
 describe('SliderServiceTs', () => {
-  let service: SliderServiceTs;
+  let service: SliderService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(SliderServiceTs);
+    service = TestBed.inject(SliderService);
   });
 
   it('should be created', () => {

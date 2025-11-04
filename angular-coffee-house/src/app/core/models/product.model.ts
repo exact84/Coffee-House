@@ -1,4 +1,4 @@
-export interface BaseProduct {
+export type BaseProduct = {
   id: number;
   name: string;
   description: string;
@@ -6,14 +6,14 @@ export interface BaseProduct {
   discountPrice: string;
   category: string;
   image?: string;
-}
+};
 
-export interface Product extends BaseProduct {
+export type Product = BaseProduct & {
   sizes: Sizes;
   additives: Additives[];
-}
+};
 
-export interface FavoritesProduct extends BaseProduct {}
+export type FavoritesProduct = BaseProduct;
 
 export type Sizes = Record<DrinkSizeKey, SizeOption>;
 

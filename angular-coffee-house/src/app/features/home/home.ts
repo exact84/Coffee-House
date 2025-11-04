@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SliderComponent } from '../../features/slider/slider.component';
@@ -10,6 +10,4 @@ import { SliderComponent } from '../../features/slider/slider.component';
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
-export class Home implements OnInit {
-  ngOnInit(): void {}
-}
+export class Home {}

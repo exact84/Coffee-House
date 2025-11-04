@@ -12,31 +12,31 @@
 
   <div class="slider-row" #sliderRow>
     @if (isLoading()) {
-    <div class="slider-card">
-      <p class="loading typography-heading-3">Loading...</p>
-    </div>
-    } @else if (loadError()) {
-    <div class="slider-card">
-      <p class="loading typography-heading-3">{{ loadError() }}</p>
-    </div>
-    } @else {
-    <div class="slider-slider" [style.transform]="'translateX(' + state.position + 'px)'">
-      @for (item of dataSet; track item.id) {
-      <div
-        class="slider-card"
-        (mouseenter)="pauseProgress()"
-        (mouseleave)="resumeProgress()"
-        (touchstart)="handleTouchStart($event)"
-        (touchmove)="handleTouchMove($event)"
-        (touchend)="handleTouchEnd($event)"
-      >
-        <img [src]="item.image" [alt]="item.name" class="slide-image" />
-        <h3 class="typography-heading-3">{{ item.name }}</h3>
-        <p class="typography-body-medium">{{ item.description }}</p>
-        <h3 class="typography-heading-3">{{ item.price }}$</h3>
+      <div class="slider-card">
+        <p class="loading typography-heading-3">Loading...</p>
       </div>
-      }
-    </div>
+    } @else if (loadError()) {
+      <div class="slider-card">
+        <p class="loading typography-heading-3">{{ loadError() }}</p>
+      </div>
+    } @else {
+      <div class="slider-slider" [style.transform]="'translateX(' + state.position + 'px)'">
+        @for (item of dataSet; track item.id) {
+          <div
+            class="slider-card"
+            (mouseenter)="pauseProgress()"
+            (mouseleave)="resumeProgress()"
+            (touchstart)="handleTouchStart($event)"
+            (touchmove)="handleTouchMove($event)"
+            (touchend)="handleTouchEnd($event)"
+          >
+            <img [src]="item.image" [alt]="item.name" class="slide-image" />
+            <h3 class="typography-heading-3">{{ item.name }}</h3>
+            <p class="typography-body-medium">{{ item.description }}</p>
+            <h3 class="typography-heading-3">{{ item.price }}$</h3>
+          </div>
+        }
+      </div>
     }
   </div>
 
@@ -53,11 +53,15 @@
 </div>
 
 @if (!isLoading && !loadError) {
-<div class="slider-controls">
-  @for (item of dataSet; track item.id) {
-  <div #control class="slider-control" [class.slider-control-activ]="$index === state.currentSlide">
-    <div class="slider-progress"></div>
+  <div class="slider-controls">
+    @for (item of dataSet; track item.id) {
+      <div
+        #control
+        class="slider-control"
+        [class.slider-control-activ]="$index === state.currentSlide"
+      >
+        <div class="slider-progress"></div>
+      </div>
+    }
   </div>
-  }
-</div>
 }
