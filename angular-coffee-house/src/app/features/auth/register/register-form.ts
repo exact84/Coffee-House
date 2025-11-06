@@ -28,7 +28,7 @@ import { ERR_MSG_LOGIN, ERR_MSG_PASS } from '../model/auth.constants';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './register-form.html',
-  styleUrl: './register-form.scss',
+  styleUrl: '../auth.scss',
 })
 export class RegisterFormComponent {
   @ViewChildren('formInput', { read: ElementRef }) inputs!: QueryList<ElementRef>;

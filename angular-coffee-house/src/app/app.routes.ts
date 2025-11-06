@@ -1,14 +1,14 @@
 import { Routes } from '@angular/router';
-import { Home } from './features/home/home';
-// import { Menu } from './features/menu/components/menu/menu';
-import { Cart } from './features/cart/cart';
+import { MenuPage } from './pages/menu-page/menu-page';
 import { RegisterPage } from './pages/register-page/register-page';
 import { LoginPage } from './pages/login-page/login-page';
+import { CartPage } from './pages/cart-page/cart-page';
+import { HomePage } from './pages/home-page/home-page';
 
 export const routes: Routes = [
-  { path: '', component: Home },
-  // { path: 'menu', component: Menu },
-  { path: 'cart', component: Cart },
+  { path: '', component: HomePage },
+  { path: 'menu', component: MenuPage },
+  { path: 'cart', component: CartPage },
   { path: 'login', component: LoginPage },
   { path: 'register', component: RegisterPage },
   { path: '**', redirectTo: '' },

@@ -33,8 +33,8 @@ interface SliderState {
 @Component({
   selector: 'app-slider',
   standalone: true,
-  templateUrl: './slider.component.html',
-  styleUrls: ['./slider.component.scss'],
+  templateUrl: './slider.html',
+  styleUrls: ['./slider.scss'],
 })
 export class SliderComponent implements AfterViewInit, OnDestroy {
   @ViewChild('slider', { static: true }) sliderRef!: ElementRef<HTMLDivElement>;

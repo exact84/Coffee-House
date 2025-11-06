@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { SliderComponent } from '../../features/slider/slider.component';
+import { SliderComponent } from '../slider/slider';
 
 @Component({
   selector: 'app-home',
