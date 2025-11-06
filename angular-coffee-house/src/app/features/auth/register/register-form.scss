@@ -1,10 +1,3 @@
-.register {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
 .register-container,
 .login-container {
   display: flex;
@@ -63,7 +56,8 @@
   font-family: inherit !important;
 }
 
-.invalid {
+input.ng-invalid.ng-touched,
+select.ng-invalid.ng-touched {
   border: 1px solid red !important;
   background-image: url('/assets/img/alert-triangle.svg');
   background-repeat: no-repeat;
@@ -71,12 +65,18 @@
   background-size: 16px 16px;
 }
 
-.valid {
+input.ng-valid.ng-touched,
+select.ng-valid.ng-touched {
   border: 1px solid green !important;
   background-image: url('/assets/img/check-mark.svg') !important;
   background-repeat: no-repeat;
   background-position: right 6px center;
   background-size: 16px 16px;
+}
+
+input[type='number'] {
+  // background-position: right 36px center !important;
+  padding-right: 26px;
 }
 
 .label-radio {

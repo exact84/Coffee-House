@@ -15,25 +15,29 @@ export class AuthService {
   authRequest<T>(authData: T, path: string): Observable<ApiResponseItem<UserData>> {
     const url = `${this.config.baseUrl}/auth/${path}`;
 
-    return this.http.post<ApiResponseItem<UserData>>(url, authData).pipe(
-      map((response) => {
-        if (!isApiResponseItem(response)) {
-          throw new Error('Invalid API response structure');
-        }
-        return response;
-      }),
-      catchError((error) => {
-        const body = error?.error;
-        let message = Array.isArray(body?.message)
-          ? body.message[0]
-          : body?.message || body?.error || 'Network error';
+    return this.http
+      .post<
+        ApiResponseItem<UserData>
+      >(url, authData, { headers: { 'Content-Type': 'application/json' } })
+      .pipe(
+        map((response) => {
+          if (!isApiResponseItem(response)) {
+            throw new Error('Invalid API response structure');
+          }
+          return response;
+        }),
+        catchError((error) => {
+          const body = error?.error;
+          let message = Array.isArray(body?.message)
+            ? body.message[0]
+            : body?.message || body?.error || 'Network error';
 
-        if (message === 'Invalid credentials') {
-          message = 'Incorrect login or password';
-        }
+          if (message === 'Invalid credentials') {
+            message = 'Incorrect login or password';
+          }
 
-        return throwError(() => new Error(message));
-      }),
-    );
+          return throwError(() => new Error(message));
+        }),
+      );
   }
 }

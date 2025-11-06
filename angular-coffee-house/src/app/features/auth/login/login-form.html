@@ -1,4 +1,9 @@
-<form class="login-container" autocomplete="off" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+<form
+  class="login-container"
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+  (keypress)="onKeyPress($event)"
+>
   <h2 class="typography-heading-2">Sign In</h2>
 
   <div class="input-container-login typography-body-medium">
@@ -9,17 +14,10 @@
         formControlName="username"
         class="input-field"
         placeholder="Placeholder"
-        [ngClass]="{
-          valid: isValid('username'),
-          invalid: isInvalid('username'),
-        }"
-        (focus)="clearError('username')"
-        (blur)="markTouched('username')"
+        (focusin)="onFocus('username')"
       />
-      @if (fieldErrors['username']) {
-        <div class="error-msg">
-          {{ fieldErrors['username'] }}
-        </div>
+      @if (form.get('username')?.touched && form.get('username')?.invalid) {
+        <div class="error-msg">{{ ERR_MSG_LOGIN }}</div>
       }
     </label>
 
@@ -31,17 +29,10 @@
         formControlName="password"
         class="input-field"
         placeholder="Placeholder"
-        [ngClass]="{
-          valid: isValid('password'),
-          invalid: isInvalid('password'),
-        }"
-        (focus)="clearError('password')"
-        (blur)="markTouched('password')"
+        (focusin)="onFocus('password')"
       />
-      @if (fieldErrors['password']) {
-        <div class="error-msg">
-          {{ fieldErrors['password'] }}
-        </div>
+      @if (form.get('password')?.touched && form.get('password')?.invalid) {
+        <div class="error-msg">{{ ERR_MSG_PASS }}</div>
       }
     </label>
   </div>
@@ -50,14 +41,12 @@
     <button
       type="submit"
       class="register-btn typography-action-link-button"
-      [disabled]="loginForm.invalid"
+      [disabled]="form.invalid"
     >
       Sign In
     </button>
     @if (errorMessage()) {
-      <div class="error-msg visible">
-        {{ errorMessage() }}
-      </div>
+      <div class="error-msg visible">{{ errorMessage() }}</div>
     }
   </div>
 </form>
