@@ -1,4 +1,9 @@
 <section class="top">
+  @if (modalErrorMessage()) {
+    <div class="typography-heading-3 notification">
+      {{ modalErrorMessage() }}
+    </div>
+  }
   <div class="offer">
     <h2 class="typography-heading-2">
       Behind each of our cups hides an
@@ -6,7 +11,7 @@
     </h2>
 
     <div class="tabs">
-      @for (tab of tabs; track tab) {
+      @for (tab of tabs; track $index) {
         <div
           class="tab-item"
           [class.tab-item-active]="category() === tab"
@@ -28,10 +33,10 @@
   } @else {
     @if (isError()) {
       <span class="typography-heading-3 loading">
-        Something went wrong. Please refresh the page.
+        {{ error_500_msg }}
       </span>
     } @else {
-      <div class="menu-grid" [style.grid-template-columns]="columns" id="menu-grid">
+      <div class="menu-grid" [style.grid-template-columns]="gridColumns" id="menu-grid">
         @for (item of visibleItems(); track item.id) {
           <div class="card" (click)="openModal(item.id.toString())">
             <div class="image">
@@ -44,8 +49,7 @@
               </div>
 
               <div class="typography-heading-3 price">
-                <!-- @if (!item.discountPrice || CurrentUser.instance?.userData?.user.id == -1) { -->
-                @if (!item.discountPrice) {
+                @if (!item.discountPrice || !authService.checkAuth()) {
                   ${{ item.price }}
                 } @else {
                   ${{ item.discountPrice }}
@@ -67,3 +71,4 @@
     }
   }
 </section>
+<app-menu-modal></app-menu-modal>

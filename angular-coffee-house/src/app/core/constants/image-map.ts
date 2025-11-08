@@ -32,3 +32,5 @@ export const IMAGE_MAP: Record<string, string> = {
   Tiramisu: 'dessert-13.png',
   Pavlova: 'dessert-14.png',
 };
+
+export const PLACEHOLDER_IMAGE = 'coffee.png';

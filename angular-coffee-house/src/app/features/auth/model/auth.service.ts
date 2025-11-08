@@ -24,6 +24,7 @@ export class AuthService {
           if (!isApiResponseItem(response)) {
             throw new Error('Invalid API response structure');
           }
+          this.login(response.data.access_token);
           return response;
         }),
         catchError((error) => {
@@ -39,5 +40,17 @@ export class AuthService {
           return throwError(() => new Error(message));
         }),
       );
+  }
+
+  login(token: string): void {
+    localStorage.setItem('CoffeHouseUser', JSON.stringify(token));
+  }
+
+  logout(): void {
+    localStorage.removeItem('CoffeHouseUser');
+  }
+
+  checkAuth(): boolean {
+    return !!localStorage.getItem('CoffeHouseUser');
   }
 }

@@ -1,28 +1,42 @@
-import { Component, OnInit, signal, computed, effect, inject, HostListener } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  signal,
+  computed,
+  effect,
+  inject,
+  HostListener,
+  ViewChild,
+} from '@angular/core';
 import { TitleCasePipe } from '@angular/common';
-// import { CurrentUser } from '../../core/models/current-user.model';
-// import { ModalService } from '../../core/services/modal.service';
 import { Product, ProductType } from '../../../core/models/product.model';
-import { IMAGE_MAP } from '../../../core/constants/image-map';
+import { IMAGE_MAP, PLACEHOLDER_IMAGE } from '../../../core/constants/image-map';
 import { MenuService } from '../model/menu.service';
+import { MenuModalComponent } from './menu-modal/menu-modal';
+import { ERROR_500_MSG } from '../../../core/constants/messages';
+import { AuthService } from '../../auth/model/auth.service';
 
 @Component({
   selector: 'app-menu',
   standalone: true,
-  imports: [TitleCasePipe],
+  imports: [TitleCasePipe, MenuModalComponent],
   templateUrl: './menu.html',
   styleUrl: './menu.scss',
 })
 export class MenuComponent implements OnInit {
+  @ViewChild(MenuModalComponent) modal!: MenuModalComponent;
   private menuService = inject(MenuService);
-  // private modal = inject(ModalService);
+  authService = inject(AuthService);
   readonly isDesktop = signal(window.innerWidth > 768);
   private readonly allItems = signal<Product[]>([]);
   readonly category = signal<ProductType>('coffee');
   readonly visibleCount = signal(4);
   readonly isError = signal(false);
   readonly isLoading = signal(false);
+  readonly modalErrorMessage = signal('');
   readonly tabs: ProductType[] = ['coffee', 'tea', 'dessert'];
+  readonly error_500_msg = ERROR_500_MSG;
+  gridColumns = '';
 
   // при изменении категории или allItems обновляем filteredItems
   readonly filteredItems = computed(() => {
@@ -31,12 +45,11 @@ export class MenuComponent implements OnInit {
       .filter((item) => item.category === cat)
       .map((item) => ({
         ...item,
-        image: `assets/img/menu/${IMAGE_MAP[item.name as keyof typeof IMAGE_MAP] || 'coffee.png'}`,
+        image: `assets/img/menu/${IMAGE_MAP[item.name as keyof typeof IMAGE_MAP] || PLACEHOLDER_IMAGE}`,
       }));
   });
 
   readonly visibleItems = computed(() => this.filteredItems().slice(0, this.visibleCount()));
-  columns = '';
 
   constructor() {
     effect(() => {
@@ -63,7 +76,7 @@ export class MenuComponent implements OnInit {
       next: (response) => {
         this.allItems.set(response.data);
         this.filterCategory(this.category());
-        this.columns = 'repeat(auto-fill, minmax(310px, 1fr))';
+        this.gridColumns = 'repeat(auto-fill, minmax(310px, 1fr))';
         this.isLoading.set(false);
       },
       error: () => {
@@ -82,7 +95,12 @@ export class MenuComponent implements OnInit {
   }
 
   openModal(id: string) {
-    console.log('Модалка ', id);
-    // this.modal.open(id);
+    this.modalErrorMessage.set('');
+    this.modal.open(id).subscribe({
+      error: () => {
+        this.modalErrorMessage.set(this.error_500_msg);
+        window.scrollTo(0, 0);
+      },
+    });
   }
 }

@@ -13,8 +13,9 @@ import {
 } from '@angular/core';
 import { FavoritesProduct } from '../../core/models/product.model';
 import { SliderService } from './slider.service';
-import { IMAGE_MAP } from '../../core/constants/image-map';
+import { IMAGE_MAP, PLACEHOLDER_IMAGE } from '../../core/constants/image-map';
 import { take } from 'rxjs';
+import { ERROR_500_MSG } from '../../core/constants/messages';
 
 const SCROLL_TIME = 5000;
 
@@ -84,7 +85,8 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
         this.dataSet = dataSet.map((p) => ({
           ...p,
           image:
-            '/assets/img/menu/' + (IMAGE_MAP[p.name as keyof typeof IMAGE_MAP] ?? 'coffee.png'),
+            '/assets/img/menu/' +
+            (IMAGE_MAP[p.name as keyof typeof IMAGE_MAP] ?? PLACEHOLDER_IMAGE),
         }));
 
         this.state.slidesCount = this.dataSet.length;
@@ -108,7 +110,7 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
         });
       })
       .catch(() => {
-        this.loadError.set('Something went wrong. Please, refresh the page.');
+        this.loadError.set(ERROR_500_MSG);
         this.isLoading.set(false);
         this.dataSet = [];
 
