@@ -38,7 +38,6 @@ export class MenuComponent implements OnInit {
   readonly error_500_msg = ERROR_500_MSG;
   gridColumns = '';
 
-  // при изменении категории или allItems обновляем filteredItems
   readonly filteredItems = computed(() => {
     const cat = this.category();
     return this.allItems()

@@ -31,6 +31,36 @@
   box-sizing: border-box;
 }
 
+.count-picker {
+  display: flex;
+  flex-direction: column;
+  border-radius: 40px;
+  background: var(--color-background-body);
+  transition: transform 0.5s ease;
+  padding: 16px 16px;
+  width: 280px;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-field {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  padding: 0 12px;
+  height: 26px;
+  width: 64px;
+  border-radius: 12px;
+  border: 1px solid var(--color-border-light);
+  background-color: var(--color-background-body) !important;
+  appearance: none;
+}
+
+.error {
+  color: red;
+}
+
 .modal-window {
   display: flex;
   flex-direction: column;
@@ -51,7 +81,7 @@
   background: var(--color-background-body);
   transition: transform 0.5s ease;
   padding: 16px 16px;
-  width: 800px;
+  width: 780px;
   justify-content: center;
   align-items: flex-start;
 }
@@ -175,18 +205,19 @@
 .prices {
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: 4px;
 }
 
 .striked-price {
   text-decoration: line-through;
-  opacity: 0.5;
+  opacity: 0.6;
+  margin-right: 4px;
 }
 
 .close-btn {
   border: solid 1px var(--color-border-light);
   border-radius: 40px;
-  padding: 10px 0;
+  padding: 10px 20px;
   transition:
     background-color 0.5s ease-in-out,
     color 0.5s ease-in-out;

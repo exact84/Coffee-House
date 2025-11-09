@@ -1,0 +1,83 @@
+@if (isLoading()) {
+  <div class="loader-overlay">
+    <div class="loading typography-heading-3">Loading...</div>
+  </div>
+}
+<div class="cart-container">
+  @if (notificationMessage()) {
+    <div class="typography-heading-3 notification">
+      {{ notificationMessage() }}
+    </div>
+  }
+  <h1 class="typography-heading-2 title-cart">Cart</h1>
+
+  @if (cartItems().length > 0) {
+    <div class="list-items">
+      @for (item of cartItems(); track item.id) {
+        <div class="list-item">
+          <button (click)="removeItem(item)" class="delete-btn">
+            <img src="./assets/img/trash.svg" alt="delete icon" class="icon" />
+          </button>
+          <div class="item-count typography-body-medium">{{ item.quantity }} x</div>
+
+          <img [src]="item.image" [alt]="item.name" class="list-item-img" />
+
+          <div class="item-info">
+            <div class="typography-heading-3 title">{{ item.name }}</div>
+            <div class="typography-body-medium">
+              {{ item.size }}{{ getAdditivesText(item.additives) }}
+            </div>
+          </div>
+
+          @if (isAuthenticated() && item.price !== item.discountPrice) {
+            <div class="typography-heading-3 price">${{ item.price }}</div>
+            <div class="typography-heading-3 disc-price">${{ item.discountPrice }}</div>
+          } @else {
+            <div class="typography-heading-3">${{ item.price || item.discountPrice }}</div>
+          }
+        </div>
+      }
+    </div>
+  }
+
+  <div class="total typography-heading-3">
+    <div class="total-line">
+      <div class="max-width">Total:</div>
+      @if (isAuthenticated() && showBothPrices()) {
+        <div class="price">${{ totalPrice() }}</div>
+        <div class="disc-price">${{ discountPrice() }}</div>
+      } @else {
+        <div>${{ displayPrice() }}</div>
+      }
+    </div>
+
+    @if (isAuthenticated()) {
+      <div class="total-line">
+        <div>Address:</div>
+        <div>{{ userAddress() }}</div>
+      </div>
+
+      <div class="total-line">
+        <div>Pay by:</div>
+        <div>{{ paymentMethod() }}</div>
+      </div>
+    }
+  </div>
+
+  <!-- @if (cartItems().length === 0 && isAuthenticated()) {
+    <p>Your cart is empty</p>
+  } -->
+
+  <div class="buttons">
+    @if (!isAuthenticated()) {
+      <button (click)="navigateToLogin()" class="typography-action-link-button button">
+        Sign In
+      </button>
+      <button (click)="navigateToRegister()" class="typography-action-link-button button">
+        Registration
+      </button>
+    } @else if (cartItems().length > 0) {
+      <button (click)="confirmOrder()" class="typography-action-link-button button">Confirm</button>
+    }
+  </div>
+</div>

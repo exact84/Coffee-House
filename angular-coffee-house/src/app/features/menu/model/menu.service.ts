@@ -4,7 +4,6 @@ import { isApiResponse, isApiResponseItem } from '../../../core/typeGuards/typeG
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { ApiConfigService } from '../../../shared/config/api-config.service';
-import { CartItem } from '../../../core/models/product.model';
 
 @Injectable({
   providedIn: 'root',
@@ -58,9 +57,5 @@ export class MenuService {
           return throwError(() => new Error(message));
         }),
       );
-  }
-
-  addToCart(cartItem: CartItem) {
-    console.log(cartItem, ' added to cart');
   }
 }

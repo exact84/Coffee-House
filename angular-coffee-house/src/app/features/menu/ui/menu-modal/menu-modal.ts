@@ -1,10 +1,17 @@
 import { Component, signal, inject } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { MenuService } from '../../model/menu.service';
-import { Additives, CardItem, CartItem, Product } from '../../../../core/models/product.model';
+import {
+  Additives,
+  CardItem,
+  CartItem,
+  DrinkSizeKey,
+  Product,
+} from '../../../../core/models/product.model';
 import { IMAGE_MAP, PLACEHOLDER_IMAGE } from '../../../../core/constants/image-map';
 import { catchError, map, tap, throwError } from 'rxjs';
 import { AuthService } from '../../../auth/model/auth.service';
+import { CartService } from '../../../cart/cart.service';
 
 @Component({
   selector: 'app-menu-modal',
@@ -15,7 +22,8 @@ import { AuthService } from '../../../auth/model/auth.service';
 })
 export class MenuModalComponent {
   private menuService = inject(MenuService);
-  authService = inject(AuthService);
+  private authService = inject(AuthService);
+  private cartService = inject(CartService);
 
   isOpen = signal(false);
   loading = signal(false);
@@ -27,6 +35,13 @@ export class MenuModalComponent {
   id = 0;
   cartItemId = 0;
   notificationMessage = signal<string | null>(null);
+  count = 0;
+  showCountModal = signal(false);
+  showCountModalError = signal(false);
+
+  isAuthenticated = () => {
+    return this.authService.checkAuth();
+  };
 
   open(id: string) {
     this.id = Number(id);
@@ -52,7 +67,6 @@ export class MenuModalComponent {
 
         this.sizeKeys = Object.keys(data.sizes);
         this.additivesValues = Object.values(data.additives);
-        console.log(this.card());
         this.loading.set(false);
       }),
       catchError((err) => {
@@ -66,6 +80,7 @@ export class MenuModalComponent {
 
   close() {
     this.isOpen.set(false);
+    this.showCountModal.set(false);
     document.documentElement.classList.remove('no-scroll');
   }
 
@@ -80,15 +95,14 @@ export class MenuModalComponent {
     this.selectedSize.set(size);
   }
 
-  getTotalPrice(): number {
+  getTotalPrice(): [number, number] {
     const card = this.card();
     const selectedSize = this.selectedSize();
-    if (!card || !selectedSize) return 0;
+    if (!card || !selectedSize) return [0, 0];
 
     const sizeInfo = card.sizes[selectedSize as keyof typeof card.sizes];
     const sizePrice = parseFloat(sizeInfo.price);
     const discSizePrice = parseFloat(sizeInfo.discountPrice || sizeInfo.price);
-    console.log(sizeInfo, sizePrice, discSizePrice);
 
     let additivesTotal = 0;
     let additivesDiscount = 0;
@@ -99,15 +113,15 @@ export class MenuModalComponent {
         additivesDiscount += parseFloat(add.discountPrice || add.price);
       }
     });
-
-    if (!this.authService.checkAuth()) return sizePrice + additivesTotal;
-    return discSizePrice + additivesDiscount;
+    return [sizePrice + additivesTotal, discSizePrice + additivesDiscount];
   }
 
   addToCart() {
     const card = this.card();
     const selectedSize = this.selectedSize();
-    if (!this.card || !this.selectedSize) return;
+    if (!card || !selectedSize) return;
+    const sizeKey = selectedSize as DrinkSizeKey;
+    const sizeOption = card.sizes[sizeKey];
 
     const cartItem: CartItem = {
       id: (this.cartItemId += 1),
@@ -116,24 +130,16 @@ export class MenuModalComponent {
       description: card?.description || '',
       image: card?.image,
       category: card?.category || '',
-      size: selectedSize || '',
+      size: sizeOption.size,
       additives: Array.from(this.selectedAdditives()),
-      price: '',
-      discountPrice: '',
-      quantity: 1,
+      price: (this.getTotalPrice()[0] * this.count).toFixed(2),
+      discountPrice: (this.getTotalPrice()[1] * this.count).toFixed(2),
+      quantity: this.count,
       totalPrice: '',
     };
 
-    const total = this.getTotalPrice().toFixed(2);
-    if (this.authService.checkAuth()) {
-      cartItem.discountPrice = total;
-      cartItem.totalPrice = total;
-    } else {
-      cartItem.price = total;
-      cartItem.totalPrice = total;
-    }
-
-    this.menuService.addToCart(cartItem);
+    this.cartService.addToCart(cartItem);
+    console.log(cartItem);
     this.close();
   }
 
@@ -157,8 +163,7 @@ export class MenuModalComponent {
   }
 
   showStrikedPrice(): boolean {
-    // показывать ли зачеркнутую цену
-    return this.getStrikedPrice() !== this.getTotalPrice(); // && this.authService.checkAuth();
+    return this.getTotalPrice()[0] !== this.getTotalPrice()[1] && this.isAuthenticated();
   }
 
   getStrikedPrice(): number {
@@ -177,5 +182,19 @@ export class MenuModalComponent {
     });
 
     return sizePrice + additivesTotal;
+  }
+
+  openCountModal() {
+    this.showCountModal.set(true);
+  }
+
+  closeCountModal(count = '1') {
+    this.count = Number(count) || 1;
+    if (this.count > 99) {
+      this.showCountModalError.set(true);
+      return;
+    }
+    this.showCountModal.set(false);
+    this.addToCart();
   }
 }
