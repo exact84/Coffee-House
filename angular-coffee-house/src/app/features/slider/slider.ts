@@ -84,8 +84,7 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
         this.dataSet = dataSet.map((p) => ({
           ...p,
           image:
-            '/assets/img/menu/' +
-            (IMAGE_MAP[p.name as keyof typeof IMAGE_MAP] ?? PLACEHOLDER_IMAGE),
+            'assets/img/menu/' + (IMAGE_MAP[p.name as keyof typeof IMAGE_MAP] ?? PLACEHOLDER_IMAGE),
         }));
 
         this.state.slidesCount = this.dataSet.length;

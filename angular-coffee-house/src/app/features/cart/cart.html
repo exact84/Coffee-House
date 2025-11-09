@@ -16,7 +16,7 @@
       @for (item of cartItems(); track item.id) {
         <div class="list-item">
           <button (click)="removeItem(item)" class="delete-btn">
-            <img src="./assets/img/trash.svg" alt="delete icon" class="icon" />
+            <img src="assets/img/trash.svg" alt="delete icon" class="icon" />
           </button>
           <div class="item-count typography-body-medium">{{ item.quantity }} x</div>
 

@@ -11,6 +11,12 @@
     />
     <meta name="keywords" content="coffee, cafe, coffee house, espresso, latte, pastries" />
     <link rel="icon" href="assets/img/logo.png" />
+    <script>
+      if (window.location.pathname !== '/Coffee-House/' && !window.location.hash) {
+        const route = window.location.pathname.replace('/Coffee-House', '');
+        window.location.hash = route || '/';
+      }
+    </script>
   </head>
   <body>
     <app-root></app-root>

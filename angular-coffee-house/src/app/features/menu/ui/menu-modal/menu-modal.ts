@@ -57,7 +57,7 @@ export class MenuModalComponent {
           this.card.set({
             ...currentCard,
             image:
-              '/assets/img/menu/' +
+              'assets/img/menu/' +
               (IMAGE_MAP[currentCard.name as keyof typeof IMAGE_MAP] ?? PLACEHOLDER_IMAGE),
           });
         }
@@ -139,7 +139,6 @@ export class MenuModalComponent {
     };
 
     this.cartService.addToCart(cartItem);
-    console.log(cartItem);
     this.close();
   }
 

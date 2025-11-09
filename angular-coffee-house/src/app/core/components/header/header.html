@@ -1,7 +1,7 @@
 <header>
   <nav class="nav">
     <a routerLink="/">
-      <img src="/assets/img/logo.png" alt="Logo" />
+      <img src="assets/img/logo.png" alt="Logo" />
     </a>
 
     <input
@@ -32,7 +32,7 @@
         <a routerLink="/menu" class="coffee-menu-vertical">
           <div class="typography-burger-link">Menu</div>
           <div>
-            <img src="/assets/img/coffee-cup.svg" alt="coffee-cup" />
+            <img src="assets/img/coffee-cup.svg" alt="coffee-cup" />
           </div>
         </a>
       </li>
@@ -41,7 +41,7 @@
           <a href="#" (click)="logout($event)" class="coffee-menu-vertical">
             <div class="typography-burger-link">LogOut</div>
             <div>
-              <img src="/assets/img/logout.svg" alt="logout" />
+              <img src="assets/img/logout.svg" alt="logout" />
             </div>
           </a>
         </li>
@@ -50,7 +50,7 @@
         <a routerLink="/cart" class="cart-menu-vertical">
           <div class="typography-burger-link">Cart</div>
           <div>
-            <img src="/assets/img/shopping-bag.svg" alt="cart icon" />
+            <img src="assets/img/shopping-bag.svg" alt="cart icon" />
           </div>
         </a>
       </li>
@@ -73,7 +73,7 @@
     <div class="cart-menu" id="cart-menu" title="{{ this.cartService.userLogin() || 'Guest' }}">
       <a routerLink="/cart">
         <div>
-          <img src="/assets/img/shopping-bag.svg" alt="cart icon" />
+          <img src="assets/img/shopping-bag.svg" alt="cart icon" />
         </div>
         <div class="typography-action-link-button" id="cart-item-count">
           <span id="cart-count" class="cart-count">{{ cartCountSignal() }}</span>
@@ -84,7 +84,7 @@
       <div class="logout-btn">
         <a href="#" (click)="logout($event)">
           <div>
-            <img src="/assets/img/logout.svg" class="logout-icon" alt="LogOut" />
+            <img src="assets/img/logout.svg" class="logout-icon" alt="LogOut" />
           </div>
         </a>
       </div>
@@ -93,7 +93,7 @@
       <a routerLink="/menu">
         <div class="typography-action-link-button">Menu</div>
         <div>
-          <img src="/assets/img/coffee-cup.svg" alt="coffee-cup" />
+          <img src="assets/img/coffee-cup.svg" alt="coffee-cup" />
         </div>
       </a>
     </div>
