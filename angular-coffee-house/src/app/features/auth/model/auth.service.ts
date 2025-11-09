@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ApiConfigService } from '../../../shared/config/api-config.service';
-import { UserData } from './auth.types';
+import { RegisterData, UserData } from './auth.types';
 import { isApiResponseItem } from '../../../core/typeGuards/typeGuard';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -24,7 +24,7 @@ export class AuthService {
           if (!isApiResponseItem(response)) {
             throw new Error('Invalid API response structure');
           }
-          this.login(response.data.access_token);
+          localStorage.setItem('CoffeeHouseUser', response.data.access_token);
           return response;
         }),
         catchError((error) => {
@@ -42,15 +42,36 @@ export class AuthService {
       );
   }
 
-  login(token: string): void {
-    localStorage.setItem('CoffeHouseUser', JSON.stringify(token));
-  }
-
-  logout(): void {
-    localStorage.removeItem('CoffeHouseUser');
-  }
-
   checkAuth(): boolean {
-    return !!localStorage.getItem('CoffeHouseUser');
+    return !!localStorage.getItem('CoffeeHouseUser');
+  }
+
+  getProfile(): Observable<ApiResponseItem<RegisterData>> {
+    const url = `${this.config.baseUrl}/auth/profile`;
+    const token = localStorage.getItem('CoffeeHouseUser');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http
+      .get<ApiResponseItem<RegisterData>>(url, {
+        headers,
+      })
+      .pipe(
+        map((response) => {
+          if (!isApiResponseItem(response)) {
+            throw new Error('Invalid API response structure');
+          }
+          return response;
+        }),
+        catchError((error) => {
+          const body = error?.error;
+          let message = Array.isArray(body?.message)
+            ? body.message[0]
+            : body?.message || body?.error || 'Network error';
+          return throwError(() => new Error(message));
+        }),
+      );
   }
 }

@@ -22,6 +22,7 @@ import { AuthData, RegisterData } from '../model/auth.types';
 import { streetsByCity, cities } from '../model/auth.constants';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ERR_MSG_LOGIN, ERR_MSG_PASS } from '../model/auth.constants';
+import { CartService } from '../../cart/cart.service';
 
 @Component({
   selector: 'app-register-form',
@@ -33,6 +34,7 @@ import { ERR_MSG_LOGIN, ERR_MSG_PASS } from '../model/auth.constants';
 export class RegisterFormComponent {
   @ViewChildren('formInput', { read: ElementRef }) inputs!: QueryList<ElementRef>;
   private readonly authService = inject(AuthService);
+  private readonly cartService = inject(CartService);
   private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
 
@@ -105,13 +107,13 @@ export class RegisterFormComponent {
       houseNumber: Number(this.form.value.houseNumber),
       paymentMethod: this.form.value.paymentMethod!,
     };
-    console.log(data);
 
     this.authService.authRequest<AuthData>(data, 'register').subscribe({
       next: (result) => {
         if (result.message === 'User registered successfully') {
           this.form.reset();
           this.form.get('paymentMethod')?.setValue('cash');
+          this.cartService.loadUserProfile();
           this.router.navigate(['/menu']);
         } else {
           this.errorMessage.set(result.error ?? 'Registration error');

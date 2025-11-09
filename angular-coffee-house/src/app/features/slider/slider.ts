@@ -80,7 +80,6 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
       .getFavorites<FavoritesProduct>('/products/favorites')
       .then((response) => {
         const dataSet: FavoritesProduct[] = response.data;
-        console.log(dataSet);
 
         this.dataSet = dataSet.map((p) => ({
           ...p,

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../model/auth.service';
 import { AuthData } from '../model/auth.types';
 import { ERR_MSG_LOGIN, ERR_MSG_PASS } from '../model/auth.constants';
+import { CartService } from '../../cart/cart.service';
 
 @Component({
   selector: 'app-login-form',
@@ -17,6 +18,7 @@ export class LoginFormComponent {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
+  private readonly cartService = inject(CartService);
 
   readonly ERR_MSG_LOGIN = ERR_MSG_LOGIN;
   readonly ERR_MSG_PASS = ERR_MSG_PASS;
@@ -54,6 +56,7 @@ export class LoginFormComponent {
     this.authService.authRequest<AuthData>(data, 'login').subscribe({
       next: (result) => {
         if (result.message === 'Login successful') {
+          this.cartService.loadUserProfile();
           this.router.navigate(['/menu']);
         } else {
           this.errorMessage.set(result.error ?? 'Login error');
