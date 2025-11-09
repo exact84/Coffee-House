@@ -70,7 +70,7 @@
         <a [routerLink]="[]" fragment="contact">Contact us</a>
       </li>
     </ul>
-    <div class="cart-menu" id="cart-menu">
+    <div class="cart-menu" id="cart-menu" title="{{ this.cartService.userLogin() || 'Guest' }}">
       <a routerLink="/cart">
         <div>
           <img src="/assets/img/shopping-bag.svg" alt="cart icon" />

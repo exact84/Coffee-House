@@ -25,7 +25,7 @@ export class LoginFormComponent {
   readonly errorMessage = signal('');
 
   form = this.fb.group({
-    username: ['', [Validators.required, Validators.pattern(/^[A-Za-z][A-Za-z]{2,}$/)]],
+    username: ['', [Validators.required, Validators.pattern(/^[A-Za-z]{3,}$/)]],
     password: ['', [Validators.required, Validators.pattern(/^(?=.*[^A-Za-z0-9]).{6,}$/)]],
   });
 
