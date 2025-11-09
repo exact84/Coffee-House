@@ -1,0 +1,13 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { SliderComponent } from '../slider/slider';
+
+@Component({
+  selector: 'app-home',
+  standalone: true,
+  imports: [CommonModule, RouterModule, SliderComponent],
+  templateUrl: './home.html',
+  styleUrl: './home.scss',
+})
+export class Home {}

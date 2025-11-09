@@ -1,0 +1,128 @@
+@if (isOpen()) {
+  <div class="overlay show" (click)="close()">
+    <div class="modal-window" (click)="$event.stopPropagation()">
+      <div class="close-row">
+        <button class="close-button" (click)="close()">
+          <img src="assets/img/button-close.svg" alt="close" />
+        </button>
+      </div>
+
+      @if (showCountModal()) {
+        <div class="count-picker">
+          <h3 class="typography-heading-3">Count:</h3>
+          <input
+            #qtyInput
+            class="input-field"
+            type="number"
+            value="1"
+            min="1"
+            max="99"
+            (focus)="showCountModalError.set(false)"
+          />
+          @if (showCountModalError()) {
+            <p class="error">Please enter a number from 1 to 99</p>
+          }
+          <button
+            class="close-btn typography-action-link-button"
+            (click)="closeCountModal(qtyInput.value)"
+          >
+            Add to Cart
+          </button>
+        </div>
+      }
+
+      @if (loading()) {
+        <h3 class="loading">Loading...</h3>
+      }
+
+      @if (!loading() && !showCountModal() && card()) {
+        <div class="modal-div">
+          @if (card()) {
+            <div class="gifts-img">
+              <img [src]="card()!.image" [alt]="card()?.name || 'coffee'" />
+            </div>
+
+            <div class="modal-description">
+              <div class="title">
+                <h3 class="typography-heading-3">{{ card()!.name }}</h3>
+                <p class="typography-body-medium">{{ card()!.description }}</p>
+              </div>
+
+              <div class="size">
+                <p class="typography-body-medium">Size</p>
+                <div class="size-tabs">
+                  @for (size of sizeKeys; track size; let index = $index) {
+                    <div
+                      class="size-tab typography-action-link-button"
+                      [class.size-tab-active]="size === selectedSize()"
+                      (click)="selectSize(size)"
+                    >
+                      <div class="circle">{{ size.toUpperCase() }}</div>
+                      <div class="size">{{ getSizeDisplayName(size) }}</div>
+                      <div class="tool-tip">
+                        @if (
+                          getSizePrice(size) !== getSizeDiscountPrice(size) && isAuthenticated()
+                        ) {
+                          <span class="striked-price"
+                            >${{ getSizePrice(size) | number: '1.2-2' }}</span
+                          >
+                          <span>${{ getSizeDiscountPrice(size) | number: '1.2-2' }}</span>
+                        } @else {
+                          <span>${{ getSizePrice(size) | number: '1.2-2' }}</span>
+                        }
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <div class="additives">
+                <p class="typography-body-medium">Additives</p>
+                <div class="additives-tabs">
+                  @for (add of additivesValues; track add; let index = $index) {
+                    <div
+                      class="size-tab typography-action-link-button"
+                      [class.size-tab-active]="selectedAdditives().has(add.name)"
+                      (click)="toggleAdditive(add.name)"
+                    >
+                      <div class="circle">{{ index + 1 }}</div>
+                      <div class="add-name">{{ add.name }}</div>
+                      <div class="tool-tip">
+                        @if (
+                          add.discountPrice && add.price !== add.discountPrice && isAuthenticated()
+                        ) {
+                          <span class="striked-price">${{ add.price | number: '1.2-2' }}</span>
+                          <span>${{ add.discountPrice || add.price | number: '1.2-2' }}</span>
+                        } @else {
+                          <span>${{ add.price | number: '1.2-2' }}</span>
+                        }
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <div class="total-price typography-heading-3">
+                <span>Total:</span>
+                <div class="prices">
+                  @if (showStrikedPrice()) {
+                    <div class="price striked-price">
+                      ${{ getStrikedPrice() | number: '1.2-2' }}
+                    </div>
+                  }
+                  <div class="price">
+                    ${{ getTotalPrice()[isAuthenticated() ? 1 : 0] | number: '1.2-2' }}
+                  </div>
+                </div>
+              </div>
+
+              <button class="close-btn typography-action-link-button" (click)="openCountModal()">
+                Add to Cart
+              </button>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+}

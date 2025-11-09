@@ -1,0 +1,146 @@
+<form
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+  (keypress)="onKeyPress($event)"
+  class="register-container"
+>
+  <h2 class="typography-heading-2">Registration</h2>
+  <div class="input-container typography-body-medium">
+    <label class="label-input">
+      Login
+      <input
+        id="username"
+        formControlName="username"
+        class="input-field"
+        placeholder="Placeholder"
+        (focusin)="onFocus('username')"
+      />
+      @if (form.get('username')?.touched && form.get('username')?.invalid) {
+        <div class="error-msg">{{ ERR_MSG_LOGIN }}</div>
+      }
+    </label>
+
+    <label class="label-input">
+      Password
+      <input
+        id="password"
+        type="password"
+        formControlName="password"
+        class="input-field"
+        placeholder="Placeholder"
+        (focusin)="onFocus('password')"
+      />
+      @if (form.get('password')?.touched && form.get('password')?.invalid) {
+        <div class="error-msg">{{ ERR_MSG_PASS }}</div>
+      }
+    </label>
+
+    <label class="label-input">
+      Confirm Password
+      <input
+        id="confirmPassword"
+        type="password"
+        formControlName="confirmPassword"
+        class="input-field"
+        placeholder="Placeholder"
+        (focusin)="onFocus('confirmPassword')"
+      />
+      @if (passwordMismatch) {
+        <div class="error-msg">Passwords do not match</div>
+      }
+    </label>
+
+    <label class="label-input label-small">
+      City
+      <select id="city" formControlName="city" class="input-field" (focusin)="onFocus('city')">
+        <option value="" disabled selected>Choose a city</option>
+        @for (city of cities; track city) {
+          <option [value]="city">{{ city }}</option>
+        }
+      </select>
+      @if (form.get('city')?.touched && form.get('city')?.invalid) {
+        <div class="error-msg">Please select a city</div>
+      }
+    </label>
+
+    <label class="label-input label-small">
+      Street
+      <select
+        id="street"
+        formControlName="street"
+        class="input-field"
+        (focusin)="onFocus('street')"
+      >
+        <option value="" disabled selected>Choose a street</option>
+        @for (street of streets(); track street) {
+          <option [value]="street">{{ street }}</option>
+        } @empty {
+          <option disabled>No streets available</option>
+        }
+      </select>
+      @if (form.get('street')?.touched && form.get('street')?.invalid) {
+        <div class="error-msg">Please select a street</div>
+      }
+    </label>
+
+    <label class="label-input label-small">
+      House number
+      <input
+        id="houseNumber"
+        formControlName="houseNumber"
+        class="input-field"
+        placeholder="Placeholder"
+        (focusin)="onFocus('houseNumber')"
+        type="number"
+      />
+      @if (form.get('houseNumber')?.touched && form.get('houseNumber')?.invalid) {
+        <div class="error-msg">
+          @if (form.get('houseNumber')?.hasError('required')) {
+            House number is required
+          } @else if (form.get('houseNumber')?.hasError('min')) {
+            House number must be greater than 1
+          }
+        </div>
+      }
+    </label>
+
+    <label class="label-radio"
+      >Pay by
+      <div class="payment-container">
+        <div class="cash-container">
+          <input
+            type="radio"
+            formControlName="paymentMethod"
+            value="cash"
+            id="cash"
+            class="input-radio"
+            checked
+          />
+          <label for="cash" class="radio-option">Cash</label>
+        </div>
+        <div class="card-container">
+          <input
+            type="radio"
+            formControlName="paymentMethod"
+            value="card"
+            id="card"
+            class="input-radio"
+          />
+          <label for="card" class="radio-option">Card</label>
+        </div>
+      </div>
+    </label>
+  </div>
+  <div class="button-container">
+    <button
+      type="submit"
+      class="register-btn typography-action-link-button"
+      [disabled]="form.invalid"
+    >
+      Registration
+    </button>
+    @if (errorMessage()) {
+      <div class="error-msg visible">{{ errorMessage() }}</div>
+    }
+  </div>
+</form>

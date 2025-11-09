@@ -1,0 +1,52 @@
+<form
+  class="login-container"
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+  (keypress)="onKeyPress($event)"
+>
+  <h2 class="typography-heading-2">Sign In</h2>
+
+  <div class="input-container-login typography-body-medium">
+    <label class="label-input" for="username">
+      Login:
+      <input
+        id="username"
+        formControlName="username"
+        class="input-field"
+        placeholder="Placeholder"
+        (focusin)="onFocus('username')"
+      />
+      @if (form.get('username')?.touched && form.get('username')?.invalid) {
+        <div class="error-msg">{{ ERR_MSG_LOGIN }}</div>
+      }
+    </label>
+
+    <label class="label-input" for="password">
+      Password:
+      <input
+        id="password"
+        type="password"
+        formControlName="password"
+        class="input-field"
+        placeholder="Placeholder"
+        (focusin)="onFocus('password')"
+      />
+      @if (form.get('password')?.touched && form.get('password')?.invalid) {
+        <div class="error-msg">{{ ERR_MSG_PASS }}</div>
+      }
+    </label>
+  </div>
+
+  <div class="button-container">
+    <button
+      type="submit"
+      class="register-btn typography-action-link-button"
+      [disabled]="form.invalid"
+    >
+      Sign In
+    </button>
+    @if (errorMessage()) {
+      <div class="error-msg visible">{{ errorMessage() }}</div>
+    }
+  </div>
+</form>

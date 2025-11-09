@@ -1,0 +1,101 @@
+<header>
+  <nav class="nav">
+    <a routerLink="/">
+      <img src="assets/img/logo.png" alt="Logo" />
+    </a>
+
+    <input
+      type="checkbox"
+      id="burger-toggle"
+      class="burger-toggle"
+      [checked]="isMenuOpen()"
+      (change)="toggleMenu()"
+    />
+    <label for="burger-toggle" class="burger-menu">
+      <span></span>
+      <span></span>
+    </label>
+    <ul class="menu typography-burger-link" (click)="onMenuClick()">
+      <li>
+        <a routerLink="/" fragment="favorite">Favorite coffee</a>
+      </li>
+      <li>
+        <a routerLink="/" fragment="about">About</a>
+      </li>
+      <li>
+        <a routerLink="/" fragment="mobile-app">Mobile app</a>
+      </li>
+      <li>
+        <a [routerLink]="[]" fragment="contact">Contact us</a>
+      </li>
+      <li>
+        <a routerLink="/menu" class="coffee-menu-vertical">
+          <div class="typography-burger-link">Menu</div>
+          <div>
+            <img src="assets/img/coffee-cup.svg" alt="coffee-cup" />
+          </div>
+        </a>
+      </li>
+      @if (isAuthenticated()) {
+        <li>
+          <a href="#" (click)="logout($event)" class="coffee-menu-vertical">
+            <div class="typography-burger-link">LogOut</div>
+            <div>
+              <img src="assets/img/logout.svg" alt="logout" />
+            </div>
+          </a>
+        </li>
+      }
+      <li id="cart-menu-vertical">
+        <a routerLink="/cart" class="cart-menu-vertical">
+          <div class="typography-burger-link">Cart</div>
+          <div>
+            <img src="assets/img/shopping-bag.svg" alt="cart icon" />
+          </div>
+        </a>
+      </li>
+    </ul>
+
+    <ul class="nav-bar typography-action-link-button">
+      <li>
+        <a routerLink="/" fragment="favorite">Favorite coffee</a>
+      </li>
+      <li>
+        <a routerLink="/" fragment="about">About</a>
+      </li>
+      <li>
+        <a routerLink="/" fragment="mobile-app">Mobile app</a>
+      </li>
+      <li>
+        <a [routerLink]="[]" fragment="contact">Contact us</a>
+      </li>
+    </ul>
+    <div class="cart-menu" id="cart-menu" title="{{ this.cartService.userLogin() || 'Guest' }}">
+      <a routerLink="/cart">
+        <div>
+          <img src="assets/img/shopping-bag.svg" alt="cart icon" />
+        </div>
+        <div class="typography-action-link-button" id="cart-item-count">
+          <span id="cart-count" class="cart-count">{{ cartCountSignal() }}</span>
+        </div>
+      </a>
+    </div>
+    @if (isAuthenticated()) {
+      <div class="logout-btn">
+        <a href="#" (click)="logout($event)">
+          <div>
+            <img src="assets/img/logout.svg" class="logout-icon" alt="LogOut" />
+          </div>
+        </a>
+      </div>
+    }
+    <div class="coffee-menu">
+      <a routerLink="/menu">
+        <div class="typography-action-link-button">Menu</div>
+        <div>
+          <img src="assets/img/coffee-cup.svg" alt="coffee-cup" />
+        </div>
+      </a>
+    </div>
+  </nav>
+</header>

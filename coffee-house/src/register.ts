@@ -1,0 +1,310 @@
+import { checkFormValidity, hideError, loadLayout, newElement, showError } from './utils';
+import { CurrentUser } from './user';
+import { authRequest } from './request';
+import { ApiResponseItem, RegisterData, UserData } from './responseTypes';
+import { ERR_MSG_LOGIN, ERR_MSG_PASS } from './consts';
+
+const cities = ['Almaty', 'Astana', 'Karaganda'];
+
+const streetsByCity: Record<string, string[]> = {
+  Almaty: [
+    'Abay',
+    'Zhibek Zholy',
+    'Pushkin',
+    'Gogol',
+    'Sailanov',
+    'Mametova',
+    'Dostyk',
+    'Rozybakiyev',
+    'Satpayev',
+    'Kazybek',
+  ],
+  Astana: [
+    'Nurly Zhol',
+    'Mangilik El',
+    'Abai',
+    'Turkestan',
+    'Bogenbay',
+    'Kabanbay',
+    'Zhenis',
+    'Saryarka',
+    'Satpayev',
+    'Yesil',
+  ],
+  Karaganda: [
+    'Lobody',
+    'Bukhar Zhyray',
+    'Respublica',
+    'Abay',
+    'Satpayev',
+    'Kirov',
+    'Gogol',
+    'Zataevich',
+    'Amanzholov',
+    'Seifullin',
+  ],
+};
+
+document.addEventListener('DOMContentLoaded', async () => {
+  await CurrentUser.restoreInstance();
+  await loadLayout();
+  createRegister();
+});
+
+export function createRegister(): void {
+  const main: HTMLElement | null = document.querySelector('.register');
+  if (!main) return;
+  const registerContainer = newElement('div', '', main, ['register-container']);
+
+  newElement('h2', 'Registration', registerContainer, ['typography-heading-2']);
+  const inputContainer = newElement(
+    'form',
+    '',
+    registerContainer,
+    ['input-container', 'typography-body-medium'],
+    {
+      autocomplete: 'off',
+    }
+  );
+
+  const labelName = newElement('label', 'Login', inputContainer, ['label-input'], {
+    for: 'username',
+  });
+  const inputName = newElement('input', '', labelName, ['input-field'], {
+    id: 'username',
+    type: 'text',
+    placeholder: 'Placeholder',
+    autocomplete: 'off',
+  });
+
+  const labelPass = newElement('label', 'Password', inputContainer, ['label-input'], {
+    for: 'password',
+  });
+  const inputPass = newElement('input', '', labelPass, ['input-field'], {
+    id: 'password',
+    type: 'password',
+    placeholder: 'Placeholder',
+    autocomplete: 'off',
+  });
+
+  const labelPassConfirm = newElement(
+    'label',
+    'Confirm Password',
+    inputContainer,
+    ['label-input'],
+    {
+      for: 'conf-password',
+    }
+  );
+  const inputPassConfirm = newElement('input', '', labelPassConfirm, ['input-field'], {
+    id: 'conf-password',
+    type: 'password',
+    placeholder: 'Placeholder',
+  });
+
+  const labelCity = newElement('label', 'City', inputContainer, ['label-input', 'label-small'], {
+    for: 'city',
+  });
+  const inputCity = newElement('select', '', labelCity, ['input-field'], {
+    id: 'city',
+    name: 'city',
+    type: 'text',
+  });
+  newElement('option', 'Choose a city', inputCity, [], {
+    value: '',
+    disabled: true,
+    selected: true,
+  });
+  cities.forEach((city) => {
+    newElement('option', city, inputCity, [], { value: city });
+  });
+
+  const labelStreet = newElement(
+    'label',
+    'Street',
+    inputContainer,
+    ['label-input', 'label-small'],
+    {
+      for: 'street',
+    }
+  );
+  const inputStreet = newElement('select', '', labelStreet, ['input-field'], {
+    id: 'street',
+    name: 'street',
+    type: 'text',
+  });
+  newElement('option', 'Choose a street', inputStreet, [], {
+    value: '',
+    disabled: true,
+    selected: true,
+  });
+  inputCity.addEventListener('change', () => {
+    const city = inputCity.value;
+    const streets = streetsByCity[city] || [];
+
+    inputStreet.querySelectorAll('option:not([disabled])').forEach((opt) => opt.remove());
+
+    streets.forEach((street) => {
+      newElement('option', street, inputStreet, [], { value: street });
+    });
+
+    inputStreet.value = '';
+  });
+
+  const labelHouseNumber = newElement(
+    'label',
+    'House number',
+    inputContainer,
+    ['label-input', 'label-small'],
+    {
+      for: 'houseNumber',
+    }
+  );
+  const inputHouseNumber = newElement('input', '', labelHouseNumber, ['input-field'], {
+    id: 'houseNumber',
+    type: 'text',
+    placeholder: 'Placeholder',
+  });
+
+  const labelPaymentMethod = newElement('label', 'Pay by', inputContainer, ['label-radio']);
+
+  const paymentContainer = newElement('div', '', labelPaymentMethod, ['payment-container']);
+
+  const cashContainer = newElement('div', '', paymentContainer, ['cash-container']);
+  newElement('input', '', cashContainer, ['input-radio'], {
+    type: 'radio',
+    name: 'payment',
+    value: 'Cash',
+    id: 'cash',
+    checked: true,
+  });
+  newElement('label', 'Cash', cashContainer, ['radio-option'], { for: 'cash' });
+
+  const cardContainer = newElement('div', '', paymentContainer, ['card-container']);
+  newElement('input', '', cardContainer, ['input-radio'], {
+    type: 'radio',
+    name: 'payment',
+    value: 'Card',
+    id: 'card',
+  });
+  newElement('label', 'Card', cardContainer, ['radio-option'], { for: 'card' });
+
+  const buttonContainer = newElement('div', '', registerContainer, ['button-container']);
+  const btnRegister = newElement('button', 'Registration', buttonContainer, [
+    'register-btn',
+    'typography-action-link-button',
+  ]);
+  btnRegister.disabled = true;
+  const divError = newElement('div', '', buttonContainer, ['error-msg']);
+
+  inputContainer.addEventListener('focusin', (event) => {
+    const target = event.target as HTMLInputElement;
+    hideError(target);
+  });
+
+  inputContainer.addEventListener('input', (event) => {
+    const target = event.target as HTMLInputElement;
+    target.classList.remove('invalid');
+    if (!target.classList.contains('input-field')) return;
+    btnRegister.disabled = !checkFormValidity(inputContainer);
+  });
+
+  inputContainer.addEventListener('focusout', validateInput);
+
+  function validateInput(event: FocusEvent) {
+    const target = event.target as HTMLInputElement;
+    if (!target.classList.contains('input-field')) return;
+    const value = target.value.trim();
+    const id = target.id;
+    let isValid = true;
+    let message = '';
+
+    switch (id) {
+      case 'username':
+        isValid = /^[A-Za-z][A-Za-z]{2,}$/.test(value);
+        message = ERR_MSG_LOGIN;
+        break;
+
+      case 'password':
+        isValid = /^(?=.*[^A-Za-z0-9]).{6,}$/.test(value);
+        message = ERR_MSG_PASS;
+        break;
+
+      case 'conf-password':
+        isValid =
+          value === (document.getElementById('password') as HTMLInputElement)?.value &&
+          value.length > 0;
+        message = 'Passwords do not match';
+        break;
+
+      case 'city':
+        isValid = value.length > 1;
+        message = 'Choose a city';
+        break;
+
+      case 'street':
+        isValid = value.length > 1;
+        message = 'Choose a street';
+        break;
+
+      case 'houseNumber':
+        isValid = Number(value) > 1;
+        message = 'House number must be greater than 1';
+        break;
+    }
+
+    // Highlight invalid inputs
+    if (!isValid) {
+      showError(target, message);
+    } else {
+      hideError(target);
+      target.classList.add('valid');
+    }
+    btnRegister.disabled = !checkFormValidity(inputContainer);
+  }
+
+  async function handleRegisterUser(): Promise<void> {
+    let result: ApiResponseItem<UserData> | undefined = undefined;
+    const request = {
+      login: inputName.value.trim(),
+      password: inputPass.value.trim(),
+      confirmPassword: inputPassConfirm.value.trim(),
+      city: inputCity.value.trim(),
+      street: inputStreet.value.trim(),
+      houseNumber: Number(inputHouseNumber.value.trim()),
+      paymentMethod:
+        document
+          .querySelector<HTMLInputElement>('input[name="payment"]:checked')
+          ?.value.toLowerCase() ?? '',
+    };
+
+    divError.textContent = '';
+    if (!divError.textContent) {
+      divError.classList.remove('visible');
+      try {
+        result = await authRequest<RegisterData>(request, 'register');
+      } catch (error) {
+        divError.textContent = error instanceof Error ? error.message : 'Auth error';
+      }
+    }
+    if (result) {
+      if (result.message === 'User registered successfully') {
+        new CurrentUser(result.data);
+        window.location.href = '/menu.html';
+      } else {
+        divError.classList.add('visible');
+        divError.textContent = result.error ?? 'Register error';
+      }
+    }
+  }
+
+  btnRegister.addEventListener('click', (): void => {
+    void handleRegisterUser();
+  });
+
+  inputContainer.addEventListener('keypress', (e: KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      void handleRegisterUser();
+    }
+  });
+}

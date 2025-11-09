@@ -1,0 +1,74 @@
+<section class="top">
+  @if (modalErrorMessage()) {
+    <div class="typography-heading-3 notification">
+      {{ modalErrorMessage() }}
+    </div>
+  }
+  <div class="offer">
+    <h2 class="typography-heading-2">
+      Behind each of our cups hides an
+      <span class="typography-accent">amazing surprise</span>
+    </h2>
+
+    <div class="tabs">
+      @for (tab of tabs; track $index) {
+        <div
+          class="tab-item"
+          [class.tab-item-active]="category() === tab"
+          (click)="filterCategory(tab)"
+        >
+          <span class="tab-icon" [class.tab-icon-active]="category() === tab">
+            <img src="assets/img/tabs/{{ tab }}.png" alt="{{ tab }}" />
+          </span>
+          <span class="typography-action-link-button tab-text">
+            {{ tab | titlecase }}
+          </span>
+        </div>
+      }
+    </div>
+  </div>
+
+  @if (isLoading()) {
+    <span class="typography-heading-3 loading">Loading...</span>
+  } @else {
+    @if (isError()) {
+      <span class="typography-heading-3 loading">
+        {{ error_500_msg }}
+      </span>
+    } @else {
+      <div class="menu-grid" [style.grid-template-columns]="gridColumns" id="menu-grid">
+        @for (item of visibleItems(); track item.id) {
+          <div class="card" (click)="openModal(item.id.toString())">
+            <div class="image">
+              <img [src]="item.image" [alt]="item.name" />
+            </div>
+            <div class="description">
+              <div class="title">
+                <h3 class="typography-heading-3">{{ item.name }}</h3>
+                <p class="typography-body-medium">{{ item.description }}</p>
+              </div>
+
+              <div class="typography-heading-3 price">
+                @if (!item.discountPrice || !authService.checkAuth()) {
+                  ${{ item.price }}
+                } @else {
+                  ${{ item.discountPrice }}
+                  <span class="old-price">${{ item.price }}</span>
+                }
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      @if (filteredItems().length > visibleItems().length && !isDesktop()) {
+        <div class="load-more-container">
+          <button class="load-more-btn button-more" (click)="loadMore()">
+            <img src="assets/img/refresh.svg" alt="load more" />
+          </button>
+        </div>
+      }
+    }
+  }
+</section>
+<app-menu-modal></app-menu-modal>

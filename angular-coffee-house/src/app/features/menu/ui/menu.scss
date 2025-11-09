@@ -1,0 +1,230 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  width: 1440px;
+  gap: 40px;
+  width: 100%;
+}
+
+.notification {
+  padding: 12px 24px;
+  border: 1px solid var(--color-border-dark);
+  background-color: var(--color-background-body);
+  color: var(--color-text-dark);
+  border-radius: 20px;
+  text-align: center;
+}
+
+.coffee-menu {
+  cursor: default;
+}
+
+.top {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+
+  .offer {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    margin-top: 2px;
+
+    h2 {
+      text-align: center;
+      width: 800px;
+      color: var(--color-text-dark);
+    }
+
+    .tabs {
+      display: flex;
+      flex-direction: row;
+      gap: 15px;
+      color: var(--color-text-light);
+      justify-content: center;
+
+      .tab-item {
+        display: flex;
+        gap: 8px;
+        padding: 7px 16px 7px 7px;
+        cursor: pointer;
+        border-radius: 25px;
+        border: solid 1px var(--color-border-light);
+        align-items: center;
+        align-content: center;
+        justify-items: center;
+        color: var(--color-text-dark);
+        transition: background-color 0.5s ease;
+
+        .tab-icon {
+          background-color: var(--color-border-light);
+          border-radius: 15px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 30px;
+          height: 30px;
+          transition: background-color 0.5s ease;
+        }
+
+        .tab-icon-active {
+          background-color: var(--color-background-body);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 30px;
+          height: 30px;
+        }
+
+        .tab-text {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+
+      .tab-item-active {
+        background-color: var(--color-background-container);
+        color: var(--color-text-light);
+        cursor: default;
+        pointer-events: none;
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        .tab-item:hover {
+          background-color: var(--color-background-container);
+          color: var(--color-text-light);
+          .tab-icon {
+            background-color: var(--color-background-body);
+          }
+        }
+      }
+    }
+  }
+
+  .menu-grid {
+    display: grid;
+    gap: 39px;
+    grid-template-columns: 1fr;
+    width: 100%;
+    justify-items: center;
+
+    .card {
+      border-radius: 40px;
+      border: 1px solid var(--color-border-light);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      width: 310px;
+      height: 506px;
+
+      .image {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        max-height: 310px;
+        border-radius: 40px;
+        overflow: hidden;
+
+        img {
+          border-radius: 40px;
+          width: 340px;
+          height: 340px;
+          object-fit: contain;
+          transition: transform 0.5s ease-in-out;
+        }
+      }
+
+      .description {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        flex-grow: 1;
+        padding: 20px 20px;
+        color: var(--color-text-dark);
+
+        .title {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .price {
+          display: flex;
+          justify-content: start;
+          gap: 8px;
+        }
+
+        .old-price {
+          text-decoration: line-through;
+          opacity: 0.6;
+        }
+      }
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .card:hover {
+        cursor: pointer;
+        img {
+          transform: scale(0.92);
+        }
+      }
+    }
+  }
+
+  .button-more {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 100px;
+    border: solid 1px var(--color-border-dark);
+  }
+}
+
+@media (max-width: 840px) {
+  .top {
+    .offer {
+      h2 {
+        width: 100%;
+      }
+      .tabs {
+        gap: 14px;
+      }
+    }
+    .menu-grid {
+      gap: 40px 14px;
+      .card .description {
+        padding-right: 18px;
+      }
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  .top {
+    .offer {
+      h2 {
+        width: 100%;
+      }
+      .tabs {
+        gap: 8px;
+      }
+    }
+  }
+}
+
+.coffee-menu {
+  border-bottom: 2px solid var(--color-border-dark) !important;
+  pointer-events: none;
+  cursor: default;
+}
+
+.coffee-menu-vertical {
+  pointer-events: none;
+  cursor: default;
+}
